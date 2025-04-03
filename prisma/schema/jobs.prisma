@@ -1,0 +1,3 @@
+model Jobs {
+  id String @id @default(cuid())
+}
