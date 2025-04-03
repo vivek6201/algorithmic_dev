@@ -1,8 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 import NextTopLoader from "nextjs-toploader";
+import { Toaster } from "@/components/ui/sonner";
+import { SessionProvider } from "next-auth/react";
 
 function ThemeProvider({
   children,
@@ -21,14 +23,17 @@ export default function Provider({ children }: { children: React.ReactNode }) {
   if (!windowLoaded) return;
 
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="light"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <NextTopLoader showSpinner={false} />
-      {children}
-    </ThemeProvider>
+    <SessionProvider>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="light"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <Toaster />
+        <NextTopLoader showSpinner={false} />
+        {children}
+      </ThemeProvider>
+    </SessionProvider>
   );
 }

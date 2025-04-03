@@ -23,6 +23,9 @@ import { loginValidation, signupValidation } from "@/validations/auth";
 import { z } from "zod";
 import { useState } from "react";
 import { useRouter } from "nextjs-toploader/app";
+import signupAction from "@/actions/auth/signup";
+import { toast } from "sonner";
+import { signIn } from "next-auth/react";
 
 interface Proptype extends React.ComponentPropsWithoutRef<"div"> {
   isLogin: boolean;
@@ -155,8 +158,34 @@ function SignupForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof signupValidation>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof signupValidation>) {
+    const signupTimeout = toast.loading("Creating Your Account, please wait!");
+    const { success, message } = await signupAction(values);
+    toast.dismiss(signupTimeout);
+
+    if (!success) {
+      toast.error(message);
+      return;
+    }
+
+    toast.success(message);
+    const timeout = toast.loading("Signing in, please wait");
+
+    //signing in
+    const response = await signIn("credentials", {
+      email: values.email,
+      password: values.password,
+      redirect: false,
+    });
+
+    toast.dismiss(timeout);
+
+    if (response?.ok) {
+      router.push("/");
+      toast.success("login successful");
+    } else {
+      toast.error("Error while Signing in!");
+    }
   }
 
   return (

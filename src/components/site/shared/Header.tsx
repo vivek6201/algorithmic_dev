@@ -9,6 +9,7 @@ import {
   PackageSearch,
   Sun,
 } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "nextjs-toploader/app";
@@ -16,6 +17,7 @@ import React from "react";
 
 export default function Header() {
   const { theme, setTheme } = useTheme();
+  const session = useSession();
   const router = useRouter();
 
   const [isVisible, setIsVisible] = React.useState(true);
@@ -92,25 +94,35 @@ export default function Header() {
             <span>Products</span>
           </Button>
           <div className="flex gap-2 items-center ml-5">
-            <Button
-              variant={"outline"}
-              className="cursor-pointer"
-              onClick={() => router.push("/login")}
-            >
-              Sign in
-            </Button>
-            <Button
-              className="cursor-pointer"
-              onClick={() => router.push("/signup")}
-            >
-              Sign up
-            </Button>
+            {session.status === "authenticated" ? (
+              <div className="w-5 h-5 flex justify-center items-center p-5 rounded-full bg-blue-500">
+                <p className="text-white">{session.data.user?.name?.[0]}</p>
+              </div>
+            ) : (
+              <>
+                <Button
+                  variant={"outline"}
+                  className="cursor-pointer"
+                  onClick={() => router.push("/login")}
+                >
+                  Sign in
+                </Button>
+                <Button
+                  className="cursor-pointer"
+                  onClick={() => router.push("/signup")}
+                >
+                  Sign up
+                </Button>
+              </>
+            )}
+
             <Button
               onClick={() =>
                 theme === "light" ? setTheme("dark") : setTheme("light")
               }
               variant={"outline"}
               className="cursor-pointer"
+              size={"icon"}
             >
               {theme === "dark" ? <Sun /> : <Moon />}
             </Button>

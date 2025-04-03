@@ -1,7 +1,8 @@
 model Profile {
-  id     String @id @default(cuid())
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @unique
+  id           String         @id @default(cuid())
+  User         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String         @unique
+  blogReaction BlogReaction[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
