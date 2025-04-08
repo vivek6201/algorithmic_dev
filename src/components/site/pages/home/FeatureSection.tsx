@@ -5,7 +5,7 @@ import { BookOpen, Briefcase, Users } from "lucide-react";
 
 export default function FeatureSection() {
   return (
-    <div className="min-h-[700px] flex items-center justify-center flex-col gap-y-8 my-5">
+    <div className="min-h-[500px] flex items-center justify-center flex-col gap-y-8 my-5">
       <div className="">
         <h2 className="text-3xl font-extrabold text-gray-800 dark:text-white sm:text-4xl relative inline-block text-center">
           Everything you need to succeed in tech
