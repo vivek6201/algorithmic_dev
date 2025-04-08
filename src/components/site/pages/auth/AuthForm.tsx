@@ -169,7 +169,7 @@ function SignupForm() {
       password: "",
       confirmPassword: "",
       name: "",
-      role: "Admin",
+      role: "User",
     },
   });
 
