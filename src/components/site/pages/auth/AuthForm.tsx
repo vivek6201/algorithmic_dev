@@ -61,8 +61,22 @@ function LoginForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof loginValidation>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof loginValidation>) {
+    const timeout = toast.loading("Signing in, please wait!");
+    const response = await signIn("credentials", {
+      email: values.email,
+      password: values.password,
+      redirect: false,
+    });
+    toast.dismiss(timeout);
+
+    if (response?.error) {
+      toast.error("Signin failed!");
+      return;
+    }
+
+    toast.success("Signin successful!");
+    router.push("/");
   }
 
   return (

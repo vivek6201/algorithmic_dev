@@ -8,12 +8,15 @@ import {
   Moon,
   PackageSearch,
   Sun,
+  X,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "nextjs-toploader/app";
 import React from "react";
+
+import ProfileSheet from "../pages/profile/ProfileSheet";
 
 export default function Header() {
   const { theme, setTheme } = useTheme();
@@ -95,9 +98,7 @@ export default function Header() {
           </Button>
           <div className="flex gap-2 items-center ml-5">
             {session.status === "authenticated" ? (
-              <div className="w-5 h-5 flex justify-center items-center p-5 rounded-full bg-blue-500">
-                <p className="text-white">{session.data.user?.name?.[0]}</p>
-              </div>
+              <ProfileSheet />
             ) : (
               <>
                 <Button
