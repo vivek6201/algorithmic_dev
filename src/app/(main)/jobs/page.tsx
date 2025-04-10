@@ -1,9 +1,17 @@
 
 import JobFilters from "@/components/site/pages/jobs/JobsFilter";
 import JobListings from "@/components/site/pages/jobs/JobsListing";
+import { Metadata } from "next";
 import React from "react";
 
+export const metadata: Metadata = {
+  title: "Jobs - Algorithmic Dev",
+  description:
+    "A One-Stop Solution for all your tech related queries. Be it Jobs, tutorials, courses, blogs, helper mini apps",
+};
+
 export default function JobsPage() {
+
   return (
     <div className="w-full max-w-[1400px] mx-auto mt-24 min-h-screen">
       <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_2.4fr_0.8fr] md:px-8 lg:px-0">
