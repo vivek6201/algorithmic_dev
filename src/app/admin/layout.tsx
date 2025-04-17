@@ -1,4 +1,5 @@
 import AdminSidebar from "@/components/site/pages/admin/Sidebar";
+import Breadcrumbs from "@/components/site/shared/Breadcrumb";
 import { Metadata } from "next";
 import React, { ReactNode } from "react";
 
@@ -12,7 +13,10 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex h-screen flex-col md:flex-row">
       <AdminSidebar />
-      <main className="flex-1 p-6 overflow-y-auto">{children}</main>
+      <main className="flex-1 p-6 overflow-y-auto">
+        <Breadcrumbs />
+        {children}
+      </main>
     </div>
   );
 };

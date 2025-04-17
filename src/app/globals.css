@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -114,9 +115,63 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Rich Text Editor Styles */
+.ProseMirror-content .ProseMirror {
+  @apply prose prose-slate max-w-none dark:prose-invert dark:text-gray-300;
+}
+
+.ProseMirror:focus-visible {
+  outline: none;
+}
+
+.ProseMirror h1 {
+  @apply text-3xl font-bold my-4 dark:text-white;
+}
+
+.ProseMirror h2 {
+  @apply text-2xl font-bold my-3 dark:text-white;
+}
+
+.ProseMirror h3 {
+  @apply text-xl font-bold my-2 dark:text-white;
+}
+
+.ProseMirror p {
+  @apply my-2 dark:text-gray-300;
+}
+
+.ProseMirror ul {
+  @apply list-disc pl-5 my-2 dark:text-gray-300;
+}
+
+.ProseMirror ol {
+  @apply list-decimal pl-5 my-2 dark:text-gray-300;
+}
+
+.ProseMirror blockquote {
+  @apply border-l-4 border-gray-300 pl-4 italic my-4 dark:border-gray-600 dark:text-gray-400;
+}
+
+.ProseMirror pre {
+  @apply bg-gray-100 p-4 rounded-md my-4 overflow-auto dark:bg-gray-800 dark:text-gray-300;
+}
+
+.ProseMirror img {
+  @apply max-w-full h-auto my-4;
+}
+
+.ProseMirror a {
+  @apply underline dark:text-blue-400;
+}
+
+.ProseMirror code {
+  @apply font-mono bg-gray-100 px-1 rounded dark:bg-gray-800 dark:text-gray-300;
 }
