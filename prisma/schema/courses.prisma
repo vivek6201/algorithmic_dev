@@ -4,6 +4,7 @@ model Tutorial {
   title       String
   slug        String    @unique // Unique slug for URL navigation
   description String
+  published   Boolean   @default(false)
   chapters    Chapter[]
 
   createdAt DateTime @default(now())

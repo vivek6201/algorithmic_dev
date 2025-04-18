@@ -35,7 +35,7 @@ export default function CategoryModal({
   open: boolean;
   handleClose: () => void;
   onSave: (data: z.infer<typeof blogCategorySchema>) => void;
-  editData: BlogCategory | null;
+  editData?: BlogCategory | null;
 }) {
   const form = useForm<z.infer<typeof blogCategorySchema>>({
     resolver: zodResolver(blogCategorySchema),

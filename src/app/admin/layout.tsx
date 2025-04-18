@@ -13,7 +13,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex h-screen flex-col md:flex-row">
       <AdminSidebar />
-      <main className="flex-1 p-6 overflow-y-auto">
+      <main className="flex-1 p-5 overflow-y-auto">
         <Breadcrumbs />
         {children}
       </main>

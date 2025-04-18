@@ -1,19 +1,5 @@
 "use client";
-
-import { useState, useMemo, useRef } from "react";
-import Link from "next/link";
-import { useDebounce } from "use-debounce";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Plus, Edit, Trash2 } from "lucide-react";
+import React, { useMemo, useRef, useState } from "react";
 import {
   Dialog,
   DialogClose,
@@ -23,108 +9,92 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Edit, Plus, Trash2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { useDebounce } from "use-debounce";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { useQuery } from "@tanstack/react-query";
-import { Blog, BlogCategory } from "@prisma/client";
+import { Tutorial } from "@prisma/client";
+import { CreateTutorialModal } from "./CreateTutorialModal";
+import { createTutorial } from "@/actions/admin/tutorials/tutorial";
 import { toast } from "sonner";
-import { deleteBlog } from "@/actions/admin/blogs/blog";
-import CategoryModal from "./ManageCategoryModal";
+import { tutorialSchema } from "@/validations/tutorialValidation";
 import { z } from "zod";
-import { blogCategorySchema } from "@/validations/blogValidations";
-import createCategory from "@/actions/admin/blogs/category";
 
-export default function AllBlogsClient() {
+export default function AllTutorialsClient() {
   const [search, setSearch] = useState("");
+  const [openCreateModal, setOpenCreateModal] = useState(false);
   const [debouncedSearch] = useDebounce(search, 300);
-  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const deleteModelRef = useRef<HTMLButtonElement>(null);
-
   const {
-    data: blogs = [],
+    data: tutorials = [],
     isPending,
     error,
     refetch,
   } = useQuery({
-    queryKey: ["blogs"],
+    queryKey: ["tutorials"],
     queryFn: async () => {
-      const response = await fetch("/api/admin/blogs");
+      const response = await fetch("/api/admin/tutorials");
       const data = await response.json();
-      return data.blogs || [];
+      return data.tutorials || [];
     },
   });
 
-  const handleCloseModal = () => {
-    setCategoryModalOpen(false);
-  };
+  const handleDelete = async (id: string) => {};
 
-  const handleSaveCategory = async (
-    data: z.infer<typeof blogCategorySchema>
-  ): Promise<void> => {
-    try {
-      // Add new category
-      const { success, message, newCategory } = await createCategory(data);
+  const handleCreateModel = () => setOpenCreateModal(!openCreateModal);
 
-      if (success && newCategory) {
-        toast.success("Category created successfully");
-        refetch(); // Refresh the data after creation
-      } else {
-        toast.error(message || "Failed to create category");
-      }
-    } catch (error) {
-      toast.error("An error occurred");
-      console.error(error);
+  const handleSaveTutorial = async (values: z.infer<typeof tutorialSchema>) => {
+    const { success, message } = await createTutorial(values);
+
+    if (!success) {
+      toast.error(message);
+      return;
     }
 
-    handleCloseModal();
+    toast.success(message);
+    refetch();
+    (document.querySelector("#close-btn") as HTMLButtonElement)?.click();
   };
 
-  const filteredBlogs = useMemo(() => {
-    return blogs.filter((blog: Blog) =>
-      blog.title.toLowerCase().includes(debouncedSearch.toLowerCase())
+  const filteredTutorials = useMemo(() => {
+    return tutorials.filter((tutorial: Tutorial) =>
+      tutorial.title?.toLowerCase().includes(debouncedSearch.toLowerCase())
     );
-  }, [debouncedSearch, blogs]);
+  }, [debouncedSearch, tutorials]);
 
-  const sortedBlogs = useMemo(() => {
-    return [...filteredBlogs].sort((a, b) => {
+  const sortedTutorials = useMemo(() => {
+    return [...filteredTutorials].sort((a, b) => {
       return (
         new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
       );
     });
-  }, [filteredBlogs]);
-
-  const handleDelete = async (id: string) => {
-    const timeout = toast.loading("Deleting blog, please wait!");
-    const { success, message } = await deleteBlog(id);
-    toast.dismiss(timeout);
-    if (success) toast.success(message);
-    else toast.error(message);
-
-    refetch();
-    deleteModelRef.current?.click();
-  };
-
-  const handleModal = () => setCategoryModalOpen(!categoryModalOpen);
+  }, [filteredTutorials]);
 
   return (
     <>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold tracking-tight">All Blogs</h1>
+          <h1 className="text-2xl font-bold tracking-tight">All Tutorials</h1>
           <div className="flex items-center gap-x-2">
-            <Button onClick={handleModal}>
-              <Plus className="w-4 h-4 mr-1" /> New Category
+            <Button onClick={handleCreateModel}>
+              <Plus className="w-4 h-4 mr-1" /> New Tutorial
             </Button>
-
-            <Link href="/admin/blogs/create">
-              <Button>
-                <Plus className="w-4 h-4 mr-1" /> New Blog
-              </Button>
-            </Link>
           </div>
         </div>
 
         <div className="flex justify-between items-center mb-4">
           <Input
-            placeholder="Search blog title..."
+            placeholder="Search tutorial title..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full max-w-sm"
@@ -137,9 +107,9 @@ export default function AllBlogsClient() {
               <TableRow>
                 <TableHead className="w-[50px]">#</TableHead>
                 <TableHead>Title</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Published</TableHead>
-                <TableHead>Author</TableHead>
+                <TableHead>Total Chapters</TableHead>
+                <TableHead>Date Published</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -147,7 +117,7 @@ export default function AllBlogsClient() {
               {isPending ? (
                 <TableRow>
                   <TableCell colSpan={6} className="text-center py-4">
-                    Loading Blogs...
+                    Loading tutorials...
                   </TableCell>
                 </TableRow>
               ) : error ? (
@@ -156,28 +126,28 @@ export default function AllBlogsClient() {
                     colSpan={6}
                     className="text-center py-4 text-red-500"
                   >
-                    Error loading Blogs
+                    Error loading Tutorials
                   </TableCell>
                 </TableRow>
-              ) : sortedBlogs.length === 0 ? (
+              ) : sortedTutorials.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={6} className="text-center py-4">
                     No Blogs found
                   </TableCell>
                 </TableRow>
               ) : (
-                sortedBlogs.map((blog, index) => {
+                sortedTutorials.map((tutorial, index) => {
                   return (
-                    <TableRow key={blog.id}>
+                    <TableRow key={tutorial.id}>
                       <TableCell>{index + 1}</TableCell>
-                      <TableCell>{blog.title}</TableCell>
-                      <TableCell>{blog.category.name}</TableCell>
+                      <TableCell>{tutorial.title}</TableCell>
+                      <TableCell>{tutorial._count.chapters}</TableCell>
+                      <TableCell>{tutorial.createdAt}</TableCell>
                       <TableCell>
-                        {blog.published === true ? "Published" : "Draft"}
+                        {tutorial.published === true ? "Published" : "Draft"}
                       </TableCell>
-                      <TableCell>{blog.authorName}</TableCell>
                       <TableCell className="text-right space-x-2">
-                        <Link href={`/admin/blogs/edit/${blog.slug}`}>
+                        <Link href={`/admin/tutorials/edit/${tutorial.slug}`}>
                           <Button size="sm" variant="outline">
                             <Edit className="w-4 h-4" />
                           </Button>
@@ -205,7 +175,7 @@ export default function AllBlogsClient() {
                               </DialogClose>
                               <Button
                                 variant="destructive"
-                                onClick={() => handleDelete(blog.id)}
+                                onClick={() => handleDelete(tutorial.id)}
                               >
                                 Delete
                               </Button>
@@ -221,10 +191,10 @@ export default function AllBlogsClient() {
           </Table>
         </div>
       </div>
-      <CategoryModal
-        open={categoryModalOpen}
-        handleClose={handleCloseModal}
-        onSave={handleSaveCategory}
+      <CreateTutorialModal
+        open={openCreateModal}
+        handleClose={handleCreateModel}
+        onSave={handleSaveTutorial}
       />
     </>
   );

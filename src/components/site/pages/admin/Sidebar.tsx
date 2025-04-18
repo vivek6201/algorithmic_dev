@@ -203,12 +203,12 @@ const AdminSidebar = () => {
           </SheetTrigger>
           <SheetContent
             side="left"
-            className="p-4 bg-neutral-900 text-white overflow-y-auto"
+            className="flex flex-col p-4 bg-neutral-900 text-white overflow-y-auto"
           >
             <SheetHeader>
               <SheetTitle className="text-white text-xl">Admin Menu</SheetTitle>
             </SheetHeader>
-            <nav className="mt-6 space-y-2">
+            <nav className="mt-6 space-y-2 flex-1">
               {sidebarItems.map((item) =>
                 item.children.length === 0
                   ? renderMainLink(item, true)
