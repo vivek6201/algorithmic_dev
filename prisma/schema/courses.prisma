@@ -28,9 +28,9 @@ model Chapter {
 model Topic {
   id        String  @id @default(cuid())
   title     String
-  slug      String  @unique // Unique slug for URL navigation
-  content   String // Stores content (Markdown, JSON for Tiptap, etc.)
-  order     Int // Determines topic order within a tutorial
+  slug      String  @unique
+  content   String
+  order     Int
   chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   chapterId String
 
@@ -48,14 +48,16 @@ enum ReactionType {
 }
 
 model Blog {
-  id         String       @id @default(cuid())
-  title      String
-  slug       String       @unique // SEO-friendly URL
-  content    String // Stores blog content (Markdown, JSON for Tiptap, etc.)
-  category   BlogCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId String
-  authorName String // Stores author's name as a string
-  published  Boolean      @default(false) // Only Admins can publish
+  id          String       @id @default(cuid())
+  title       String
+  slug        String       @unique // SEO-friendly URL
+  description String
+  content     String
+  category    BlogCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId  String
+  authorName  String
+  published   Boolean      @default(false)
+  coverImage  String
 
   reactions BlogReaction[]
 
@@ -79,10 +81,11 @@ model BlogReaction {
 }
 
 model BlogCategory {
-  id    String @id @default(cuid())
-  name  String @unique
-  slug  String @unique // SEO-friendly URL
-  blogs Blog[]
+  id        String  @id @default(cuid())
+  name      String  @unique
+  slug      String  @unique
+  published Boolean @default(false)
+  blogs     Blog[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

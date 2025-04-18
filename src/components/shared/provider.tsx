@@ -5,6 +5,10 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "@/components/ui/sonner";
 import { SessionProvider } from "next-auth/react";
+import {
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 
 function ThemeProvider({
   children,
@@ -12,6 +16,8 @@ function ThemeProvider({
 }: React.ComponentProps<typeof NextThemesProvider>) {
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
+
+const queryClient = new QueryClient();
 
 export default function Provider({ children }: { children: React.ReactNode }) {
   const [windowLoaded, setWindowLoaded] = React.useState(false);
@@ -32,7 +38,9 @@ export default function Provider({ children }: { children: React.ReactNode }) {
       >
         <Toaster />
         <NextTopLoader showSpinner={false} />
-        {children}
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
       </ThemeProvider>
     </SessionProvider>
   );

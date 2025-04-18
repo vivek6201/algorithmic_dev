@@ -22,6 +22,15 @@ const createCategory = async (values: z.infer<typeof blogCategorySchema>) => {
   }
 
   try {
+    const slugExists = await prisma.blogCategory.findUnique({ where: { slug: values.slug } })
+
+    if (slugExists) {
+      return {
+        success: false,
+        message: "Slug Already exists"
+      }
+    }
+
     const newCategory = await prisma.blogCategory.create({
       data: {
         name: data.name,

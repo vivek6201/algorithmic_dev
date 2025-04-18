@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useDebounce } from "use-debounce";
 import {
@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Plus, Edit, Trash2 } from "lucide-react";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -29,46 +30,37 @@ import { z } from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-const dummyBlogs = [
-  {
-    id: "1",
-    title: "Mastering React Hooks",
-    category: "Frontend",
-    publishedAt: "2025-04-01",
-    status: "Published",
-  },
-  {
-    id: "2",
-    title: "Deploying with Docker",
-    category: "DevOps",
-    publishedAt: "2025-03-28",
-    status: "Draft",
-  },
-  {
-    id: "3",
-    title: "Understanding Prisma ORM",
-    category: "Backend",
-    publishedAt: "2025-03-20",
-    status: "Published",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { Blog } from "@prisma/client";
+import { toast } from "sonner";
+import { deleteBlog } from "@/actions/admin/blogs/blog";
 
 export default function AllBlogsClient() {
-  const [blogs, setBlogs] = useState(dummyBlogs);
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 300);
-  const [deleteId, setDeleteId] = useState<string | null>(null);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  const deleteModelRef = useRef<HTMLButtonElement>(null);
+  const {
+    data: blogs = [],
+    isPending,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["blogs"],
+    queryFn: async () => {
+      const response = await fetch("/api/admin/blogs");
+      const data = await response.json();
+      return data.blogs || [];
+    },
+  });
 
   const filteredBlogs = useMemo(() => {
-    return blogs.filter((blog) =>
+    return blogs.filter((blog: Blog) =>
       blog.title.toLowerCase().includes(debouncedSearch.toLowerCase())
     );
   }, [debouncedSearch, blogs]);
@@ -81,11 +73,15 @@ export default function AllBlogsClient() {
     });
   }, [filteredBlogs]);
 
-  const handleDelete = () => {
-    if (deleteId) {
-      setBlogs((prev) => prev.filter((b) => b.id !== deleteId));
-      setDeleteId(null);
-    }
+  const handleDelete = async (id: string) => {
+    const timeout = toast.loading("Deleting blog, please wait!");
+    const { success, message } = await deleteBlog(id);
+    toast.dismiss(timeout);
+    if (success) toast.success(message);
+    else toast.error(message);
+
+    refetch();
+    deleteModelRef.current?.click();
   };
 
   const handleModal = () => setCategoryModalOpen(!categoryModalOpen);
@@ -125,67 +121,84 @@ export default function AllBlogsClient() {
                 <TableHead>Title</TableHead>
                 <TableHead>Category</TableHead>
                 <TableHead>Published</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>Author</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {sortedBlogs.map((blog, index) => (
-                <TableRow key={blog.id}>
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>{blog.title}</TableCell>
-                  <TableCell>{blog.category}</TableCell>
-                  <TableCell>{blog.publishedAt}</TableCell>
-                  <TableCell>
-                    <span
-                      className={
-                        blog.status === "Published"
-                          ? "text-green-600 font-medium"
-                          : "text-yellow-600 font-medium"
-                      }
-                    >
-                      {blog.status}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-right space-x-2">
-                    <Link href={`/admin/blogs/edit/${blog.id}`}>
-                      <Button size="sm" variant="outline">
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                    </Link>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button
-                          size="sm"
-                          variant="destructive"
-                          onClick={() => setDeleteId(blog.id)}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-sm">
-                        <h3 className="text-lg font-semibold mb-4">
-                          Confirm Delete
-                        </h3>
-                        <p className="mb-4">
-                          Are you sure you want to delete this blog?
-                        </p>
-                        <div className="flex justify-end gap-2">
-                          <Button
-                            variant="outline"
-                            onClick={() => setDeleteId(null)}
-                          >
-                            Cancel
-                          </Button>
-                          <Button variant="destructive" onClick={handleDelete}>
-                            Delete
-                          </Button>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
+              {isPending ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center py-4">
+                    Loading categories...
                   </TableCell>
                 </TableRow>
-              ))}
+              ) : error ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={6}
+                    className="text-center py-4 text-red-500"
+                  >
+                    Error loading categories
+                  </TableCell>
+                </TableRow>
+              ) : sortedBlogs.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center py-4">
+                    No Blogs found
+                  </TableCell>
+                </TableRow>
+              ) : (
+                sortedBlogs.map((blog, index) => {
+                  return (
+                    <TableRow key={blog.id}>
+                      <TableCell>{index + 1}</TableCell>
+                      <TableCell>{blog.title}</TableCell>
+                      <TableCell>{blog.category.name}</TableCell>
+                      <TableCell>
+                        {blog.published === true ? "Published" : "Draft"}
+                      </TableCell>
+                      <TableCell>{blog.authorName}</TableCell>
+                      <TableCell className="text-right space-x-2">
+                        <Link href={`/admin/blogs/edit/${blog.slug}`}>
+                          <Button size="sm" variant="outline">
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                        </Link>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button size="sm" variant="destructive">
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-sm">
+                            <DialogHeader>
+                              <DialogTitle>Confirm Delete</DialogTitle>
+                              <DialogDescription>
+                                This action cannot be undone.
+                              </DialogDescription>
+                            </DialogHeader>
+
+                            <p className="mb-4">
+                              Are you sure you want to delete this blog?
+                            </p>
+                            <div className="flex justify-end gap-2">
+                              <DialogClose asChild ref={deleteModelRef}>
+                                <Button variant="outline">Cancel</Button>
+                              </DialogClose>
+                              <Button
+                                variant="destructive"
+                                onClick={() => handleDelete(blog.id)}
+                              >
+                                Delete
+                              </Button>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              )}
             </TableBody>
           </Table>
         </div>
@@ -209,6 +222,17 @@ function CategoryModal({
       slug: "",
     },
   });
+
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name === "name") {
+        const generatedSlug = value.name?.toLowerCase().replace(/\s+/g, "-");
+        form.setValue("slug", generatedSlug || "");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof blogCategorySchema>) {
@@ -255,12 +279,7 @@ function CategoryModal({
                     <Input
                       placeholder="Enter category Slug"
                       {...field}
-                      value={
-                        field.value ||
-                        form.watch("name").toLowerCase().replace(/\s+/g, "-")
-                      }
                       readOnly
-                      onChange={(e) => field.onChange(e.target.value)}
                     />
                   </FormControl>
                   <FormMessage />

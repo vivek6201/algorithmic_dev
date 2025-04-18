@@ -4,6 +4,7 @@ import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import CodeBlock from "@tiptap/extension-code-block";
 import Youtube from "@tiptap/extension-youtube";
+import { useEffect } from "react";
 
 interface UseEditorConfigProps {
   content: string;
@@ -27,6 +28,7 @@ export const useEditorConfig = ({
       }),
     ],
     content,
+    immediatelyRender: false,
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
     },
@@ -37,6 +39,13 @@ export const useEditorConfig = ({
       },
     },
   });
+
+  // ✅ Sync editor content when external `content` changes
+  useEffect(() => {
+    if (editor && content !== editor.getHTML()) {
+      editor.commands.setContent(content);
+    }
+  }, [editor, content]);
 
   return editor;
 };
