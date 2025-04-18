@@ -23,28 +23,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { blogCategorySchema } from "@/validations/blogValidations";
-import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { useQuery } from "@tanstack/react-query";
-import { Blog } from "@prisma/client";
+import { Blog, BlogCategory } from "@prisma/client";
 import { toast } from "sonner";
 import { deleteBlog } from "@/actions/admin/blogs/blog";
+import CategoryModal from "./ManageCategoryModal";
+import { z } from "zod";
+import { blogCategorySchema } from "@/validations/blogValidations";
+import createCategory from "@/actions/admin/blogs/category";
 
 export default function AllBlogsClient() {
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 300);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const deleteModelRef = useRef<HTMLButtonElement>(null);
+  const [editCategory, setEditCategory] = useState<BlogCategory | null>(null);
+
   const {
     data: blogs = [],
     isPending,
@@ -58,6 +52,35 @@ export default function AllBlogsClient() {
       return data.blogs || [];
     },
   });
+
+  const handleCloseModal = () => {
+    setCategoryModalOpen(false);
+    setEditCategory(null);
+  };
+
+  const handleSaveCategory = async (
+    data: z.infer<typeof blogCategorySchema>
+  ): Promise<void> => {
+    try {
+      if (editCategory) {
+      } else {
+        // Add new category
+        const { success, message, newCategory } = await createCategory(data);
+
+        if (success && newCategory) {
+          toast.success("Category created successfully");
+          refetch(); // Refresh the data after creation
+        } else {
+          toast.error(message || "Failed to create category");
+        }
+      }
+    } catch (error) {
+      toast.error("An error occurred");
+      console.error(error);
+    }
+
+    handleCloseModal();
+  };
 
   const filteredBlogs = useMemo(() => {
     return blogs.filter((blog: Blog) =>
@@ -203,93 +226,12 @@ export default function AllBlogsClient() {
           </Table>
         </div>
       </div>
-      <CategoryModal open={categoryModalOpen} handleClose={handleModal} />
+      <CategoryModal
+        open={categoryModalOpen}
+        handleClose={handleCloseModal}
+        onSave={handleSaveCategory}
+        editData={editCategory}
+      />
     </>
-  );
-}
-
-function CategoryModal({
-  open,
-  handleClose,
-}: {
-  open: boolean;
-  handleClose: () => void;
-}) {
-  const form = useForm<z.infer<typeof blogCategorySchema>>({
-    resolver: zodResolver(blogCategorySchema),
-    defaultValues: {
-      name: "",
-      slug: "",
-    },
-  });
-
-  useEffect(() => {
-    const subscription = form.watch((value, { name }) => {
-      if (name === "name") {
-        const generatedSlug = value.name?.toLowerCase().replace(/\s+/g, "-");
-        form.setValue("slug", generatedSlug || "");
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [form]);
-
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof blogCategorySchema>) {
-    console.log(values);
-  }
-
-  return (
-    <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create Category</DialogTitle>
-          <DialogDescription>
-            This Modal helps you create blog categories
-          </DialogDescription>
-        </DialogHeader>
-
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter category Name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="slug"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Slug{" "}
-                    <span className="text-black/50 dark:text-white/30">
-                      (read only)
-                    </span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter category Slug"
-                      {...field}
-                      readOnly
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit">Submit</Button>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
   );
 }
