@@ -147,7 +147,7 @@ export default function AllTutorialsClient() {
                         {tutorial.published === true ? "Published" : "Draft"}
                       </TableCell>
                       <TableCell className="text-right space-x-2">
-                        <Link href={`/admin/tutorials/edit/${tutorial.slug}`}>
+                        <Link href={`/admin/tutorials/build/${tutorial.slug}`}>
                           <Button size="sm" variant="outline">
                             <Edit className="w-4 h-4" />
                           </Button>

@@ -77,7 +77,7 @@ function BlogForm({
         toast.error("Blog data is missing.");
         return;
       }
-      const { success, message, updatedBlog } = await updateBlog(
+      const { success, message } = await updateBlog(
         blog.slug,
         values
       );

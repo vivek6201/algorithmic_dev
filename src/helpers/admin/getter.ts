@@ -16,7 +16,7 @@ export const getBlogBySlug = async (slug: string) => {
     }
 }
 
-export const getTutorialChapters = async (slug: string) => {
+export const getTutorialChaptersWithTopics = async (slug: string) => {
     if (!slug) {
         return {
             success: false,
@@ -29,7 +29,19 @@ export const getTutorialChapters = async (slug: string) => {
                 slug
             },
             select: {
-                chapters: true
+                chapters: {
+                    include: {
+                        _count: true,
+                        topics: {
+                            orderBy: {
+                                order: "asc"
+                            }
+                        }
+                    },
+                    orderBy: {
+                        createdAt: "asc"
+                    }
+                },
             }
         })
 
