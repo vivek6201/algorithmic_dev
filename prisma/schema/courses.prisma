@@ -1,15 +1,43 @@
 // tutorial schema
-model Tutorial {
-  id          String    @id @default(cuid())
-  title       String
-  slug        String    @unique // Unique slug for URL navigation
-  description String
-  published   Boolean   @default(false)
-  chapters    Chapter[]
+
+model TutorialCategory {
+  id        String                       @id @default(cuid())
+  name      String                       @unique
+  slug      String                       @unique
+  published Boolean                      @default(false)
+  tutorials TutorialCategoryOnTutorial[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model TutorialCategoryOnTutorial {
+  tutorial   Tutorial @relation(fields: [tutorialId], references: [id], onDelete: Cascade)
+  tutorialId String
+
+  category   TutorialCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId String
+
+  assignedAt DateTime @default(now())
+
+  @@id([tutorialId, categoryId]) // composite primary key
+  @@index([tutorialId, categoryId])
+}
+
+model Tutorial {
+  id          String                       @id @default(cuid())
+  title       String
+  slug        String                       @unique
+  description String
+  published   Boolean                      @default(false)
+  chapters    Chapter[]
+  categories  TutorialCategoryOnTutorial[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// This is the join table for many-to-many
 
 model Chapter {
   id          String   @id @default(cuid())

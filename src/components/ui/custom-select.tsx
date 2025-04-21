@@ -7,10 +7,11 @@ import { useTheme } from "next-themes";
 type Option = { label: string; value: string };
 
 interface CustomSelectProps {
-  value: string;
+  value: string | string[]; // support both single & multi
   options: Option[];
-  defaultValue?: Option;
-  onChange: (value: string) => void;
+  defaultValue?: Option | Option[];
+  onChange: (value: string | string[]) => void;
+  isMulti?: boolean; // toggles between single and multi
   isLoading?: boolean;
   placeholder?: string;
 }
@@ -20,34 +21,44 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   options,
   onChange,
   defaultValue,
+  isMulti = false,
   isLoading = false,
   placeholder = "Select...",
 }) => {
-  const selected = options.find((opt) => opt.value === value);
   const { theme } = useTheme();
-
   const isDark = theme === "dark";
 
-  // Tailwind's neutral color equivalents
   const colors = {
-    bg: isDark ? "#171717" : "#ffffff", // neutral-900 / white
-    border: isDark ? "#3f3f46" : "#e5e5e5", // neutral-600 / neutral-200
-    text: isDark ? "#f5f5f5" : "#111827", // neutral-100 / neutral-900
-    placeholder: isDark ? "#a3a3a3" : "#6b7280", // neutral-400 / neutral-500
-    focusBorder: "#3b82f6", // blue-500
-    optionHover: isDark ? "#262626" : "#f5f5f5", // neutral-800 / neutral-100
-    selected: "#6b7280", // blue-500
+    bg: isDark ? "#171717" : "#ffffff",
+    border: isDark ? "#3f3f46" : "#e5e5e5",
+    text: isDark ? "#f5f5f5" : "#111827",
+    placeholder: isDark ? "#a3a3a3" : "#6b7280",
+    focusBorder: "#3b82f6",
+    optionHover: isDark ? "#262626" : "#f5f5f5",
+    selected: "#6b7280",
   };
+
+  const selected = isMulti
+    ? options.filter((opt) => Array.isArray(value) && value.includes(opt.value))
+    : options.find((opt) => opt.value === value);
 
   return (
     <Select
+      isMulti={isMulti}
       options={options}
       value={selected}
       isLoading={isLoading}
       defaultValue={defaultValue}
       isSearchable
       placeholder={placeholder}
-      onChange={(option) => onChange(option?.value || "")}
+      onChange={(selectedOption: any) => {
+        if (isMulti) {
+          const values = (selectedOption || []).map((opt: Option) => opt.value);
+          onChange(values);
+        } else {
+          onChange(selectedOption?.value || "");
+        }
+      }}
       styles={{
         control: (base, state) => ({
           ...base,
@@ -64,6 +75,22 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         singleValue: (base) => ({
           ...base,
           color: colors.text,
+        }),
+        multiValue: (base) => ({
+          ...base,
+          backgroundColor: isDark ? "#27272a" : "#e5e7eb",
+        }),
+        multiValueLabel: (base) => ({
+          ...base,
+          color: colors.text,
+        }),
+        multiValueRemove: (base) => ({
+          ...base,
+          color: colors.text,
+          ":hover": {
+            backgroundColor: colors.selected,
+            color: "white",
+          },
         }),
         menu: (base) => ({
           ...base,

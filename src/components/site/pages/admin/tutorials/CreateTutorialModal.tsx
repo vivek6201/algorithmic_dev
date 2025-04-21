@@ -24,6 +24,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import CustomSelect from "@/components/ui/custom-select";
 
 export function CreateTutorialModal({
   open,
@@ -61,6 +63,19 @@ export function CreateTutorialModal({
 
     return () => subscription.unsubscribe();
   }, [form, isEdit]);
+
+  const {
+    data: categories = [],
+    isPending,
+    error,
+  } = useQuery({
+    queryKey: ["tutorial-categories"],
+    queryFn: async () => {
+      const response = await fetch("/api/admin/tutorials/category");
+      const data = await response.json();
+      return data.categories || [];
+    },
+  });
 
   function onSubmit(values: z.infer<typeof tutorialSchema>) {
     onSave(values);
@@ -120,6 +135,33 @@ export function CreateTutorialModal({
                         placeholder="Write Meta description"
                         {...field}
                         className="min-h-[200px]"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="categoryId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category</FormLabel>
+                    <FormControl>
+                      <CustomSelect
+                        value={field.value}
+                        onChange={field.onChange}
+                        options={
+                          error
+                            ? []
+                            : categories.map((cat: any) => ({
+                                label: cat.name,
+                                value: cat.id,
+                              }))
+                        }
+                        isMulti={true}
+                        isLoading={isPending}
+                        placeholder="Select multiple categories"
                       />
                     </FormControl>
                     <FormMessage />

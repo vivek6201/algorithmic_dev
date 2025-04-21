@@ -38,6 +38,11 @@ export const createTutorial = async (values: z.infer<typeof tutorialSchema>) => 
                 description: data.description,
                 slug: data.slug,
                 title: data.title,
+                categories: {
+                    create: data.categoryId.map(id => {
+                        return { category: { connect: { id } } };
+                    })
+                },
             }
         })
 

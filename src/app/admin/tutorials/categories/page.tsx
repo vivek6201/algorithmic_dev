@@ -1,7 +1,6 @@
-import React from 'react'
+import AllCategoriesClient from "@/components/site/pages/admin/tutorials/AllCategoryClient";
+import React from "react";
 
 export default function page() {
-  return (
-    <div>page</div>
-  )
+  return <AllCategoriesClient />;
 }

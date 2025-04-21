@@ -132,7 +132,7 @@ export default function AllTutorialsClient() {
               ) : sortedTutorials.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={6} className="text-center py-4">
-                    No Blogs found
+                    No Tutorials found
                   </TableCell>
                 </TableRow>
               ) : (
