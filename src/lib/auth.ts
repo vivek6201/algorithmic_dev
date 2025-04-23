@@ -1,4 +1,3 @@
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
 import { prisma } from "./db";
 import Credentials from "next-auth/providers/credentials";
@@ -13,7 +12,6 @@ declare module "next-auth" {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: PrismaAdapter(prisma as any),
   providers: [
     Credentials({
       credentials: {
@@ -63,26 +61,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   events: {
     async signIn({ user }) {
-      // 🔥 Ensure account entry exists for credentials-based users
-      const existingAccount = await prisma.account.findFirst({
-        where: { userId: user.id, provider: "credentials" },
-      });
-
-      if (!existingAccount) {
-        if (!user.id) {
-          throw new Error("User ID is undefined.");
-        }
-
-        await prisma.account.create({
-          data: {
-            userId: user.id,
-            provider: "credentials",
-            providerAccountId: user.id, // Use user ID as providerAccountId
-            type: "credentials",
-          },
-        });
-      }
-
       // 🔥 Manually create a session in the database
       if (!user.id) {
         throw new Error("User ID is undefined.");
