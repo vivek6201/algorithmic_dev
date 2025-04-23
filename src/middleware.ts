@@ -8,6 +8,8 @@ const secret = process.env.AUTH_SECRET;
 export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request, secret });
 
+  console.log({ token });
+
   const isAdmin = token?.role === "Admin";
 
   if (request.nextUrl.pathname.startsWith("/admin") && !isAdmin) {
