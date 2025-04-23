@@ -1,7 +1,6 @@
 # Base image
 FROM node:lts-slim AS base
 WORKDIR /app
-ENV NODE_ENV=production
 
 # Install dependencies only
 FROM base AS deps
@@ -16,7 +15,7 @@ COPY . .
 RUN corepack enable && pnpm run build
 
 # Final image for production
-FROM node:lts-alpine AS runner
+FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 

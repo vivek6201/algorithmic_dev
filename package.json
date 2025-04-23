@@ -2,11 +2,15 @@
   "name": "algorithemic_dev",
   "version": "0.1.0",
   "private": true,
+  "prisma": {
+    "schema": "./prisma/schema"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "postinstall": "prisma generate",
     "prisma:generate": "dotenv -e .env.local -- prisma generate",
     "prisma:migrate": "dotenv -e .env.local -- prisma migrate dev",
     "prisma:studio": "dotenv -e .env.local -- prisma studio"
@@ -41,7 +45,7 @@
     "next-auth": "5.0.0-beta.25",
     "next-themes": "^0.4.6",
     "nextjs-toploader": "^3.8.16",
-    "prisma": "^6.5.0",
+    "prisma": "^6.6.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.55.0",
