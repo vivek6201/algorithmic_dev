@@ -5,8 +5,6 @@ import { auth } from "./lib/auth";
 export async function middleware(request: NextRequest) {
   const session = await auth();
 
-  console.log({ session });
-
   const isAdmin = session?.user?.role === "Admin";
 
   if (request.nextUrl.pathname.startsWith("/admin") && !isAdmin) {

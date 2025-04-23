@@ -31,8 +31,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           where: { email: data.email },
         });
 
-        console.log({ user });
-
         if (!user) throw new Error("User not found!");
 
         const matchPass =
@@ -49,8 +47,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   callbacks: {
     async jwt({ token, user }) {
-      console.log("token in jwt");
-      console.log({token});
       if (user) {
         token.id = user.id;
         token.role = user.role;
@@ -58,8 +54,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      console.log("token in session");
-      console.log({token});
       if (token) {
         session.user.id = token.id as string;
         session.user.role = token.role as string;

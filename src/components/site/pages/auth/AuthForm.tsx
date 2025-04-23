@@ -30,8 +30,7 @@ interface Proptype extends React.ComponentPropsWithoutRef<"div"> {
   isLogin: boolean;
 }
 
-export function AuthForm({ className, isLogin }: Proptype) {
-  console.log({ className });
+export function AuthForm({  isLogin }: Proptype) {
   return (
     <Card className="w-11/12 max-w-[450px]">
       <CardHeader>
