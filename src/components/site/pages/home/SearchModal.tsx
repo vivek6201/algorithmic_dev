@@ -1,14 +1,11 @@
 "use client";
 import {
-  Command,
   CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList,
-  CommandSeparator,
-  CommandShortcut,
+  CommandList
 } from "@/components/ui/command";
 import React from "react";
 
@@ -28,7 +25,7 @@ export default function SearchModal({
     };
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
-  }, []);
+  }, [handleModalState]);
 
   return (
     <CommandDialog open={open} onOpenChange={handleModalState}>

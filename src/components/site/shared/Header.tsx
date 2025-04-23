@@ -8,7 +8,6 @@ import {
   Moon,
   PackageSearch,
   Sun,
-  X,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";

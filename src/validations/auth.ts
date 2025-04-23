@@ -1,5 +1,4 @@
-import * as z from "zod";
-import User from "@prisma/client";
+import * as z from "zod"
 
 export const loginValidation = z.object({
   email: z.string().email(),

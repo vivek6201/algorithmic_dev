@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { blogCategorySchema } from "@/validations/blogValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { BlogCategory } from "@prisma/client";
+import { BlogCategory } from "@/generated/prisma";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -21,7 +21,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useDebounce } from "use-debounce";
 import {
   Table,
@@ -26,7 +26,7 @@ import { z } from "zod";
 
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { BlogCategory } from "@prisma/client";
+import { BlogCategory } from "@/generated/prisma";
 import CategoryModal from "../blogs/ManageCategoryModal";
 import createCategory from "@/actions/admin/tutorials/category";
 
@@ -70,7 +70,9 @@ export default function AllCategoriesClient() {
     });
   }, [filteredCategories]);
 
-  const handleDelete = async (id: string) => {};
+  const handleDelete = async (id: string) => {
+    console.log(id);
+  };
 
   const handleAddCategory = () => {
     setEditCategory(null);
@@ -241,5 +243,3 @@ export default function AllCategoriesClient() {
     </>
   );
 }
-
-

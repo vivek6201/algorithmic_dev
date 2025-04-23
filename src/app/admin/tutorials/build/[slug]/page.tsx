@@ -1,14 +1,14 @@
 import ChapterList from "@/components/site/pages/admin/tutorials/ChapterList";
 import TopicSection from "@/components/site/pages/admin/tutorials/TopicSection";
 import { getTutorialChaptersWithTopics } from "@/helpers/admin/getter";
-import React, { ReactNode } from "react";
+import React from "react";
 
 export default async function page({
   params,
   searchParams,
 }: {
   params: Promise<{ slug: string }>;
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const { slug } = await params;
   const { topicSlug, chapterSlug } = await searchParams;

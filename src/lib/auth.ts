@@ -1,5 +1,5 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import NextAuth, { User } from "next-auth";
+import NextAuth from "next-auth";
 import { prisma } from "./db";
 import Credentials from "next-auth/providers/credentials";
 import { loginValidation } from "@/validations/auth";
@@ -13,7 +13,7 @@ declare module "next-auth" {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma as any),
   providers: [
     Credentials({
       credentials: {
@@ -27,7 +27,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (!success) return null;
 
-        let user = await prisma.user.findUnique({
+        const user = await prisma.user.findUnique({
           where: { email: data.email },
         });
 

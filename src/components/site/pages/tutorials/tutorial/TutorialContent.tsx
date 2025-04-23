@@ -25,7 +25,7 @@ const TutorialContent = () => {
         <p>
           JavaScript allows developers to create dynamic user interfaces,
           manipulate the DOM, and communicate with servers in real-time using
-          APIs. It's supported by all modern browsers and has a massive
+          APIs. It&apos;s supported by all modern browsers and has a massive
           ecosystem.
         </p>
 

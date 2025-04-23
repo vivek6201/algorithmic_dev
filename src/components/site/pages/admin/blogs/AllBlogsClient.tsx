@@ -24,7 +24,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useQuery } from "@tanstack/react-query";
-import { Blog, BlogCategory } from "@prisma/client";
+import { Blog } from "@/generated/prisma";
 import { toast } from "sonner";
 import { deleteBlog } from "@/actions/admin/blogs/blog";
 import CategoryModal from "./ManageCategoryModal";

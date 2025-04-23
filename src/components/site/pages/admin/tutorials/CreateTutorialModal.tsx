@@ -53,6 +53,8 @@ export function CreateTutorialModal({
     },
   });
 
+  console.log({ data });
+
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
       if (name === "title") {
@@ -154,6 +156,7 @@ export function CreateTutorialModal({
                         options={
                           error
                             ? []
+                            //@typescript-eslint/no-explicit-any
                             : categories.map((cat: any) => ({
                                 label: cat.name,
                                 value: cat.id,

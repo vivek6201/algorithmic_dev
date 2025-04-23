@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { Editor } from "@tiptap/react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -34,8 +34,6 @@ interface MenuBarProps {
 const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
   const imageInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
-  const [height, setHeight] = React.useState(480);
-  const [width, setWidth] = React.useState(640);
 
   if (!editor) {
     return null;
@@ -53,8 +51,8 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
     if (url) {
       editor.commands.setYoutubeVideo({
         src: url,
-        width: Math.max(320, width) || 640,
-        height: Math.max(180, height) || 480,
+        width: Math.max(320) || 640,
+        height: Math.max(180) || 480,
       });
     }
   };

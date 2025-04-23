@@ -15,9 +15,6 @@ import {
   ChevronRight,
   FolderOpen,
   ListFilter,
-  Users,
-  Settings,
-  LineChart,
 } from "lucide-react";
 import {
   Sheet,
@@ -68,7 +65,7 @@ const sidebarItems = [
       },
       {
         name: "All Tutorials",
-        href: "/admin/tutorials",  // Fixed path - was missing '/all'
+        href: "/admin/tutorials", // Fixed path - was missing '/all'
         icon: ListFilter,
       },
     ],
@@ -85,7 +82,7 @@ const sidebarItems = [
       },
       {
         name: "All Blogs",
-        href: "/admin/blogs",  // Fixed path - was missing '/all'
+        href: "/admin/blogs", // Fixed path - was missing '/all'
         icon: ListFilter,
       },
     ],
@@ -100,31 +97,31 @@ const AdminSidebar = () => {
   const isLinkActive = (href: string): boolean => {
     // Exact match
     if (pathname === href) return true;
-    
+
     // Special handling for parent items
-    if (href.endsWith('/blogs') || href.endsWith('/tutorials')) {
+    if (href.endsWith("/blogs") || href.endsWith("/tutorials")) {
       // If this is a parent path (like /admin/blogs), then it should be active only if
       // we're on exactly that path, not when we're on a child path
       return pathname === href;
     }
-    
+
     // For all other cases, use startsWith for checking prefix matches
     return pathname.startsWith(href);
   };
 
   // Check if any children are active
   const hasActiveChild = (item: SidebarItem): boolean => {
-    return item.children.some(child => isLinkActive(child.href));
+    return item.children.some((child) => isLinkActive(child.href));
   };
 
   // Generate expanded accordion state
-  const getDefaultAccordion = (): string[] => {
-    const activeAccordions = sidebarItems
-      .filter(item => item.children.length > 0 && hasActiveChild(item))
-      .map(item => item.name.toLowerCase());
-    
-    return activeAccordions;
-  };
+  // const getDefaultAccordion = (): string[] => {
+  //   const activeAccordions = sidebarItems
+  //     .filter(item => item.children.length > 0 && hasActiveChild(item))
+  //     .map(item => item.name.toLowerCase());
+
+  //   return activeAccordions;
+  // };
 
   const renderMainLink = (item: SidebarItem, isMobile: boolean = false) => (
     <Link
@@ -147,48 +144,53 @@ const AdminSidebar = () => {
   const renderAccordion = (
     item: SidebarItem,
     isMobile: boolean = false
-  ): JSX.Element => (
-    <Accordion
-      type="single"
-      collapsible
-      defaultValue={hasActiveChild(item) ? item.name.toLowerCase() : undefined}
-      className="border-none"
-      key={item.href}
-    >
-      <AccordionItem value={item.name.toLowerCase()} className="border-none">
-        <AccordionTrigger
-          className={clsx(
-            "flex items-center gap-3 px-4 py-2 rounded-md transition-all font-medium",
-            isLinkActive(item.href) && !hasActiveChild(item)
-              ? "bg-white text-gray-900 shadow-md"
-              : "hover:bg-gray-700 hover:shadow-sm"
-          )}
-        >
-          <div className="flex items-center gap-3">
-            <item.icon className="w-5 h-5" />
-            <span>{item.name}</span>
-          </div>
-        </AccordionTrigger>
-        <AccordionContent className="pl-10 space-y-1 mt-1">
-          {item.children.map((child: SidebarChildItem) => (
-            <Link
-              key={child.href}
-              href={child.href}
-              className={clsx(
-                "flex items-center gap-3 px-4 py-2 rounded-md transition-all font-medium",
-                isLinkActive(child.href)
-                  ? "bg-white text-gray-900 shadow-md"
-                  : "hover:bg-gray-700 hover:shadow-sm"
-              )}
-            >
-              <child.icon className="w-4 h-4" />
-              <span>{child.name}</span>
-            </Link>
-          ))}
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
-  );
+  ): JSX.Element => {
+    console.log({ isMobile });
+    return (
+      <Accordion
+        type="single"
+        collapsible
+        defaultValue={
+          hasActiveChild(item) ? item.name.toLowerCase() : undefined
+        }
+        className="border-none"
+        key={item.href}
+      >
+        <AccordionItem value={item.name.toLowerCase()} className="border-none">
+          <AccordionTrigger
+            className={clsx(
+              "flex items-center gap-3 px-4 py-2 rounded-md transition-all font-medium",
+              isLinkActive(item.href) && !hasActiveChild(item)
+                ? "bg-white text-gray-900 shadow-md"
+                : "hover:bg-gray-700 hover:shadow-sm"
+            )}
+          >
+            <div className="flex items-center gap-3">
+              <item.icon className="w-5 h-5" />
+              <span>{item.name}</span>
+            </div>
+          </AccordionTrigger>
+          <AccordionContent className="pl-10 space-y-1 mt-1">
+            {item.children.map((child: SidebarChildItem) => (
+              <Link
+                key={child.href}
+                href={child.href}
+                className={clsx(
+                  "flex items-center gap-3 px-4 py-2 rounded-md transition-all font-medium",
+                  isLinkActive(child.href)
+                    ? "bg-white text-gray-900 shadow-md"
+                    : "hover:bg-gray-700 hover:shadow-sm"
+                )}
+              >
+                <child.icon className="w-4 h-4" />
+                <span>{child.name}</span>
+              </Link>
+            ))}
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    );
+  };
 
   return (
     <>

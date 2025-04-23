@@ -23,7 +23,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useQuery } from "@tanstack/react-query";
-import { Tutorial } from "@prisma/client";
+import { Tutorial } from "@/generated/prisma";
 import { CreateTutorialModal } from "./CreateTutorialModal";
 import { createTutorial } from "@/actions/admin/tutorials/tutorial";
 import { toast } from "sonner";
@@ -49,7 +49,9 @@ export default function AllTutorialsClient() {
     },
   });
 
-  const handleDelete = async (id: string) => {};
+  const handleDelete = async (id: string) => {
+    console.log(id);
+  };
 
   const handleCreateModel = () => setOpenCreateModal(!openCreateModal);
 

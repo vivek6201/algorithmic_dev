@@ -46,7 +46,7 @@ export default function BlogDetailPage() {
 
         <h2>Why Scaling Matters</h2>
         <p>
-          Whether you're running a small startup or a massive enterprise,
+          Whether youre running a small startup or a massive enterprise,
           scalability ensures reliability, performance, and cost-efficiency...
         </p>
 

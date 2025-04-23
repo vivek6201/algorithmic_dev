@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -31,7 +30,8 @@ interface Proptype extends React.ComponentPropsWithoutRef<"div"> {
   isLogin: boolean;
 }
 
-export function AuthForm({ className, isLogin, ...props }: Proptype) {
+export function AuthForm({ className, isLogin }: Proptype) {
+  console.log({ className });
   return (
     <Card className="w-11/12 max-w-[450px]">
       <CardHeader>

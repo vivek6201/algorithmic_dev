@@ -54,7 +54,7 @@ export const editCategory = async (
   id: string,
   values: z.infer<ReturnType<(typeof tutorialCategorySchema)["partial"]>>
 ) => {
-  const { success, data, error } = await tutorialCategorySchema
+  const { success, error } = await tutorialCategorySchema
     .partial()
     .safeParseAsync(values);
 
@@ -91,6 +91,7 @@ export const editCategory = async (
       },
     });
   } catch (error) {
+    console.error(error)
     return {
       success: false,
       message: "Error while editing category!",

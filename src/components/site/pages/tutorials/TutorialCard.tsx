@@ -20,7 +20,6 @@ const TutorialCard = ({
   duration,
   difficulty,
   language,
-  author,
   publishedAt,
   tags,
 }: Props) => {

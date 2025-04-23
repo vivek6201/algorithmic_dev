@@ -43,6 +43,8 @@ export default function HandleChapterModal({
 }) {
   const router = useRouter();
 
+  console.log({ data });
+
   const form = useForm<z.infer<typeof tutorialChapterSchema>>({
     resolver: zodResolver(tutorialChapterSchema),
     defaultValues: {

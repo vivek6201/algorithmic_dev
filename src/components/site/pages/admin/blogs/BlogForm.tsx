@@ -77,10 +77,7 @@ function BlogForm({
         toast.error("Blog data is missing.");
         return;
       }
-      const { success, message } = await updateBlog(
-        blog.slug,
-        values
-      );
+      const { success, message } = await updateBlog(blog.slug, values);
 
       if (!success) {
         toast.error(message);
@@ -150,7 +147,8 @@ function BlogForm({
                     options={
                       error
                         ? []
-                        : categories.map((cat: any) => ({
+                        : //@typescript-eslint/no-explicit-any
+                          categories.map((cat: any) => ({
                             label: cat.name,
                             value: cat.id,
                           }))

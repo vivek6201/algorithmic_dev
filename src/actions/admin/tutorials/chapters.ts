@@ -1,5 +1,6 @@
 "use server"
 
+import { Prisma } from "@/generated/prisma";
 import { prisma } from "@/lib/db";
 import { tutorialChapterSchema } from "@/validations/tutorialValidation"
 import { z } from "zod"
@@ -39,7 +40,7 @@ export const createChapter = async (tutorialSlug: string, values: z.infer<typeof
     }
 
     try {
-        const chapter = await prisma.$transaction(async (tx) => {
+        const chapter = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const tutorial = await tx.tutorial.findUnique({
                 where: {
                     slug: tutorialSlug
