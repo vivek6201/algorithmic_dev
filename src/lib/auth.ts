@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import { prisma } from "./db";
 import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google"
 import { loginValidation } from "@/validations/auth";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
@@ -13,6 +14,7 @@ declare module "next-auth" {
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
+    Google,
     Credentials({
       credentials: {
         email: {},
