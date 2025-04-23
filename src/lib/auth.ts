@@ -4,7 +4,7 @@ import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google"
 import { loginValidation } from "@/validations/auth";
 import bcrypt from "bcryptjs";
-import crypto from "crypto";
+import { v4 as uuid } from "uuid"
 
 declare module "next-auth" {
   interface User {
@@ -31,6 +31,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           where: { email: data.email },
         });
 
+        console.log({ user });
+
         if (!user) throw new Error("User not found!");
 
         const matchPass =
@@ -47,6 +49,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   callbacks: {
     async jwt({ token, user }) {
+      console.log("token in jwt");
+      console.log({token});
       if (user) {
         token.id = user.id;
         token.role = user.role;
@@ -54,6 +58,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
     async session({ session, token }) {
+      console.log("token in session");
+      console.log({token});
       if (token) {
         session.user.id = token.id as string;
         session.user.role = token.role as string;
@@ -71,7 +77,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       await prisma.session.create({
         data: {
           userId: user.id,
-          sessionToken: crypto.randomUUID(),
+          sessionToken: uuid(),
           expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
         },
       });
