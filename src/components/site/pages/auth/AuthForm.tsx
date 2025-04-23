@@ -30,7 +30,7 @@ interface Proptype extends React.ComponentPropsWithoutRef<"div"> {
   isLogin: boolean;
 }
 
-export function AuthForm({  isLogin }: Proptype) {
+export function AuthForm({ isLogin }: Proptype) {
   return (
     <Card className="w-11/12 max-w-[450px]">
       <CardHeader>
@@ -43,7 +43,17 @@ export function AuthForm({  isLogin }: Proptype) {
             : "Enter your details below to create an account"}
         </CardDescription>
       </CardHeader>
-      <CardContent>{isLogin ? <LoginForm /> : <SignupForm />}</CardContent>
+      <CardContent>
+        {isLogin ? <LoginForm /> : <SignupForm />}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+          <Button type="button" variant={"outline"} >
+            Login with Google
+          </Button>
+          <Button type="button" variant={"outline"}>
+            Login with Github
+          </Button>
+        </div>
+      </CardContent>
     </Card>
   );
 }
@@ -143,14 +153,6 @@ function LoginForm() {
             Create an account
           </span>
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 ">
-          <Button type="button" variant={"outline"}>
-            Login with Google
-          </Button>
-          <Button type="button" variant={"outline"}>
-            Login with Github
-          </Button>
-        </div>
       </form>
     </Form>
   );
@@ -300,14 +302,6 @@ function SignupForm() {
             Login
           </span>
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 ">
-          <Button type="button" variant={"outline"}>
-            Login with Google
-          </Button>
-          <Button type="button" variant={"outline"}>
-            Login with Github
-          </Button>
-        </div>
       </form>
     </Form>
   );
