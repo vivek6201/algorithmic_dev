@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function page() {
   return (
-    <div className="w-full max-w-[1400px] mx-auto mt-24 min-h-screen">
+    <div className="w-full max-w-[1400px] mx-auto mt-5 min-h-screen">
       <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_2.4fr_0.8fr] md:px-8 lg:px-0">
         {/* Left Sidebar: Filters */}
         <aside className="space-y-4 hidden lg:block">

@@ -11,9 +11,9 @@ export const metadata: Metadata = {
 
 export default async function TutorialsPage() {
   const { data: categories } = await getClientTutorialsCategories();
-  
+
   return (
-    <div className="w-full max-w-[1400px] mx-auto mt-24 min-h-screen px-4">
+    <div className="w-full max-w-[1400px] mx-auto mt-5 min-h-screen px-4">
       <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_2.4fr_0.8fr] gap-6">
         {/* Left Sidebar - Filters (non-sticky) */}
         <aside className="space-y-4 hidden lg:block">

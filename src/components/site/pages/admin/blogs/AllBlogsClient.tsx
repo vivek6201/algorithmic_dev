@@ -31,13 +31,16 @@ import CategoryModal from "./ManageCategoryModal";
 import { z } from "zod";
 import { blogCategorySchema } from "@/validations/blogValidations";
 import createCategory from "@/actions/admin/blogs/category";
+import { updateBlogStatus } from "@/actions/admin/blogs/publish";
+import { useRouter } from "nextjs-toploader/app";
+import StatusSelector from "../shared/StatusSelector";
 
 export default function AllBlogsClient() {
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 300);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const deleteModelRef = useRef<HTMLButtonElement>(null);
-
+  const router = useRouter();
   const {
     data: blogs = [],
     isPending,
@@ -75,6 +78,16 @@ export default function AllBlogsClient() {
     }
 
     handleCloseModal();
+  };
+
+  const handleStatusUpdate = async (id: string, status: boolean) => {
+    const { message, success } = await updateBlogStatus(id, status);
+    if (success) {
+      toast.success(message);
+    } else {
+      toast.error(message);
+    }
+    router.refresh();
   };
 
   const filteredBlogs = useMemo(() => {
@@ -173,7 +186,12 @@ export default function AllBlogsClient() {
                       <TableCell>{blog.title}</TableCell>
                       <TableCell>{blog.category.name}</TableCell>
                       <TableCell>
-                        {blog.published === true ? "Published" : "Draft"}
+                        <StatusSelector
+                          status={blog.published}
+                          handleStatusChange={(status) =>
+                            handleStatusUpdate(blog.id, status)
+                          }
+                        />
                       </TableCell>
                       <TableCell>{blog.authorName}</TableCell>
                       <TableCell className="text-right space-x-2">

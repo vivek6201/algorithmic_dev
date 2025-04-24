@@ -11,10 +11,10 @@ export const metadata: Metadata = {
 
 export default async function layout({ children }: { children: ReactNode }) {
   return (
-    <div>
+    <>
       <Header />
       {children}
       <Footer />
-    </div>
+    </>
   );
 }

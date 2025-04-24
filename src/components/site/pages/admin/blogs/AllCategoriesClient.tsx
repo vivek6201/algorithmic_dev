@@ -29,13 +29,16 @@ import createCategory from "@/actions/admin/blogs/category";
 import { toast } from "sonner";
 import { BlogCategory } from "@/generated/prisma";
 import CategoryModal from "./ManageCategoryModal";
+import { updateBlogCategoryStatus } from "@/actions/admin/blogs/publish";
+import { useRouter } from "nextjs-toploader/app";
+import StatusSelector from "../shared/StatusSelector";
 
 export default function AllCategoriesClient() {
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 300);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const [editCategory, setEditCategory] = useState<BlogCategory | null>(null);
-
+  const router = useRouter();
   const {
     data: categories = [],
     isPending,
@@ -73,6 +76,16 @@ export default function AllCategoriesClient() {
   // write handle delete
   const handleDelete = async (id: string) => {
     console.log(id);
+  };
+
+  const handleStatusUpdate = async (id: string, status: boolean) => {
+    const { message, success } = await updateBlogCategoryStatus(id, status);
+    if (success) {
+      toast.success(message);
+    } else {
+      toast.error(message);
+    }
+    router.refresh();
   };
 
   const handleAddCategory = () => {
@@ -179,15 +192,12 @@ export default function AllCategoriesClient() {
                       {new Date(category.createdAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
-                      <span
-                        className={
-                          category.published
-                            ? "text-green-600 font-medium"
-                            : "text-yellow-600 font-medium"
+                      <StatusSelector
+                        status={category.published}
+                        handleStatusChange={(status) =>
+                          handleStatusUpdate(category.id, status)
                         }
-                      >
-                        {category.published ? "Published" : "Draft"}
-                      </span>
+                      />
                     </TableCell>
                     <TableCell className="text-right space-x-2">
                       <Button
@@ -244,5 +254,3 @@ export default function AllCategoriesClient() {
     </>
   );
 }
-
-

@@ -2,7 +2,7 @@ import React from "react";
 
 export default function BlogDetailPage() {
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 mt-24 mb-16 text-gray-800 dark:text-gray-100 ">
+    <div className="w-full max-w-4xl mx-auto px-4 mt-5 mb-16 text-gray-800 dark:text-gray-100 ">
       {/* Breadcrumb */}
       <div className="mb-4 text-sm text-gray-500 dark:text-gray-400">
         <span className="hover:underline cursor-pointer">Home</span> /{" "}

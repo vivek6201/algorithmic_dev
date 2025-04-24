@@ -36,8 +36,7 @@ export default function HeroSection() {
     <>
       <div className="min-h-[700px] flex items-center justify-center flex-col gap-y-8">
         <h1 className="max-w-[90%] md:max-w-[70%] text-center font-extrabold text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
-          Your <span className="text-blue-500 text-shadow-sm dark:text-shadow-blue-800">ultimate hub</span> for
-          everything in tech career!
+          The <span className="text-blue-500">Ultimate Destination</span>  for Your Tech Career Journey
         </h1>
         <div className="flex items-center gap-4 mt-5 w-11/12 flex-wrap justify-center">
           <Button

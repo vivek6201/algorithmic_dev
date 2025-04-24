@@ -22,38 +22,9 @@ export default function Header() {
   const session = useSession();
   const router = useRouter();
 
-  const [isVisible, setIsVisible] = React.useState(true);
-  const [lastScroll, setLastScroll] = React.useState(0);
-
-  React.useEffect(() => {
-    const handleScroll = () => {
-      const currentScroll = window.pageYOffset;
-      if (currentScroll <= 0) {
-        setIsVisible(true);
-        return;
-      }
-      if (currentScroll > lastScroll) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-      }
-      setLastScroll(currentScroll);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScroll]);
-
   return (
-    <div
-      className={`bg-white dark:bg-neutral-900 py-4 px-5 md:px-10 fixed top-0 left-0 w-full z-50 transition-transform duration-300 ${
-        typeof window !== "undefined" && window.scrollY > 0 ? "shadow" : ""
-      }`}
-      style={{
-        transform: isVisible ? "translateY(0)" : "translateY(-100%)",
-      }}
-    >
-      <div className="w-full max-w-[1400px] mx-auto flex justify-between items-center">
+    <div className="py-4 backdrop-blur-lg sticky top-0 left-0 right-0 z-50">
+      <div className="w-11/12 max-w-[1400px] mx-auto flex justify-between items-center">
         <Link className="font-bold text-xl " href={"/"}>
           Algorithemic Dev
         </Link>

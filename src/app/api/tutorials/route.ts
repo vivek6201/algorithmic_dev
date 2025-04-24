@@ -32,6 +32,17 @@ export async function GET(request: NextRequest) {
             category: true,
           },
         },
+        chapters: {
+          take: 1,
+          include: {
+            topics: {
+              take: 1,
+              orderBy: {
+                order: "asc",
+              },
+            },
+          },
+        },
         _count: true,
       },
       orderBy: {

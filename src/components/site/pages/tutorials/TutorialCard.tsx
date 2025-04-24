@@ -11,6 +11,7 @@ type Props = {
   publishedAt: string;
   tags: string[];
   slug: string;
+  topicSlug: string;
 };
 
 const TutorialCard = ({
@@ -18,6 +19,7 @@ const TutorialCard = ({
   description,
   chapters,
   slug,
+  topicSlug,
   publishedAt,
   tags,
 }: Props) => {
@@ -27,7 +29,7 @@ const TutorialCard = ({
     <div className="border rounded-2xl p-5 shadow-sm hover:shadow-md transition dark:border-neutral-700 dark:bg-neutral-900">
       <div
         className="flex justify-between items-center group mb-2 cursor-pointer"
-        onClick={() => router.push(`${pathname}/${slug}`)}
+        onClick={() => router.push(`${pathname}/${slug}/${topicSlug}`)}
       >
         <h2 className="text-2xl font-bold mb-2 dark:text-white group-hover:cursor-pointer group-hover:underline">
           {title}
