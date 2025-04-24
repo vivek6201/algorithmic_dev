@@ -20,11 +20,11 @@ export default function TutorialSection({
 }) {
   console.log({ data });
   return (
-    <div className="w-full h-full min-h-[800px]">
+    <div className="w-full h-[800px]">
       <div className="flex w-full items-center gap-5 lg:hidden border-b py-2">
         <Menu size={18} className="opacity-70" />
       </div>
-      <div className="w-full px-10">
+      <div className="w-full px-10 h-full overflow-y-auto scrollbar-none">
         <HTMLRenderer content={data.content} />
       </div>
     </div>

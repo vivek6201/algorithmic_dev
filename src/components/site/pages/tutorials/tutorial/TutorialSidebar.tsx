@@ -29,7 +29,7 @@ export default function TutorialSidebar({
   };
 
   return (
-    <div className="min-h-[800px] w-[250px] pt-2 overflow-y-auto">
+    <div className="h-[800px] w-[250px] pt-2 overflow-y-auto">
       <div className="flex flex-col gap-y-5">
         {data.map((chapter) => (
           <div key={chapter.id}>

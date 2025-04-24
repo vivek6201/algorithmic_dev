@@ -70,6 +70,7 @@
     "@types/react-dom": "^19",
     "dotenv-cli": "^8.0.0",
     "eslint-config-next": "15.3.1",
+    "tailwind-scrollbar": "^4.0.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
