@@ -1,47 +1,48 @@
 import React from "react";
-import { BookIcon, ClockIcon } from "lucide-react";
+import { ArrowRight, BookIcon, ChevronRight, ClockIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "nextjs-toploader/app";
+import { usePathname } from "next/navigation";
 
 type Props = {
   title: string;
   description: string;
   chapters: number;
-  duration: string;
-  difficulty: string;
-  language: string;
-  author: string;
   publishedAt: string;
   tags: string[];
+  slug: string;
 };
 
 const TutorialCard = ({
   title,
   description,
   chapters,
-  duration,
-  difficulty,
-  language,
+  slug,
   publishedAt,
   tags,
 }: Props) => {
+  const router = useRouter();
+  const pathname = usePathname();
   return (
     <div className="border rounded-2xl p-5 shadow-sm hover:shadow-md transition dark:border-neutral-700 dark:bg-neutral-900">
-      <h2 className="text-2xl font-bold mb-2 dark:text-white">{title}</h2>
+      <div
+        className="flex justify-between items-center group mb-2 cursor-pointer"
+        onClick={() => router.push(`${pathname}/${slug}`)}
+      >
+        <h2 className="text-2xl font-bold mb-2 dark:text-white group-hover:cursor-pointer group-hover:underline">
+          {title}
+        </h2>
+        <Button variant={"ghost"} className="cursor-pointer">
+          <ArrowRight className="group-hover:translate-x-1.5 duration-150 transition-transform" />
+        </Button>
+      </div>
       <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
         {description}
       </p>
 
       <div className="flex flex-wrap gap-2 text-sm mb-3">
-        <span className="px-3 py-1 bg-blue-100 dark:bg-blue-800 text-blue-700 dark:text-blue-200 rounded-full">
-          {language}
-        </span>
-        <span className="px-3 py-1 bg-yellow-100 dark:bg-yellow-800 text-yellow-700 dark:text-yellow-200 rounded-full">
-          {difficulty}
-        </span>
         <span className="px-3 py-1 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded-full flex items-center gap-1">
           <BookIcon size={14} /> {chapters} Chapters
-        </span>
-        <span className="px-3 py-1 bg-green-100 dark:bg-green-800 text-green-700 dark:text-green-200 rounded-full flex items-center gap-1">
-          <ClockIcon size={14} /> {duration}
         </span>
       </div>
 

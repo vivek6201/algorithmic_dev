@@ -65,7 +65,7 @@ export const createTopic = async (chapterSlug: string, values: z.infer<typeof tu
 
         if (topic) {
             return {
-                success: false,
+                success: success,
                 message: "Topic created successfully!"
             }
         } else {

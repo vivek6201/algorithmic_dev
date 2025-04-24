@@ -29,13 +29,16 @@ import { toast } from "sonner";
 import { BlogCategory } from "@/generated/prisma";
 import CategoryModal from "../blogs/ManageCategoryModal";
 import createCategory from "@/actions/admin/tutorials/category";
+import StatusSelector from "../shared/StatusSelector";
+import { updateTutorialCategoryStatus } from "@/actions/admin/tutorials/publish";
+import { useRouter } from "nextjs-toploader/app";
 
 export default function AllCategoriesClient() {
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 300);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const [editCategory, setEditCategory] = useState<BlogCategory | null>(null);
-
+  const router = useRouter();
   const {
     data: categories = [],
     isPending,
@@ -113,6 +116,16 @@ export default function AllCategoriesClient() {
     handleCloseModal();
   };
 
+  const handleStatusUpdate = async (id: string, status: boolean) => {
+    const { message, success } = await updateTutorialCategoryStatus(id, status);
+    if (success) {
+      toast.success(message);
+    } else {
+      toast.error(message);
+    }
+    router.refresh();
+  };
+
   return (
     <>
       <div className="space-y-6">
@@ -178,15 +191,12 @@ export default function AllCategoriesClient() {
                       {new Date(category.createdAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
-                      <span
-                        className={
-                          category.published
-                            ? "text-green-600 font-medium"
-                            : "text-yellow-600 font-medium"
+                      <StatusSelector
+                        status={category.published}
+                        handleStatusChange={(status) =>
+                          handleStatusUpdate(category.id, status)
                         }
-                      >
-                        {category.published ? "Published" : "Draft"}
-                      </span>
+                      />
                     </TableCell>
                     <TableCell className="text-right space-x-2">
                       <Button

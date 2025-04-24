@@ -1,32 +1,46 @@
+"use client";
+
 import React from "react";
 import TutorialCard from "./TutorialCard";
+import { useSearchParams } from "next/navigation";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 export default function TutorialsList() {
+  const searchParams = useSearchParams();
+  const categories = searchParams.get("category");
+
+  const fetchTutorials = async (categories: string | null) => {
+    const response = await axios.get("/api/tutorials", {
+      params: { category: categories ?? undefined },
+    });
+    return response.data.data;
+  };
+
+  const {
+    data: tutorials = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["tutorials", categories],
+    queryFn: () => fetchTutorials(categories),
+  });
+
   return (
     <div className="flex flex-col gap-y-6">
-      <TutorialCard
-        title="Mastering JavaScript: From Zero to Hero"
-        description="Comprehensive JavaScript course covering everything from fundamentals to advanced topics."
-        chapters={12}
-        duration="8 hours"
-        difficulty="Intermediate"
-        language="JavaScript"
-        author="John Doe"
-        publishedAt="Mar 25, 2025"
-        tags={["Frontend", "ES6", "DOM"]}
-      />
-
-      <TutorialCard
-        title="C++ DSA Crash Course"
-        description="Step-by-step data structures and algorithms explained using C++."
-        chapters={20}
-        duration="15 hours"
-        difficulty="Advanced"
-        language="C++"
-        author="Alice Johnson"
-        publishedAt="Feb 12, 2025"
-        tags={["DSA", "Competitive Programming"]}
-      />
+      {isLoading && <p>Loading tutorials...</p>}
+      {isError && <p>Failed to load tutorials.</p>}
+      {tutorials?.map((tutorial: any) => (
+        <TutorialCard
+          key={tutorial.id}
+          title={tutorial.title}
+          description={tutorial.description}
+          chapters={tutorial._count.chapters}
+          slug={tutorial.slug}
+          publishedAt={new Date(tutorial.createdAt).toDateString()}
+          tags={tutorial.categories.map((c: any) => c.category.name)}
+        />
+      ))}
     </div>
   );
 }

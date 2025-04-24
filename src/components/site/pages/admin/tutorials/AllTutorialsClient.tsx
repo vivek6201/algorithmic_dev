@@ -29,12 +29,16 @@ import { createTutorial } from "@/actions/admin/tutorials/tutorial";
 import { toast } from "sonner";
 import { tutorialSchema } from "@/validations/tutorialValidation";
 import { z } from "zod";
+import StatusSelector from "../shared/StatusSelector";
+import { updateTutorialStatus } from "@/actions/admin/tutorials/publish";
+import { useRouter } from "nextjs-toploader/app";
 
 export default function AllTutorialsClient() {
   const [search, setSearch] = useState("");
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [debouncedSearch] = useDebounce(search, 300);
   const deleteModelRef = useRef<HTMLButtonElement>(null);
+  const router = useRouter();
   const {
     data: tutorials = [],
     isPending,
@@ -81,6 +85,16 @@ export default function AllTutorialsClient() {
       );
     });
   }, [filteredTutorials]);
+
+  const handleStatusUpdate = async (id: string, status: boolean) => {
+    const { message, success } = await updateTutorialStatus(id, status);
+    if (success) {
+      toast.success(message);
+    } else {
+      toast.error(message);
+    }
+    router.refresh();
+  };
 
   return (
     <>
@@ -146,7 +160,12 @@ export default function AllTutorialsClient() {
                       <TableCell>{tutorial._count.chapters}</TableCell>
                       <TableCell>{tutorial.createdAt}</TableCell>
                       <TableCell>
-                        {tutorial.published === true ? "Published" : "Draft"}
+                        <StatusSelector
+                          status={tutorial.published}
+                          handleStatusChange={(status) =>
+                            handleStatusUpdate(tutorial.id, status)
+                          }
+                        />
                       </TableCell>
                       <TableCell className="text-right space-x-2">
                         <Link href={`/admin/tutorials/build/${tutorial.slug}`}>
