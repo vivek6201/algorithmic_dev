@@ -8,9 +8,8 @@ export default async function page({
   params: Promise<{ slug: string; topicSlug: string }>;
 }) {
   const { topicSlug } = await params;
-  const { success, data, message } = await getClientTutorialTopicBySlug(
-    topicSlug
-  );
+  const { success, data, nextTopic, prevTopic, message } =
+    await getClientTutorialTopicBySlug(topicSlug);
 
   if (!success || !data) {
     return (
@@ -22,7 +21,7 @@ export default async function page({
 
   return (
     <div className="w-full h-full">
-      <TutorialSection data={data} />
+      <TutorialSection data={data} nextSlug={nextTopic?.slug} prevSlug={prevTopic?.slug}/>
     </div>
   );
 }

@@ -14,7 +14,6 @@ export default function TutorialsList() {
     const response = await axios.get("/api/tutorials", {
       params: { category: categories ?? undefined },
     });
-    console.log(response.data.data);
     return response.data.data;
   };
 

@@ -46,6 +46,7 @@ model Chapter {
   description String?
   tutorial    Tutorial @relation(fields: [tutorialId], references: [id], onDelete: Cascade)
   tutorialId  String
+  order       Int      
   topics      Topic[]
 
   createdAt DateTime @default(now())
@@ -97,19 +98,6 @@ model Blog {
   @@map("blogs")
 }
 
-model BlogReaction {
-  id        String       @id @default(cuid())
-  user      Profile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  profileId String
-  blog      Blog         @relation(fields: [blogId], references: [id], onDelete: Cascade)
-  blogId    String
-  type      ReactionType // Enum for LIKE or DISLIKE
-
-  createdAt DateTime @default(now())
-
-  @@unique([profileId, blogId]) // Ensures one reaction per user per blog
-}
-
 model BlogCategory {
   id        String  @id @default(cuid())
   name      String  @unique
@@ -121,4 +109,17 @@ model BlogCategory {
   updatedAt DateTime @updatedAt
 
   @@map("categories")
+}
+
+model BlogReaction {
+  id        String       @id @default(cuid())
+  user      Profile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String
+  blog      Blog         @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  blogId    String
+  type      ReactionType // Enum for LIKE or DISLIKE
+
+  createdAt DateTime @default(now())
+
+  @@unique([profileId, blogId]) // Ensures one reaction per user per blog
 }

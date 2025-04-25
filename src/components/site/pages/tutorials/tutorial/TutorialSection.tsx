@@ -1,11 +1,18 @@
 "use client";
 import HTMLRenderer from "@/components/site/shared/HTMLRenderer";
-import { Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight, Menu } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import React from "react";
 
 export default function TutorialSection({
   data,
+  prevSlug,
+  nextSlug,
 }: {
+  prevSlug?: string;
+  nextSlug?: string;
   data: {
     id: string;
     order: number;
@@ -18,7 +25,19 @@ export default function TutorialSection({
     chapterId: string;
   };
 }) {
-  console.log({ data });
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handlePageChange = (type: "next" | "prev") => {
+    if (!nextSlug && type === "next") return;
+    if (!prevSlug && type === "prev") return;
+
+    const newSlug = type === "next" ? nextSlug : prevSlug;
+    const newPath = pathname.replace(/[^/]+$/, newSlug ?? "");
+
+    router.push(newPath);
+  };
+
   return (
     <div className="w-full h-[800px]">
       <div className="flex w-full items-center gap-5 lg:hidden border-b py-2">
@@ -26,6 +45,26 @@ export default function TutorialSection({
       </div>
       <div className="w-full px-10 h-full overflow-y-auto scrollbar-none">
         <HTMLRenderer content={data.content} />
+        <div className="flex justify-between items-center border-t mt-5 py-5">
+          <Button
+            disabled={!prevSlug}
+            onClick={() => handlePageChange("prev")}
+            size={"lg"}
+            className="cursor-pointer"
+          >
+            <ChevronLeft />
+            Prev
+          </Button>
+          <Button
+            disabled={!nextSlug}
+            onClick={() => handlePageChange("next")}
+            size={"lg"}
+            className="cursor-pointer"
+          >
+            Next
+            <ChevronRight />
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -1,12 +1,120 @@
 model Profile {
-  id           String         @id @default(cuid())
-  User         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String         @unique
-  blogReaction BlogReaction[]
+  id          String     @id @default(cuid())
+  image       String
+  phoneNumber String? 
+  bio         String 
+  
+  city        String 
+  state       String 
+  country     String 
+  pincode     String
+
+  urls        Json? 
+  resumeUrl   String? 
+  skills      String[] 
+  languages   String[] 
+  dateOfBirth DateTime 
+  hobbies     String[] 
+  personType  PersonType
+
+  blogReaction BlogReaction[] // Reactions for blogs
+
+  // Relationship with user
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+
+  // Relationships for different profile details
+  educationDetails  Education[]
+  experienceDetails Experience[]
+  projects          Project[]
+  achievements      Achievement[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// Enum to define the type of person
+enum PersonType {
+  SCHOOL_STUDENT
+  WORKING_PROFESSIONAL
+  SELF_EMPLOYED
+  OTHER
+}
+
+// Education details
+model Education {
+  id           String   @id @default(cuid())
+  profileId    String
+  profile      Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  schoolName   String
+  degree       String
+  fieldOfStudy String
+  startDate    DateTime
+  endDate      DateTime
+  grade        String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Work experience details
+model Experience {
+  id             String   @id @default(cuid())
+  profileId      String
+  profile        Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  companyName    String
+  jobTitle       String
+  startDate      DateTime
+  endDate        DateTime
+  jobDescription String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Projects
+model Project {
+  id          String   @id @default(cuid())
+  profileId   String
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  projectName String
+  description String
+  startDate   DateTime
+  endDate     DateTime
+  projectLink String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Achievements
+model Achievement {
+  id              String   @id @default(cuid())
+  profileId       String
+  profile         Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  achievementName String
+  description     String
+  date            DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// enum BookmarkType {
+//   Jobs
+//   Blogs
+// }
+
+// model Bookmarks {
+//   id String @id @default(cuid())
+//   type BookmarkType
+
+//   Profile   Profile? @relation(fields: [profileId], references: [id])
+//   profileId String?
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
 
 model EmployerProfile {
   id     String @id @default(cuid())

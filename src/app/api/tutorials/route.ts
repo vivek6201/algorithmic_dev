@@ -4,6 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const categorySlugs = searchParams.get("category");
+  const page = parseInt(searchParams.get("page") || "1", 10);
+  const limit = parseInt(searchParams.get("limit") || "10", 10);
 
   try {
     const categories = categorySlugs ? categorySlugs.split(",") : null;
@@ -48,9 +50,42 @@ export async function GET(request: NextRequest) {
       orderBy: {
         createdAt: "desc",
       },
+      skip: (page - 1) * limit,
+      take: limit,
     });
 
-    return NextResponse.json({ data: tutorials }, { status: 200 });
+    // Return the response with pagination data
+    const totalTutorials = await prisma.tutorial.count({
+      where: {
+        published: true,
+        ...(categories
+          ? {
+              categories: {
+                some: {
+                  category: {
+                    slug: {
+                      in: categories,
+                    },
+                    published: true,
+                  },
+                },
+              },
+            }
+          : {}),
+      },
+    });
+
+    return NextResponse.json(
+      {
+        data: tutorials,
+        pagination: {
+          currentPage: page,
+          totalPages: Math.ceil(totalTutorials / limit),
+          totalCount: totalTutorials,
+        },
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
