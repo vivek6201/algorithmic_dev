@@ -51,6 +51,7 @@ export default function HandleChapterModal({
       title: "",
       slug: "",
       description: "",
+      order: 0,
     },
   });
 
@@ -59,6 +60,18 @@ export default function HandleChapterModal({
       if (name === "title") {
         const generatedSlug = value.title?.toLowerCase().replace(/\s+/g, "-");
         form.setValue("slug", generatedSlug || "");
+      }
+      if (name === "order") {
+        const orderValue = value.order
+          ? parseInt(value.order.toString(), 10)
+          : undefined;
+        if (
+          orderValue !== undefined &&
+          !isNaN(orderValue) &&
+          orderValue !== value.order
+        ) {
+          form.setValue("order", orderValue);
+        }
       }
     });
 
@@ -115,6 +128,23 @@ export default function HandleChapterModal({
                       placeholder="Slug is auto-generated"
                       {...field}
                       readOnly
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="order"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Order</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter Chapter Order"
+                      type="number"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />

@@ -7,6 +7,7 @@ interface BlogCardProps {
   author: string;
   date: string;
   category: string;
+  slug: string;
 }
 
 const BlogCard: React.FC<BlogCardProps> = ({
@@ -15,6 +16,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
   author,
   date,
   category,
+  slug,
 }) => {
   return (
     <div className="border rounded-2xl p-6 shadow-sm hover:shadow-md transition bg-white dark:bg-neutral-900 text-gray-800 dark:text-gray-100">
@@ -24,7 +26,10 @@ const BlogCard: React.FC<BlogCardProps> = ({
       </span>
 
       {/* Title */}
-      <Link href={"#"} className="text-xl font-semibold mb-2 line-clamp-2 hover:underline underline-offset-2">
+      <Link
+        href={`/blogs/${slug}`}
+        className="text-xl font-semibold mb-2 line-clamp-2 hover:underline underline-offset-2"
+      >
         {title}
       </Link>
 
@@ -36,7 +41,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
       {/* Author + Date */}
       <div className="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
         <span>By {author}</span>
-        <span>{date}</span>
+        <span>{new Date(date).toDateString()}</span>
       </div>
     </div>
   );

@@ -28,6 +28,8 @@ export default function TutorialSidebar({
     }
   };
 
+  console.log({ data });
+
   return (
     <div className="h-[800px] w-[250px] pt-2 overflow-y-auto">
       <div className="flex flex-col gap-y-5">
@@ -40,8 +42,10 @@ export default function TutorialSidebar({
                   onClick={() => navigate(topic.slug)}
                   key={topic.id}
                   className={cn(
-                    "flex gap-2 items-center max-w-11/12 mb-1 hover:bg-gray-100 dark:hover:bg-neutral-900 rounded-md px-2 cursor-pointer duration-150 transition-colors group py-1",
-                    topicSlug === topic.slug ? "bg-gray-200 dark:bg-neutral-800" : ""
+                    "flex gap-2 items-center text-sm max-w-11/12 mb-1 hover:bg-gray-100 dark:hover:bg-neutral-900 rounded-md px-2 cursor-pointer duration-150 transition-colors group py-1.5",
+                    topicSlug === topic.slug
+                      ? "bg-gray-200 dark:bg-neutral-800"
+                      : ""
                   )}
                 >
                   <BookOpen size={14} />

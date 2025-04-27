@@ -21,7 +21,14 @@ export const getClientTutorialChapters = async (tutorialSlug: string) => {
         },
       },
       include: {
-        topics: true,
+        topics: {
+          orderBy: {
+            order: "asc",
+          },
+        },
+      },
+      orderBy: {
+        order: "asc",
       },
     });
 

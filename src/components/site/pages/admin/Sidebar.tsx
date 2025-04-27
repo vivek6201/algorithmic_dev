@@ -51,7 +51,18 @@ const sidebarItems = [
     name: "Jobs",
     href: "/admin/jobs",
     icon: Briefcase,
-    children: [], // No children for Jobs section
+    children: [
+      {
+        name: "Categories",
+        href: "/admin/jobs/categories",
+        icon: FolderOpen,
+      },
+      {
+        name: "All jobs",
+        href: "/admin/jobs",
+        icon: FolderOpen,
+      },
+    ], // No children for Jobs section
   },
   {
     name: "Tutorials",
@@ -65,7 +76,7 @@ const sidebarItems = [
       },
       {
         name: "All Tutorials",
-        href: "/admin/tutorials", // Fixed path - was missing '/all'
+        href: "/admin/tutorials",
         icon: ListFilter,
       },
     ],
@@ -98,15 +109,14 @@ const AdminSidebar = () => {
     // Exact match
     if (pathname === href) return true;
 
-    // Special handling for parent items
-    if (href.endsWith("/blogs") || href.endsWith("/tutorials")) {
-      // If this is a parent path (like /admin/blogs), then it should be active only if
-      // we're on exactly that path, not when we're on a child path
-      return pathname === href;
+    // Check if it's a parent item
+    const isParent = sidebarItems.some((item) => item.href === href);
+
+    if (isParent) {
+      return pathname === href; // strict match for parent
     }
 
-    // For all other cases, use startsWith for checking prefix matches
-    return pathname.startsWith(href);
+    return pathname === href; // strict match for child
   };
 
   // Check if any children are active
@@ -195,7 +205,7 @@ const AdminSidebar = () => {
   return (
     <>
       {/* Mobile Sheet */}
-      <div className="md:hidden p-4 bg-neutral-800 text-white flex items-center justify-between shadow-md">
+      <div className="lg:hidden p-4 bg-neutral-800 text-white flex items-center justify-between shadow-md">
         <h2 className="text-xl font-bold tracking-tight">Algorithmic Dev</h2>
         <Sheet>
           <SheetTrigger asChild>
@@ -246,7 +256,7 @@ const AdminSidebar = () => {
       {/* Desktop Sidebar */}
       <aside
         className={clsx(
-          "hidden md:flex flex-col justify-between bg-gradient-to-b from-neutral-900 to-neutral-800 text-white h-screen transition-all duration-300 ease-in-out shadow-lg",
+          "hidden lg:flex flex-col justify-between bg-gradient-to-b from-neutral-900 to-neutral-800 text-white h-screen transition-all duration-300 ease-in-out shadow-lg",
           collapsed ? "w-20" : "w-64"
         )}
       >

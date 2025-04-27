@@ -188,7 +188,7 @@ export default function AllTutorialsClient() {
                             </DialogHeader>
 
                             <p className="mb-4">
-                              Are you sure you want to delete this blog?
+                              Are you sure you want to delete this tutorial?
                             </p>
                             <div className="flex justify-end gap-2">
                               <DialogClose asChild ref={deleteModelRef}>

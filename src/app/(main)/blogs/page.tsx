@@ -1,5 +1,6 @@
 import BlogsFilters from "@/components/site/pages/blogs/BlogsFilters";
 import BlogsList from "@/components/site/pages/blogs/BlogsList";
+import { getClientBlogsCategories } from "@/helpers/main/blogGetter";
 import { Metadata } from "next";
 import React from "react";
 
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
     "A One-Stop Solution for all your tech related queries. Be it Jobs, tutorials, courses, blogs, helper mini apps",
 };
 
-export default function page() {
+export default async function page() {
+  const { data: categories } = await getClientBlogsCategories();
+
   return (
     <div className="w-full max-w-[1400px] mx-auto mt-5 min-h-screen">
       <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_2.4fr_0.8fr] md:px-8 lg:px-0">
@@ -17,7 +20,7 @@ export default function page() {
         <aside className="space-y-4 hidden lg:block">
           <div className="p-4 rounded-2xl shadow-md border dark:bg-neutral-900">
             <h2 className="text-xl font-semibold mb-4">Filters</h2>
-            <BlogsFilters />
+            <BlogsFilters data={categories ?? []}/>
           </div>
         </aside>
 

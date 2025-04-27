@@ -16,9 +16,9 @@ import { useRouter } from "nextjs-toploader/app";
 import React from "react";
 
 import ProfileSheet from "../pages/profile/ProfileSheet";
+import ThemeToggler from "./theme-toggler";
 
 export default function Header() {
-  const { theme, setTheme } = useTheme();
   const session = useSession();
   const router = useRouter();
 
@@ -26,7 +26,7 @@ export default function Header() {
     <div className="py-4 backdrop-blur-lg sticky top-0 left-0 right-0 z-50">
       <div className="w-11/12 max-w-[1400px] mx-auto flex justify-between items-center">
         <Link className="font-bold text-xl " href={"/"}>
-          Algorithemic Dev
+          Algorithmic Dev
         </Link>
         <div className="lg:hidden">
           <Button variant={"ghost"}>
@@ -87,16 +87,7 @@ export default function Header() {
               </>
             )}
 
-            <Button
-              onClick={() =>
-                theme === "light" ? setTheme("dark") : setTheme("light")
-              }
-              variant={"outline"}
-              className="cursor-pointer"
-              size={"icon"}
-            >
-              {theme === "dark" ? <Sun /> : <Moon />}
-            </Button>
+            <ThemeToggler />
           </div>
         </div>
       </div>

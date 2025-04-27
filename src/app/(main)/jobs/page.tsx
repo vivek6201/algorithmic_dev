@@ -13,18 +13,18 @@ export const metadata: Metadata = {
 export default function JobsPage() {
 
   return (
-    <div className="w-full max-w-[1400px] mx-auto mt-5 min-h-screen">
-      <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_2.4fr_0.8fr] md:px-8 lg:px-0">
+    <div className="w-11/12 max-w-[1400px] mx-auto mt-5 min-h-screen">
+      <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_2.4fr_0.8fr] md:px-0">
         {/* Left Sidebar: Filters */}
         <aside className="space-y-4 hidden lg:block">
-          <div className="p-4 rounded-2xl shadow-md border dark:bg-neutral-900">
+          <div className="py-4 md:p-4 rounded-2xl shadow-md border dark:bg-neutral-900">
             <h2 className="text-xl font-semibold mb-4">Filters</h2>
             <JobFilters />
           </div>
         </aside>
 
         {/* Center Content: Job Listings */}
-        <main className="space-y-2 mx-6">
+        <main className="space-y-2 md:mx-6">
           {/* Header and Search bar */}
           <div className="flex justify-between p-4">
             <h1 className="text-2xl font-bold flex-1">All Jobs</h1>
@@ -36,7 +36,7 @@ export default function JobsPage() {
           </div>
 
           {/* Jobs List */}
-          <div className="p-4">
+          <div className="md:p-4">
             <JobListings />
           </div>
         </main>
