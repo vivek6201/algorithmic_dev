@@ -3,10 +3,13 @@ import React from 'react';
 
 export default function AdSense({ pid }: { pid: string }) {
   return (
-    <Script
-      async
-      src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${pid}`}
-      crossOrigin="anonymous"
-    ></Script>
+    <>
+      <Script
+        async
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${pid}`}
+        crossOrigin="anonymous"
+      ></Script>
+      <meta name="google-adsense-account" content={`ca-pub-${pid}`}></meta>
+    </>
   );
 }
