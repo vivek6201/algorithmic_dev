@@ -4,6 +4,7 @@ import './globals.css';
 import Provider from '@/components/shared/provider';
 import AdSense from '@/components/shared/adsense';
 import Head from 'next/head';
+import Script from 'next/script';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -28,9 +29,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-        <AdSense pid={process.env.NEXT_PUBLIC_PUBLISH_ID ?? ''} />
-      </Head>
+      <head>
+        <Script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${process.env.NEXT_PUBLIC_PUBLISH_ID}`}
+          crossOrigin="anonymous"
+        ></Script>
+        <meta
+          name="google-adsense-account"
+          content={`ca-pub-${process.env.NEXT_PUBLIC_PUBLISH_ID}`}
+        ></meta>
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Provider>{children}</Provider>
       </body>
