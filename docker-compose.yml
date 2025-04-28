@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   app:
+    image: vivek6201/algorithmicdev
     build:
       context: .
       dockerfile: Dockerfile

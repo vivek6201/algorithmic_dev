@@ -33,11 +33,11 @@ export default function TutorialSidebar({
   return (
     <div className="h-[800px] w-[250px] pt-2 overflow-y-auto">
       <div className="flex flex-col gap-y-5">
-        {data.map((chapter) => (
+        {data.map((chapter: any) => (
           <div key={chapter.id}>
             <p className="font-medium">{chapter.title}</p>
             <div className="flex flex-col gap-y-1 my-4">
-              {chapter.topics.map((topic) => (
+              {chapter.topics.map((topic: any) => (
                 <div
                   onClick={() => navigate(topic.slug)}
                   key={topic.id}
