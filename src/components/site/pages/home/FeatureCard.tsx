@@ -1,8 +1,8 @@
-"use client";
-import React from "react";
-import { LucideIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "nextjs-toploader/app";
+'use client';
+import React from 'react';
+import { LucideIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'nextjs-toploader/app';
 
 interface FeatureCardProps {
   title: string;

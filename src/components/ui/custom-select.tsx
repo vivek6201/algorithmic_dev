@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
-import Select from "react-select";
-import { useTheme } from "next-themes";
+import React from 'react';
+import Select from 'react-select';
+import { useTheme } from 'next-themes';
 
 type Option = { label: string; value: string };
 
@@ -23,19 +23,19 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   defaultValue,
   isMulti = false,
   isLoading = false,
-  placeholder = "Select...",
+  placeholder = 'Select...',
 }) => {
   const { theme } = useTheme();
-  const isDark = theme === "dark";
+  const isDark = theme === 'dark';
 
   const colors = {
-    bg: isDark ? "#171717" : "#ffffff",
-    border: isDark ? "#3f3f46" : "#e5e5e5",
-    text: isDark ? "#f5f5f5" : "#111827",
-    placeholder: isDark ? "#a3a3a3" : "#6b7280",
-    focusBorder: "#3b82f6",
-    optionHover: isDark ? "#262626" : "#f5f5f5",
-    selected: "#6b7280",
+    bg: isDark ? '#171717' : '#ffffff',
+    border: isDark ? '#3f3f46' : '#e5e5e5',
+    text: isDark ? '#f5f5f5' : '#111827',
+    placeholder: isDark ? '#a3a3a3' : '#6b7280',
+    focusBorder: '#3b82f6',
+    optionHover: isDark ? '#262626' : '#f5f5f5',
+    selected: '#6b7280',
   };
 
   const selected = isMulti
@@ -56,21 +56,19 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           const values = (selectedOption || []).map((opt: Option) => opt.value);
           onChange(values);
         } else {
-          onChange(selectedOption?.value || "");
+          onChange(selectedOption?.value || '');
         }
       }}
       styles={{
         control: (base, state) => ({
           ...base,
-          padding: "0.06rem 0.25rem",
-          borderRadius: "0.5rem",
+          padding: '0.06rem 0.25rem',
+          borderRadius: '0.5rem',
           borderColor: state.isFocused ? colors.focusBorder : colors.border,
-          boxShadow: state.isFocused
-            ? `0 0 0 1px ${colors.focusBorder}`
-            : undefined,
+          boxShadow: state.isFocused ? `0 0 0 1px ${colors.focusBorder}` : undefined,
           backgroundColor: colors.bg,
           color: colors.text,
-          minHeight: "30px",
+          minHeight: '30px',
         }),
         singleValue: (base) => ({
           ...base,
@@ -78,7 +76,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         }),
         multiValue: (base) => ({
           ...base,
-          backgroundColor: isDark ? "#27272a" : "#e5e7eb",
+          backgroundColor: isDark ? '#27272a' : '#e5e7eb',
         }),
         multiValueLabel: (base) => ({
           ...base,
@@ -87,9 +85,9 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         multiValueRemove: (base) => ({
           ...base,
           color: colors.text,
-          ":hover": {
+          ':hover': {
             backgroundColor: colors.selected,
-            color: "white",
+            color: 'white',
           },
         }),
         menu: (base) => ({
@@ -103,9 +101,9 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
             ? colors.selected
             : isFocused
               ? colors.optionHover
-              : "transparent",
-          color: isSelected ? "white" : colors.text,
-          cursor: "pointer",
+              : 'transparent',
+          color: isSelected ? 'white' : colors.text,
+          cursor: 'pointer',
         }),
         input: (base) => ({
           ...base,

@@ -1,14 +1,14 @@
-import { prisma } from "@/lib/db";
-import { NextRequest, NextResponse } from "next/server";
+import { prisma } from '@/lib/db';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const categorySlugs = searchParams.get("category");
-  const page = parseInt(searchParams.get("page") || "1", 10);
-  const limit = parseInt(searchParams.get("limit") || "10", 10);
+  const categorySlugs = searchParams.get('category');
+  const page = parseInt(searchParams.get('page') || '1', 10);
+  const limit = parseInt(searchParams.get('limit') || '10', 10);
 
   try {
-    const categories = categorySlugs ? categorySlugs.split(",") : null;
+    const categories = categorySlugs ? categorySlugs.split(',') : null;
 
     const tutorials = await prisma.tutorial.findMany({
       where: {
@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
             topics: {
               take: 1,
               orderBy: {
-                order: "asc",
+                order: 'asc',
               },
             },
           },
@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
         _count: true,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
       skip: (page - 1) * limit,
       take: limit,
@@ -88,9 +88,6 @@ export async function GET(request: NextRequest) {
     );
   } catch (error) {
     console.error(error);
-    return NextResponse.json(
-      { success: false, message: "Internal Server Error" },
-      { status: 500 },
-    );
+    return NextResponse.json({ success: false, message: 'Internal Server Error' }, { status: 500 });
   }
 }

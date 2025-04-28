@@ -1,13 +1,13 @@
-import AdminSidebar from "@/components/site/pages/admin/Sidebar";
-import Breadcrumbs from "@/components/site/shared/Breadcrumb";
-import ThemeToggler from "@/components/site/shared/theme-toggler";
-import { Metadata } from "next";
-import React, { ReactNode } from "react";
+import AdminSidebar from '@/components/site/pages/admin/Sidebar';
+import Breadcrumbs from '@/components/site/shared/Breadcrumb';
+import ThemeToggler from '@/components/site/shared/theme-toggler';
+import { Metadata } from 'next';
+import React, { ReactNode } from 'react';
 
 export const metadata: Metadata = {
-  title: "Admin | Algorithmic Dev",
+  title: 'Admin | Algorithmic Dev',
   description:
-    "A One-Stop Solution for all your tech related queries. Be it Jobs, tutorials, courses, blogs, helper mini apps",
+    'A One-Stop Solution for all your tech related queries. Be it Jobs, tutorials, courses, blogs, helper mini apps',
 };
 
 const AdminLayout = ({ children }: { children: ReactNode }) => {

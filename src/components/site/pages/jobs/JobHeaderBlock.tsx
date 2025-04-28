@@ -1,37 +1,27 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import React, { ButtonHTMLAttributes, ReactNode } from "react";
-import { toast } from "sonner";
-import { FaWhatsapp, FaLinkedinIn, FaTwitter } from "react-icons/fa";
-import { Bookmark, Share2 } from "lucide-react";
+'use client';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import React, { ButtonHTMLAttributes, ReactNode } from 'react';
+import { toast } from 'sonner';
+import { FaWhatsapp, FaLinkedinIn, FaTwitter } from 'react-icons/fa';
+import { Bookmark, Share2 } from 'lucide-react';
 
-export default function JobHeaderBlock({
-  title,
-  slug,
-}: {
-  title: string;
-  slug: string;
-}) {
+export default function JobHeaderBlock({ title, slug }: { title: string; slug: string }) {
   console.log({ slug });
   const fullUrl = `${window.location.origin}${window.location.pathname}`;
   const openSharePopup = (url: string) => {
-    window.open(url, "_blank", "width=600,height=600");
+    window.open(url, '_blank', 'width=600,height=600');
   };
 
   const jobUrl = encodeURIComponent(fullUrl);
-  const message = encodeURIComponent("Check out this awesome job opportunity!");
+  const message = encodeURIComponent('Check out this awesome job opportunity!');
 
   const shareOnLinkedIn = () => {
-    openSharePopup(
-      `https://www.linkedin.com/sharing/share-offsite/?url=${jobUrl}`,
-    );
+    openSharePopup(`https://www.linkedin.com/sharing/share-offsite/?url=${jobUrl}`);
   };
 
   const shareOnTwitter = () => {
-    openSharePopup(
-      `https://twitter.com/intent/tweet?url=${jobUrl}&text=${message}`,
-    );
+    openSharePopup(`https://twitter.com/intent/tweet?url=${jobUrl}&text=${message}`);
   };
 
   const shareOnWhatsApp = () => {
@@ -41,10 +31,10 @@ export default function JobHeaderBlock({
   const copyToClipboard = () => {
     try {
       navigator.clipboard.writeText(fullUrl);
-      toast.success("copied to clipboard");
+      toast.success('copied to clipboard');
     } catch (error) {
       console.error(error);
-      toast.error("failed to copy");
+      toast.error('failed to copy');
     }
   };
 
@@ -82,8 +72,8 @@ interface ActionButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 function ActionButton({ children, ...props }: ActionButtonProps) {
   return (
     <Button
-      variant={"outline"}
-      className={cn("rounded-full w-10 h-10", props.className)}
+      variant={'outline'}
+      className={cn('rounded-full w-10 h-10', props.className)}
       {...props}
     >
       {children}

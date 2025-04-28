@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import React, { useMemo, useState } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { Plus, BookOpen, ChevronRight } from "lucide-react";
+import React, { useMemo, useState } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { Plus, BookOpen, ChevronRight } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
-} from "@/components/ui/accordion";
-import HandleChapterModal from "./HandleChapterModal";
+} from '@/components/ui/accordion';
+import HandleChapterModal from './HandleChapterModal';
 
 interface ChapterListProps {
   tutorialSlug: string;
@@ -39,18 +39,15 @@ interface ChapterListProps {
   }[];
 }
 
-export default function ChapterList({
-  tutorialSlug,
-  chapters,
-}: ChapterListProps) {
+export default function ChapterList({ tutorialSlug, chapters }: ChapterListProps) {
   const [modalOpen, setModalOpen] = useState(false);
 
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const chapterSlug = searchParams.get("chapterSlug");
-  const topicSlug = searchParams.get("topicSlug");
+  const chapterSlug = searchParams.get('chapterSlug');
+  const topicSlug = searchParams.get('topicSlug');
 
   const expandedChapterId = useMemo(() => {
     return chapters.find((c) => c.slug === chapterSlug)?.id ?? undefined;
@@ -58,14 +55,10 @@ export default function ChapterList({
 
   const toggleModal = () => setModalOpen((prev) => !prev);
 
-  const navigateTo = (
-    chapterSlug: string,
-    type: "new" | "edit",
-    topicSlug?: string,
-  ) => {
+  const navigateTo = (chapterSlug: string, type: 'new' | 'edit', topicSlug?: string) => {
     const query = new URLSearchParams();
-    query.set("chapterSlug", chapterSlug);
-    if (type === "edit" && topicSlug) query.set("topicSlug", topicSlug);
+    query.set('chapterSlug', chapterSlug);
+    if (type === 'edit' && topicSlug) query.set('topicSlug', topicSlug);
 
     router.push(`${pathname}?${query.toString()}`);
   };
@@ -87,27 +80,19 @@ export default function ChapterList({
                 key={chapter.id}
                 value={chapter.id}
                 className={`rounded px-2.5 border-none ${
-                  expandedChapterId === chapter.id
-                    ? "bg-gray-200 dark:bg-neutral-600/20"
-                    : ""
+                  expandedChapterId === chapter.id ? 'bg-gray-200 dark:bg-neutral-600/20' : ''
                 }`}
               >
-                <AccordionTrigger className="hover:no-underline">
-                  {chapter.title}
-                </AccordionTrigger>
+                <AccordionTrigger className="hover:no-underline">{chapter.title}</AccordionTrigger>
 
                 <AccordionContent className="flex flex-col gap-y-1">
                   <div className="mb-5 flex flex-col gap-y-2">
                     {chapter.topics.map((topic) => (
                       <div
                         key={topic.id}
-                        onClick={() =>
-                          navigateTo(chapter.slug, "edit", topic.slug)
-                        }
+                        onClick={() => navigateTo(chapter.slug, 'edit', topic.slug)}
                         className={`group flex justify-between items-center hover:bg-gray-700/40 dark:hover:bg-neutral-700/60 rounded-md cursor-pointer transition-colors duration-150 ${
-                          topicSlug === topic.slug
-                            ? "bg-gray-300 dark:bg-neutral-500/60"
-                            : ""
+                          topicSlug === topic.slug ? 'bg-gray-300 dark:bg-neutral-500/60' : ''
                         }`}
                       >
                         <div className="flex gap-2 items-center px-2 py-1">
@@ -126,7 +111,7 @@ export default function ChapterList({
                     variant="outline"
                     size="sm"
                     className="uppercase"
-                    onClick={() => navigateTo(chapter.slug, "new")}
+                    onClick={() => navigateTo(chapter.slug, 'new')}
                   >
                     <Plus className="mr-1" />
                     Add topic
@@ -138,11 +123,7 @@ export default function ChapterList({
         </div>
       </div>
 
-      <HandleChapterModal
-        open={modalOpen}
-        handleClose={toggleModal}
-        tutorialSlug={tutorialSlug}
-      />
+      <HandleChapterModal open={modalOpen} handleClose={toggleModal} tutorialSlug={tutorialSlug} />
     </>
   );
 }

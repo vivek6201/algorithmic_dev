@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/db";
+import { prisma } from '@/lib/db';
 
 export const updateJobStatus = async (id: string, status: boolean) => {
   try {
@@ -11,7 +11,7 @@ export const updateJobStatus = async (id: string, status: boolean) => {
     if (!data) {
       return {
         success: false,
-        message: "Job not found",
+        message: 'Job not found',
       };
     }
 
@@ -24,13 +24,13 @@ export const updateJobStatus = async (id: string, status: boolean) => {
 
     return {
       success: true,
-      message: "Status updated successfully!",
+      message: 'Status updated successfully!',
     };
   } catch (error) {
     console.error(error);
     return {
       success: true,
-      message: "Internal Server error",
+      message: 'Internal Server error',
     };
   }
 };

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState, useMemo, useRef } from "react";
-import Link from "next/link";
-import { useDebounce } from "use-debounce";
+import { useState, useMemo, useRef } from 'react';
+import Link from 'next/link';
+import { useDebounce } from 'use-debounce';
 import {
   Table,
   TableBody,
@@ -10,10 +10,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Plus, Edit, Trash2 } from "lucide-react";
+} from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Plus, Edit, Trash2 } from 'lucide-react';
 import {
   Dialog,
   DialogClose,
@@ -22,21 +22,21 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { useQuery } from "@tanstack/react-query";
-import { Jobs } from "@/generated/prisma";
-import { toast } from "sonner";
-import { z } from "zod";
-import { useRouter } from "nextjs-toploader/app";
-import StatusSelector from "../shared/StatusSelector";
-import ManageJobsModal from "./ManageJobsModal";
-import { jobCategorySchema } from "@/validations/jobValidation";
-import { handleJobCategory } from "@/actions/admin/jobs/category";
-import { updateJobStatus } from "@/actions/admin/jobs/publish";
-import { deleteJob } from "@/actions/admin/jobs/job";
+} from '@/components/ui/dialog';
+import { useQuery } from '@tanstack/react-query';
+import { Jobs } from '@/generated/prisma';
+import { toast } from 'sonner';
+import { z } from 'zod';
+import { useRouter } from 'nextjs-toploader/app';
+import StatusSelector from '../shared/StatusSelector';
+import ManageJobsModal from './ManageJobsModal';
+import { jobCategorySchema } from '@/validations/jobValidation';
+import { handleJobCategory } from '@/actions/admin/jobs/category';
+import { updateJobStatus } from '@/actions/admin/jobs/publish';
+import { deleteJob } from '@/actions/admin/jobs/job';
 
 export default function AllJobsClient() {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [debouncedSearch] = useDebounce(search, 300);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const deleteModelRef = useRef<HTMLButtonElement>(null);
@@ -47,9 +47,9 @@ export default function AllJobsClient() {
     error,
     refetch,
   } = useQuery({
-    queryKey: ["jobs"],
+    queryKey: ['jobs'],
     queryFn: async () => {
-      const response = await fetch("/api/admin/jobs");
+      const response = await fetch('/api/admin/jobs');
       const { data } = await response.json();
       return data || [];
     },
@@ -59,21 +59,19 @@ export default function AllJobsClient() {
     setCategoryModalOpen(false);
   };
 
-  const handleSaveCategory = async (
-    values: z.infer<typeof jobCategorySchema>,
-  ): Promise<void> => {
+  const handleSaveCategory = async (values: z.infer<typeof jobCategorySchema>): Promise<void> => {
     try {
       // Add new category
       const { success, message } = await handleJobCategory(values);
 
       if (success) {
-        toast.success("Category created successfully");
+        toast.success('Category created successfully');
         refetch();
       } else {
-        toast.error(message || "Failed to create category");
+        toast.error(message || 'Failed to create category');
       }
     } catch (error) {
-      toast.error("An error occurred");
+      toast.error('An error occurred');
       console.error(error);
     }
 
@@ -98,14 +96,12 @@ export default function AllJobsClient() {
 
   const sortedJobs = useMemo(() => {
     return [...filteredJobs].sort((a, b) => {
-      return (
-        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-      );
+      return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
     });
   }, [filteredJobs]);
 
   const handleDelete = async (id: string) => {
-    const timeout = toast.loading("Deleting Job, please wait!");
+    const timeout = toast.loading('Deleting Job, please wait!');
     const { success, message } = await deleteJob(id);
     toast.dismiss(timeout);
     if (success) toast.success(message);
@@ -166,10 +162,7 @@ export default function AllJobsClient() {
                 </TableRow>
               ) : error ? (
                 <TableRow>
-                  <TableCell
-                    colSpan={7}
-                    className="text-center py-4 text-red-500"
-                  >
+                  <TableCell colSpan={7} className="text-center py-4 text-red-500">
                     Error loading Jobs
                   </TableCell>
                 </TableRow>
@@ -195,19 +188,15 @@ export default function AllJobsClient() {
                               id: string;
                             }) => category.name,
                           )
-                          .join(",")}
+                          .join(',')}
                       </TableCell>
                       <TableCell>
                         <StatusSelector
                           status={job.published}
-                          handleStatusChange={(status) =>
-                            handleStatusUpdate(job.id, status)
-                          }
+                          handleStatusChange={(status) => handleStatusUpdate(job.id, status)}
                         />
                       </TableCell>
-                      <TableCell>
-                        {job.experienceLevel.split("_").join(" ")}
-                      </TableCell>
+                      <TableCell>{job.experienceLevel.split('_').join(' ')}</TableCell>
                       <TableCell>{job.type}</TableCell>
                       <TableCell className="text-right space-x-2">
                         <Link href={`/admin/jobs/edit/${job.slug}`}>
@@ -224,22 +213,15 @@ export default function AllJobsClient() {
                           <DialogContent className="max-w-sm">
                             <DialogHeader>
                               <DialogTitle>Confirm Delete</DialogTitle>
-                              <DialogDescription>
-                                This action cannot be undone.
-                              </DialogDescription>
+                              <DialogDescription>This action cannot be undone.</DialogDescription>
                             </DialogHeader>
 
-                            <p className="mb-4">
-                              Are you sure you want to delete this job?
-                            </p>
+                            <p className="mb-4">Are you sure you want to delete this job?</p>
                             <div className="flex justify-end gap-2">
                               <DialogClose asChild ref={deleteModelRef}>
                                 <Button variant="outline">Cancel</Button>
                               </DialogClose>
-                              <Button
-                                variant="destructive"
-                                onClick={() => handleDelete(job.id)}
-                              >
+                              <Button variant="destructive" onClick={() => handleDelete(job.id)}>
                                 Delete
                               </Button>
                             </div>

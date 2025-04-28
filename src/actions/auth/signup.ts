@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/db";
-import { hashPass } from "@/lib/utils";
-import { signupValidation } from "@/validations/auth";
-import { z } from "zod";
+import { prisma } from '@/lib/db';
+import { hashPass } from '@/lib/utils';
+import { signupValidation } from '@/validations/auth';
+import { z } from 'zod';
 
 const signupAction = async (data: z.infer<typeof signupValidation>) => {
   try {
@@ -16,7 +16,7 @@ const signupAction = async (data: z.infer<typeof signupValidation>) => {
     if (user) {
       return {
         success: false,
-        message: "User already exists",
+        message: 'User already exists',
       };
     }
 
@@ -31,7 +31,7 @@ const signupAction = async (data: z.infer<typeof signupValidation>) => {
 
     return {
       success: true,
-      message: "User created successfully!",
+      message: 'User created successfully!',
       data: {
         id: user.id,
         name: user.name,
@@ -45,7 +45,7 @@ const signupAction = async (data: z.infer<typeof signupValidation>) => {
     console.log(error);
     return {
       success: false,
-      message: "Internal Server Error",
+      message: 'Internal Server Error',
     };
   }
 };

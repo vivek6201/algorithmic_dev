@@ -1,12 +1,10 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/db";
-import { tutorialSchema } from "@/validations/tutorialValidation";
-import { z } from "zod";
+import { prisma } from '@/lib/db';
+import { tutorialSchema } from '@/validations/tutorialValidation';
+import { z } from 'zod';
 
-export const createTutorial = async (
-  values: z.infer<typeof tutorialSchema>,
-) => {
+export const createTutorial = async (values: z.infer<typeof tutorialSchema>) => {
   const { success, error, data } = await tutorialSchema.safeParseAsync(values);
 
   if (!success) {
@@ -31,7 +29,7 @@ export const createTutorial = async (
     if (slugExists) {
       return {
         success: false,
-        message: "Slug already exists!",
+        message: 'Slug already exists!',
       };
     }
 
@@ -50,24 +48,22 @@ export const createTutorial = async (
 
     return {
       success: true,
-      message: "Tutorial created Successfully!",
+      message: 'Tutorial created Successfully!',
     };
   } catch (error) {
     console.error(error);
     return {
       success: false,
-      message: "Failed to create tutorial",
+      message: 'Failed to create tutorial',
     };
   }
 };
 
 export const updateTutorial = async (
   slug: string,
-  values: z.infer<ReturnType<(typeof tutorialSchema)["partial"]>>,
+  values: z.infer<ReturnType<(typeof tutorialSchema)['partial']>>,
 ) => {
-  const { success, error, data } = await tutorialSchema
-    .partial()
-    .safeParseAsync(values);
+  const { success, error, data } = await tutorialSchema.partial().safeParseAsync(values);
 
   if (!success) {
     return {
@@ -91,13 +87,13 @@ export const updateTutorial = async (
 
     return {
       success: true,
-      message: "tutorial updated successfully!",
+      message: 'tutorial updated successfully!',
     };
   } catch (error) {
     console.error(error);
     return {
       success: false,
-      message: "Failed to update tutorial",
+      message: 'Failed to update tutorial',
     };
   }
 };
@@ -107,7 +103,7 @@ export const deleteTutorial = async (id: string) => {
     if (!id)
       return {
         success: false,
-        message: "id is required",
+        message: 'id is required',
       };
 
     const tutExists = await prisma.tutorial.findUnique({ where: { id } });
@@ -115,20 +111,20 @@ export const deleteTutorial = async (id: string) => {
     if (tutExists)
       return {
         success: false,
-        message: "Tutorial does not exist",
+        message: 'Tutorial does not exist',
       };
 
     await prisma.tutorial.delete({ where: { id } });
 
     return {
       success: true,
-      message: "Tutorial deleted successfully!",
+      message: 'Tutorial deleted successfully!',
     };
   } catch (error) {
     console.error(error);
     return {
       success: false,
-      message: "Failed to delete tutorial",
+      message: 'Failed to delete tutorial',
     };
   }
 };

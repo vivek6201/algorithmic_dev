@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Form,
@@ -8,22 +8,22 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { blogCategorySchema } from "@/validations/blogValidations";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { BlogCategory } from "@/generated/prisma";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from '@/components/ui/form';
+import { blogCategorySchema } from '@/validations/blogValidations';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { BlogCategory } from '@/generated/prisma';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 export default function CategoryModal({
   open,
@@ -39,8 +39,8 @@ export default function CategoryModal({
   const form = useForm<z.infer<typeof blogCategorySchema>>({
     resolver: zodResolver(blogCategorySchema),
     defaultValues: {
-      name: "",
-      slug: "",
+      name: '',
+      slug: '',
     },
   });
 
@@ -53,8 +53,8 @@ export default function CategoryModal({
       });
     } else {
       form.reset({
-        name: "",
-        slug: "",
+        name: '',
+        slug: '',
       });
     }
   }, [editData, form]);
@@ -62,12 +62,12 @@ export default function CategoryModal({
   // Watch for name changes to auto-generate slug
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
-      if (name === "name") {
+      if (name === 'name') {
         const generatedSlug = value.name
           ?.toLowerCase()
-          .replace(/\s+/g, "-")
-          .replace(/[^a-z0-9-]/g, "");
-        form.setValue("slug", generatedSlug || "");
+          .replace(/\s+/g, '-')
+          .replace(/[^a-z0-9-]/g, '');
+        form.setValue('slug', generatedSlug || '');
       }
     });
 
@@ -82,13 +82,9 @@ export default function CategoryModal({
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            {editData ? "Edit Category" : "Create Category"}
-          </DialogTitle>
+          <DialogTitle>{editData ? 'Edit Category' : 'Create Category'}</DialogTitle>
           <DialogDescription>
-            {editData
-              ? "Update an existing blog category"
-              : "Add a new blog category to your site"}
+            {editData ? 'Update an existing blog category' : 'Add a new blog category to your site'}
           </DialogDescription>
         </DialogHeader>
 
@@ -113,17 +109,12 @@ export default function CategoryModal({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Slug{" "}
-                    <span className="text-black/50 dark:text-white/30">
-                      (auto-generated)
-                    </span>
+                    Slug <span className="text-black/50 dark:text-white/30">(auto-generated)</span>
                   </FormLabel>
                   <FormControl>
                     <Input placeholder="category-slug" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    Used in URLs for this category
-                  </FormDescription>
+                  <FormDescription>Used in URLs for this category</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -132,9 +123,7 @@ export default function CategoryModal({
               <Button type="button" variant="outline" onClick={handleClose}>
                 Cancel
               </Button>
-              <Button type="submit">
-                {editData ? "Update" : "Create"} Category
-              </Button>
+              <Button type="submit">{editData ? 'Update' : 'Create'} Category</Button>
             </div>
           </form>
         </Form>

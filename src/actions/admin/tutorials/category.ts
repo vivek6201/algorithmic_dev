@@ -1,14 +1,11 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/db";
-import { tutorialCategorySchema } from "@/validations/tutorialValidation";
-import { z } from "zod";
+import { prisma } from '@/lib/db';
+import { tutorialCategorySchema } from '@/validations/tutorialValidation';
+import { z } from 'zod';
 
-const createCategory = async (
-  values: z.infer<typeof tutorialCategorySchema>,
-) => {
-  const { success, data, error } =
-    await tutorialCategorySchema.safeParseAsync(values);
+const createCategory = async (values: z.infer<typeof tutorialCategorySchema>) => {
+  const { success, data, error } = await tutorialCategorySchema.safeParseAsync(values);
 
   if (!success) {
     return {
@@ -30,7 +27,7 @@ const createCategory = async (
     if (slugExists) {
       return {
         success: false,
-        message: "Slug Already exists",
+        message: 'Slug Already exists',
       };
     }
 
@@ -46,7 +43,7 @@ const createCategory = async (
     console.error(error);
     return {
       success: false,
-      message: "Failed to create category!",
+      message: 'Failed to create category!',
     };
   }
 };
@@ -55,11 +52,9 @@ export default createCategory;
 
 export const editCategory = async (
   id: string,
-  values: z.infer<ReturnType<(typeof tutorialCategorySchema)["partial"]>>,
+  values: z.infer<ReturnType<(typeof tutorialCategorySchema)['partial']>>,
 ) => {
-  const { success, error } = await tutorialCategorySchema
-    .partial()
-    .safeParseAsync(values);
+  const { success, error } = await tutorialCategorySchema.partial().safeParseAsync(values);
 
   if (!success) {
     return {
@@ -83,7 +78,7 @@ export const editCategory = async (
     if (!category) {
       return {
         success: false,
-        message: "Invalid Category Id",
+        message: 'Invalid Category Id',
       };
     }
 
@@ -97,7 +92,7 @@ export const editCategory = async (
     console.error(error);
     return {
       success: false,
-      message: "Error while editing category!",
+      message: 'Error while editing category!',
     };
   }
 };

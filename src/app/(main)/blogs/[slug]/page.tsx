@@ -1,22 +1,18 @@
-import Breadcrumbs from "@/components/site/shared/Breadcrumb";
-import HTMLRenderer from "@/components/site/shared/HTMLRenderer";
-import { getClientBlogBySlug } from "@/helpers/main/blogGetter";
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+import Breadcrumbs from '@/components/site/shared/Breadcrumb';
+import HTMLRenderer from '@/components/site/shared/HTMLRenderer';
+import { getClientBlogBySlug } from '@/helpers/main/blogGetter';
+import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const { success, data } = await getClientBlogBySlug(slug);
 
   if (!success || !data) {
     return {
-      title: "Blog not found",
-      description: "This blog does not exist.",
+      title: 'Blog not found',
+      description: 'This blog does not exist.',
     };
   }
 
@@ -26,11 +22,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogDetailPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const { success, data, relatedPosts } = await getClientBlogBySlug(slug);
 
@@ -111,15 +103,13 @@ export default async function BlogDetailPage({
                 key={post.id}
               >
                 <h4 className="font-semibold mb-2">{post.title}</h4>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {post.description}
-                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{post.description}</p>
               </Link>
             ))}
           </div>
         </div>
       ) : (
-        ""
+        ''
       )}
     </div>
   );

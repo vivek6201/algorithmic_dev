@@ -1,8 +1,8 @@
-import { prisma } from "@/lib/db";
+import { prisma } from '@/lib/db';
 
 export const getBlogBySlug = async (slug: string) => {
   try {
-    if (!slug) return { success: false, message: "Slug is required" };
+    if (!slug) return { success: false, message: 'Slug is required' };
     const blog = await prisma.blog.findUnique({
       where: {
         slug,
@@ -12,7 +12,7 @@ export const getBlogBySlug = async (slug: string) => {
     return { success: true, blog };
   } catch (error) {
     console.error(error);
-    return { success: false, message: "Internal server error" };
+    return { success: false, message: 'Internal server error' };
   }
 };
 
@@ -20,7 +20,7 @@ export const getTutorialChaptersWithTopics = async (slug: string) => {
   if (!slug) {
     return {
       success: false,
-      message: "Slug is Required!",
+      message: 'Slug is Required!',
     };
   }
   try {
@@ -34,12 +34,12 @@ export const getTutorialChaptersWithTopics = async (slug: string) => {
             _count: true,
             topics: {
               orderBy: {
-                order: "asc",
+                order: 'asc',
               },
             },
           },
           orderBy: {
-            createdAt: "asc",
+            createdAt: 'asc',
           },
         },
       },
@@ -48,7 +48,7 @@ export const getTutorialChaptersWithTopics = async (slug: string) => {
     if (!data) {
       return {
         success: false,
-        message: "Chapters not found!",
+        message: 'Chapters not found!',
       };
     }
 
@@ -58,7 +58,7 @@ export const getTutorialChaptersWithTopics = async (slug: string) => {
     };
   } catch (error) {
     console.error(error);
-    return { success: false, message: "Internal server error" };
+    return { success: false, message: 'Internal server error' };
   }
 };
 
@@ -76,7 +76,7 @@ export const getJobBySlug = async (slug: string) => {
     console.error(error);
     return {
       success: false,
-      message: "Failed to find data ",
+      message: 'Failed to find data ',
     };
   }
 };

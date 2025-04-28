@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+import { prisma } from '@/lib/db';
 
 export const getClientJobBySlug = async (slug: string) => {
   try {
@@ -11,7 +11,7 @@ export const getClientJobBySlug = async (slug: string) => {
     console.error(error);
     return {
       success: false,
-      message: "Failed to find data ",
+      message: 'Failed to find data ',
     };
   }
 };
@@ -24,7 +24,7 @@ export const getClientJobCategories = async () => {
     console.error(error);
     return {
       success: false,
-      message: "Failed to find data ",
+      message: 'Failed to find data ',
     };
   }
 };

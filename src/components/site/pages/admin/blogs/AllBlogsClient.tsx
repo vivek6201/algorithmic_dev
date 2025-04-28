@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState, useMemo, useRef } from "react";
-import Link from "next/link";
-import { useDebounce } from "use-debounce";
+import { useState, useMemo, useRef } from 'react';
+import Link from 'next/link';
+import { useDebounce } from 'use-debounce';
 import {
   Table,
   TableBody,
@@ -10,10 +10,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Plus, Edit, Trash2 } from "lucide-react";
+} from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Plus, Edit, Trash2 } from 'lucide-react';
 import {
   Dialog,
   DialogClose,
@@ -22,21 +22,21 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { useQuery } from "@tanstack/react-query";
-import { Blog } from "@/generated/prisma";
-import { toast } from "sonner";
-import { deleteBlog } from "@/actions/admin/blogs/blog";
-import CategoryModal from "./ManageCategoryModal";
-import { z } from "zod";
-import { blogCategorySchema } from "@/validations/blogValidations";
-import createCategory from "@/actions/admin/blogs/category";
-import { updateBlogStatus } from "@/actions/admin/blogs/publish";
-import { useRouter } from "nextjs-toploader/app";
-import StatusSelector from "../shared/StatusSelector";
+} from '@/components/ui/dialog';
+import { useQuery } from '@tanstack/react-query';
+import { Blog } from '@/generated/prisma';
+import { toast } from 'sonner';
+import { deleteBlog } from '@/actions/admin/blogs/blog';
+import CategoryModal from './ManageCategoryModal';
+import { z } from 'zod';
+import { blogCategorySchema } from '@/validations/blogValidations';
+import createCategory from '@/actions/admin/blogs/category';
+import { updateBlogStatus } from '@/actions/admin/blogs/publish';
+import { useRouter } from 'nextjs-toploader/app';
+import StatusSelector from '../shared/StatusSelector';
 
 export default function AllBlogsClient() {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [debouncedSearch] = useDebounce(search, 300);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const deleteModelRef = useRef<HTMLButtonElement>(null);
@@ -47,9 +47,9 @@ export default function AllBlogsClient() {
     error,
     refetch,
   } = useQuery({
-    queryKey: ["blogs"],
+    queryKey: ['blogs'],
     queryFn: async () => {
-      const response = await fetch("/api/admin/blogs");
+      const response = await fetch('/api/admin/blogs');
       const data = await response.json();
       return data.blogs || [];
     },
@@ -59,21 +59,19 @@ export default function AllBlogsClient() {
     setCategoryModalOpen(false);
   };
 
-  const handleSaveCategory = async (
-    data: z.infer<typeof blogCategorySchema>,
-  ): Promise<void> => {
+  const handleSaveCategory = async (data: z.infer<typeof blogCategorySchema>): Promise<void> => {
     try {
       // Add new category
       const { success, message, newCategory } = await createCategory(data);
 
       if (success && newCategory) {
-        toast.success("Category created successfully");
+        toast.success('Category created successfully');
         refetch(); // Refresh the data after creation
       } else {
-        toast.error(message || "Failed to create category");
+        toast.error(message || 'Failed to create category');
       }
     } catch (error) {
-      toast.error("An error occurred");
+      toast.error('An error occurred');
       console.error(error);
     }
 
@@ -98,14 +96,12 @@ export default function AllBlogsClient() {
 
   const sortedBlogs = useMemo(() => {
     return [...filteredBlogs].sort((a, b) => {
-      return (
-        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-      );
+      return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
     });
   }, [filteredBlogs]);
 
   const handleDelete = async (id: string) => {
-    const timeout = toast.loading("Deleting blog, please wait!");
+    const timeout = toast.loading('Deleting blog, please wait!');
     const { success, message } = await deleteBlog(id);
     toast.dismiss(timeout);
     if (success) toast.success(message);
@@ -165,10 +161,7 @@ export default function AllBlogsClient() {
                 </TableRow>
               ) : error ? (
                 <TableRow>
-                  <TableCell
-                    colSpan={6}
-                    className="text-center py-4 text-red-500"
-                  >
+                  <TableCell colSpan={6} className="text-center py-4 text-red-500">
                     Error loading Blogs
                   </TableCell>
                 </TableRow>
@@ -188,9 +181,7 @@ export default function AllBlogsClient() {
                       <TableCell>
                         <StatusSelector
                           status={blog.published}
-                          handleStatusChange={(status) =>
-                            handleStatusUpdate(blog.id, status)
-                          }
+                          handleStatusChange={(status) => handleStatusUpdate(blog.id, status)}
                         />
                       </TableCell>
                       <TableCell>{blog.authorName}</TableCell>
@@ -209,22 +200,15 @@ export default function AllBlogsClient() {
                           <DialogContent className="max-w-sm">
                             <DialogHeader>
                               <DialogTitle>Confirm Delete</DialogTitle>
-                              <DialogDescription>
-                                This action cannot be undone.
-                              </DialogDescription>
+                              <DialogDescription>This action cannot be undone.</DialogDescription>
                             </DialogHeader>
 
-                            <p className="mb-4">
-                              Are you sure you want to delete this blog?
-                            </p>
+                            <p className="mb-4">Are you sure you want to delete this blog?</p>
                             <div className="flex justify-end gap-2">
                               <DialogClose asChild ref={deleteModelRef}>
                                 <Button variant="outline">Cancel</Button>
                               </DialogClose>
-                              <Button
-                                variant="destructive"
-                                onClick={() => handleDelete(blog.id)}
-                              >
+                              <Button variant="destructive" onClick={() => handleDelete(blog.id)}>
                                 Delete
                               </Button>
                             </div>

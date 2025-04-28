@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+import { prisma } from '@/lib/db';
 
 export const getClientBlogsCategories = async () => {
   try {
@@ -8,7 +8,7 @@ export const getClientBlogsCategories = async () => {
     return { success: true, data };
   } catch (error) {
     console.error(error);
-    return { success: false, message: "Error getting data" };
+    return { success: false, message: 'Error getting data' };
   }
 };
 
@@ -39,7 +39,7 @@ export const getClientBlogBySlug = async (slug: string) => {
     console.error(error);
     return {
       success: false,
-      message: "Failed to fetch data",
+      message: 'Failed to fetch data',
     };
   }
 };

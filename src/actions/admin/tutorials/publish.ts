@@ -1,11 +1,8 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/db";
+import { prisma } from '@/lib/db';
 
-export const updateTutorialCategoryStatus = async (
-  id: string,
-  status: boolean,
-) => {
+export const updateTutorialCategoryStatus = async (id: string, status: boolean) => {
   try {
     await prisma.tutorialCategory.update({
       where: { id },
@@ -14,10 +11,10 @@ export const updateTutorialCategoryStatus = async (
       },
     });
 
-    return { success: true, message: "Status Changed Successfully!" };
+    return { success: true, message: 'Status Changed Successfully!' };
   } catch (error) {
     console.error(error);
-    return { success: false, message: "Internal Server Error" };
+    return { success: false, message: 'Internal Server Error' };
   }
 };
 
@@ -30,17 +27,14 @@ export const updateTutorialStatus = async (id: string, status: boolean) => {
       },
     });
 
-    return { success: true, message: "Status Changed Successfully!" };
+    return { success: true, message: 'Status Changed Successfully!' };
   } catch (error) {
     console.error(error);
-    return { success: false, message: "Internal Server Error" };
+    return { success: false, message: 'Internal Server Error' };
   }
 };
 
-export const updateTutorialTopicStatus = async (
-  id: string,
-  status: boolean,
-) => {
+export const updateTutorialTopicStatus = async (id: string, status: boolean) => {
   try {
     await prisma.topic.update({
       where: { id },
@@ -49,9 +43,9 @@ export const updateTutorialTopicStatus = async (
       },
     });
 
-    return { success: true, message: "Status Changed Successfully!" };
+    return { success: true, message: 'Status Changed Successfully!' };
   } catch (error) {
     console.error(error);
-    return { success: false, message: "Internal Server Error" };
+    return { success: false, message: 'Internal Server Error' };
   }
 };

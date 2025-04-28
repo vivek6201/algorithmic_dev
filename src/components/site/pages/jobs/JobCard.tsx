@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { JobCategory, Jobs } from "@/generated/prisma";
-import { ChevronRight } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Button } from '@/components/ui/button';
+import { JobCategory, Jobs } from '@/generated/prisma';
+import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 type JobCardProps = { job: Jobs; categories: JobCategory[] };
 
@@ -25,20 +25,16 @@ const JobCard = ({ job, categories }: JobCardProps) => {
           ))}
         </div>
 
-        <h2 className="text-xl font-semibold group-hover:underline">
-          {job.title}
-        </h2>
+        <h2 className="text-xl font-semibold group-hover:underline">{job.title}</h2>
         <div className="flex gap-x-2 items-center mt-2">
           <Badge title={job.type} />
-          <Badge title={job.experienceLevel.split("_").join(" ")} />
+          <Badge title={job.experienceLevel.split('_').join(' ')} />
           <Badge title={job.salaryRange} />
         </div>
       </div>
 
       <div className="w-full justify-between flex gap-2 items-center ">
-        <span className="text-xs text-gray-500">
-          {new Date(job.createdAt).toDateString()}
-        </span>
+        <span className="text-xs text-gray-500">{new Date(job.createdAt).toDateString()}</span>
 
         <Button className="cursor-pointer">
           View More <ChevronRight />

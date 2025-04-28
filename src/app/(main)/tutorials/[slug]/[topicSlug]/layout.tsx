@@ -1,6 +1,6 @@
-import TutorialSidebar from "@/components/site/pages/tutorials/tutorial/TutorialSidebar";
-import { getClientTutorialChapters } from "@/helpers/main/tutorialGetter";
-import React, { ReactNode } from "react";
+import TutorialSidebar from '@/components/site/pages/tutorials/tutorial/TutorialSidebar';
+import { getClientTutorialChapters } from '@/helpers/main/tutorialGetter';
+import React, { ReactNode } from 'react';
 
 export default async function TutorialLayout({
   params,

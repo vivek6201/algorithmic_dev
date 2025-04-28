@@ -1,24 +1,20 @@
-import JobHeaderBlock from "@/components/site/pages/jobs/JobHeaderBlock";
-import Breadcrumbs from "@/components/site/shared/Breadcrumb";
-import HTMLRenderer from "@/components/site/shared/HTMLRenderer";
-import { Button } from "@/components/ui/button";
-import { getClientJobBySlug } from "@/helpers/main/jobsGetter";
-import { ChevronRight } from "lucide-react";
-import Link from "next/link";
-import React from "react";
+import JobHeaderBlock from '@/components/site/pages/jobs/JobHeaderBlock';
+import Breadcrumbs from '@/components/site/shared/Breadcrumb';
+import HTMLRenderer from '@/components/site/shared/HTMLRenderer';
+import { Button } from '@/components/ui/button';
+import { getClientJobBySlug } from '@/helpers/main/jobsGetter';
+import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const { success, data } = await getClientJobBySlug(slug);
 
   if (!success || !data) {
     return {
-      title: "Job not found",
-      description: "This job does not exist.",
+      title: 'Job not found',
+      description: 'This job does not exist.',
     };
   }
 
@@ -28,11 +24,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function page({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const { success, data } = await getClientJobBySlug(slug);
 
@@ -60,7 +52,7 @@ export default async function page({
       </article>
 
       <Link href={data.link} target="_blank" className="my-10">
-        <Button size={"lg"} className="cursor-pointer">
+        <Button size={'lg'} className="cursor-pointer">
           Apply <ChevronRight />
         </Button>
       </Link>

@@ -1,7 +1,7 @@
-"use client";
-import React from "react";
-import FeatureCard from "./FeatureCard";
-import { BookOpen, Briefcase, GraduationCap } from "lucide-react";
+'use client';
+import React from 'react';
+import FeatureCard from './FeatureCard';
+import { BookOpen, Briefcase, GraduationCap } from 'lucide-react';
 
 export default function FeatureSection() {
   return (
@@ -11,8 +11,7 @@ export default function FeatureSection() {
           Everything you need to succeed in tech
         </h2>
         <p className="mt-4 max-w-2xl text-lg text-gray-500 mx-auto text-center">
-          Our platform combines the essential tools and resources for your tech
-          career journey
+          Our platform combines the essential tools and resources for your tech career journey
         </p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 place-items-center">

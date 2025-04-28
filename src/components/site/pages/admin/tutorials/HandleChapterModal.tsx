@@ -1,7 +1,7 @@
-"use client";
-import { useRouter } from "nextjs-toploader/app";
-import React, { useEffect } from "react";
-import { Button } from "@/components/ui/button";
+'use client';
+import { useRouter } from 'nextjs-toploader/app';
+import React, { useEffect } from 'react';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -10,7 +10,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -18,15 +18,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { z } from "zod";
-import { tutorialChapterSchema } from "@/validations/tutorialValidation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Textarea } from "@/components/ui/textarea";
-import { createChapter } from "@/actions/admin/tutorials/chapters";
-import { toast } from "sonner";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { z } from 'zod';
+import { tutorialChapterSchema } from '@/validations/tutorialValidation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { Textarea } from '@/components/ui/textarea';
+import { createChapter } from '@/actions/admin/tutorials/chapters';
+import { toast } from 'sonner';
 
 export default function HandleChapterModal({
   isEdit = false,
@@ -48,29 +48,23 @@ export default function HandleChapterModal({
   const form = useForm<z.infer<typeof tutorialChapterSchema>>({
     resolver: zodResolver(tutorialChapterSchema),
     defaultValues: {
-      title: "",
-      slug: "",
-      description: "",
+      title: '',
+      slug: '',
+      description: '',
       order: 0,
     },
   });
 
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
-      if (name === "title") {
-        const generatedSlug = value.title?.toLowerCase().replace(/\s+/g, "-");
-        form.setValue("slug", generatedSlug || "");
+      if (name === 'title') {
+        const generatedSlug = value.title?.toLowerCase().replace(/\s+/g, '-');
+        form.setValue('slug', generatedSlug || '');
       }
-      if (name === "order") {
-        const orderValue = value.order
-          ? parseInt(value.order.toString(), 10)
-          : undefined;
-        if (
-          orderValue !== undefined &&
-          !isNaN(orderValue) &&
-          orderValue !== value.order
-        ) {
-          form.setValue("order", orderValue);
+      if (name === 'order') {
+        const orderValue = value.order ? parseInt(value.order.toString(), 10) : undefined;
+        if (orderValue !== undefined && !isNaN(orderValue) && orderValue !== value.order) {
+          form.setValue('order', orderValue);
         }
       }
     });
@@ -85,7 +79,7 @@ export default function HandleChapterModal({
     } else {
       toast.error(message);
     }
-    (document.querySelector("#close-btn") as HTMLButtonElement).click();
+    (document.querySelector('#close-btn') as HTMLButtonElement).click();
     router.refresh();
   }
 
@@ -94,16 +88,13 @@ export default function HandleChapterModal({
       <DialogClose id="close-btn" />
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Edit" : "Create"} Chapter</DialogTitle>
+          <DialogTitle>{isEdit ? 'Edit' : 'Create'} Chapter</DialogTitle>
           <DialogDescription>
-            This Modal allows you to {isEdit ? "edit" : "create"} chapter
+            This Modal allows you to {isEdit ? 'edit' : 'create'} chapter
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-y-5"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-5">
             <FormField
               control={form.control}
               name="title"
@@ -124,11 +115,7 @@ export default function HandleChapterModal({
                 <FormItem>
                   <FormLabel>Slug</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Slug is auto-generated"
-                      {...field}
-                      readOnly
-                    />
+                    <Input placeholder="Slug is auto-generated" {...field} readOnly />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -141,11 +128,7 @@ export default function HandleChapterModal({
                 <FormItem>
                   <FormLabel>Order</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter Chapter Order"
-                      type="number"
-                      {...field}
-                    />
+                    <Input placeholder="Enter Chapter Order" type="number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -171,11 +154,7 @@ export default function HandleChapterModal({
 
             <DialogFooter>
               <DialogClose asChild>
-                <Button
-                  type="button"
-                  variant={"outline"}
-                  onClick={() => form.reset()}
-                >
+                <Button type="button" variant={'outline'} onClick={() => form.reset()}>
                   Cancel
                 </Button>
               </DialogClose>

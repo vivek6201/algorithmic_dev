@@ -1,5 +1,5 @@
-import { prisma } from "@/lib/db";
-import { NextResponse } from "next/server";
+import { prisma } from '@/lib/db';
+import { NextResponse } from 'next/server';
 
 export const GET = async () => {
   try {
@@ -12,9 +12,6 @@ export const GET = async () => {
     return NextResponse.json({ tutorials }, { status: 200 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json(
-      { success: false, message: "Internal Server Error" },
-      { status: 500 },
-    );
+    return NextResponse.json({ success: false, message: 'Internal Server Error' }, { status: 500 });
   }
 };

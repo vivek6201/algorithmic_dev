@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/db";
+import { prisma } from '@/lib/db';
 
 export const updateBlogCategoryStatus = async (id: string, status: boolean) => {
   try {
@@ -11,10 +11,10 @@ export const updateBlogCategoryStatus = async (id: string, status: boolean) => {
       },
     });
 
-    return { success: true, message: "Status Changed Successfully!" };
+    return { success: true, message: 'Status Changed Successfully!' };
   } catch (error) {
     console.error(error);
-    return { success: false, message: "Internal Server Error" };
+    return { success: false, message: 'Internal Server Error' };
   }
 };
 
@@ -27,9 +27,9 @@ export const updateBlogStatus = async (id: string, status: boolean) => {
       },
     });
 
-    return { success: true, message: "Status Changed Successfully!" };
+    return { success: true, message: 'Status Changed Successfully!' };
   } catch (error) {
     console.error(error);
-    return { success: false, message: "Internal Server Error" };
+    return { success: false, message: 'Internal Server Error' };
   }
 };

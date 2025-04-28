@@ -1,9 +1,9 @@
-import { ExperienceLevel, JobType } from "@/generated/prisma";
-import { z } from "zod";
+import { ExperienceLevel, JobType } from '@/generated/prisma';
+import { z } from 'zod';
 
 export const jobCategorySchema = z.object({
-  name: z.string().min(3, "Minimum 3 characters are required"),
-  slug: z.string().min(3, "Minimum 3 characters are required"),
+  name: z.string().min(3, 'Minimum 3 characters are required'),
+  slug: z.string().min(3, 'Minimum 3 characters are required'),
   description: z.string().min(10).optional(),
 });
 

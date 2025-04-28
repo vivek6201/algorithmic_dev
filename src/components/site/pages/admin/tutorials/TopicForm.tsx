@@ -1,8 +1,8 @@
-"use client";
-import { tutorialTopicSchema } from "@/validations/tutorialValidation";
-import React, { useEffect } from "react";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
+'use client';
+import { tutorialTopicSchema } from '@/validations/tutorialValidation';
+import React, { useEffect } from 'react';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -10,14 +10,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import RichTextEditor from "@/components/site/shared/editor/TextEditor";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "nextjs-toploader/app";
-import { createTopic, updateTopic } from "@/actions/admin/tutorials/topics";
-import { toast } from "sonner";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import RichTextEditor from '@/components/site/shared/editor/TextEditor';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'nextjs-toploader/app';
+import { createTopic, updateTopic } from '@/actions/admin/tutorials/topics';
+import { toast } from 'sonner';
 
 export default function TopicForm({
   slug,
@@ -32,10 +32,10 @@ export default function TopicForm({
   const form = useForm<z.infer<typeof tutorialTopicSchema>>({
     resolver: zodResolver(tutorialTopicSchema),
     defaultValues: {
-      content: "",
+      content: '',
       order: 0,
-      slug: "",
-      title: "",
+      slug: '',
+      title: '',
     },
   });
 
@@ -44,31 +44,25 @@ export default function TopicForm({
       form.reset(topic);
     } else {
       form.reset({
-        content: "",
+        content: '',
         order: 0,
-        slug: "",
-        title: "",
+        slug: '',
+        title: '',
       });
     }
   }, [isEdit, topic, form]);
 
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
-      if (name === "title") {
-        const generatedSlug = value.title?.toLowerCase().replace(/\s+/g, "-");
-        form.setValue("slug", generatedSlug || "");
+      if (name === 'title') {
+        const generatedSlug = value.title?.toLowerCase().replace(/\s+/g, '-');
+        form.setValue('slug', generatedSlug || '');
       }
 
-      if (name === "order") {
-        const orderValue = value.order
-          ? parseInt(value.order.toString(), 10)
-          : undefined;
-        if (
-          orderValue !== undefined &&
-          !isNaN(orderValue) &&
-          orderValue !== value.order
-        ) {
-          form.setValue("order", orderValue);
+      if (name === 'order') {
+        const orderValue = value.order ? parseInt(value.order.toString(), 10) : undefined;
+        if (orderValue !== undefined && !isNaN(orderValue) && orderValue !== value.order) {
+          form.setValue('order', orderValue);
         }
       }
     });
@@ -79,11 +73,11 @@ export default function TopicForm({
   async function onSubmit(values: z.infer<typeof tutorialTopicSchema>) {
     if (isEdit) {
       if (!topic) {
-        toast.error("Topic data is missing.");
+        toast.error('Topic data is missing.');
         return;
       }
 
-      const timeout = toast.loading("Creating Topic, please wait...");
+      const timeout = toast.loading('Creating Topic, please wait...');
       const { success, message } = await updateTopic(topic.slug, values);
       toast.dismiss(timeout);
 
@@ -94,7 +88,7 @@ export default function TopicForm({
 
       toast.success(message);
     } else {
-      const timeout = toast.loading("Creating Topic, please wait...");
+      const timeout = toast.loading('Creating Topic, please wait...');
       const { success, message } = await createTopic(slug, values);
       toast.dismiss(timeout);
 
@@ -120,10 +114,7 @@ export default function TopicForm({
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter Title of the Topic.."
-                      {...field}
-                    />
+                    <Input placeholder="Enter Title of the Topic.." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -136,11 +127,7 @@ export default function TopicForm({
                 <FormItem>
                   <FormLabel>Slug</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter category Slug"
-                      {...field}
-                      readOnly
-                    />
+                    <Input placeholder="Enter category Slug" {...field} readOnly />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -153,11 +140,7 @@ export default function TopicForm({
                 <FormItem>
                   <FormLabel>Order</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter Topic Order"
-                      type="number"
-                      {...field}
-                    />
+                    <Input placeholder="Enter Topic Order" type="number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

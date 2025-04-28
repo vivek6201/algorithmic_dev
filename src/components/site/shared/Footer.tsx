@@ -1,29 +1,29 @@
-import Link from "next/link";
-import React from "react";
+import Link from 'next/link';
+import React from 'react';
 
 const Footer: React.FC = () => {
   const footerLinks = {
     platform: [
-      { name: "Jobs", href: "/jobs" },
-      { name: "Community", href: "/community" },
-      { name: "Blogs", href: "/blogs" },
-      { name: "Tutorials", href: "/tutorials" },
+      { name: 'Jobs', href: '/jobs' },
+      { name: 'Community', href: '/community' },
+      { name: 'Blogs', href: '/blogs' },
+      { name: 'Tutorials', href: '/tutorials' },
     ],
     company: [
-      { name: "About", href: "/about" },
-      { name: "Contact", href: "/contact-us" },
+      { name: 'About', href: '/about' },
+      { name: 'Contact', href: '/contact-us' },
     ],
     resources: [
-      { name: "Documentation", href: "#" },
-      { name: "Support", href: "#" },
-      { name: "Terms", href: "#" },
-      { name: "Privacy", href: "#" },
+      { name: 'Documentation', href: '#' },
+      { name: 'Support', href: '#' },
+      { name: 'Terms', href: '#' },
+      { name: 'Privacy', href: '#' },
     ],
     social: [
-      { name: "Twitter", href: "#" },
-      { name: "LinkedIn", href: "#" },
-      { name: "GitHub", href: "#" },
-      { name: "YouTube", href: "#" },
+      { name: 'Twitter', href: '#' },
+      { name: 'LinkedIn', href: '#' },
+      { name: 'GitHub', href: '#' },
+      { name: 'YouTube', href: '#' },
     ],
   };
 
@@ -38,16 +38,12 @@ const Footer: React.FC = () => {
               </span>
             </Link>
             <p className="text-gray-500 text-base">
-              Your complete tech career platform. Find jobs, build community,
-              share knowledge, and learn new skills.
+              Your complete tech career platform. Find jobs, build community, share knowledge, and
+              learn new skills.
             </p>
             <div className="flex space-x-6">
               {footerLinks.social.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="text-gray-400 hover:text-gray-500"
-                >
+                <a key={item.name} href={item.href} className="text-gray-400 hover:text-gray-500">
                   <span className="sr-only">{item.name}</span>
                   <div className="h-6 w-6 bg-gray-400/20 rounded-full flex items-center justify-center hover:bg-tech-purple/20 hover:text-purple-300 transition-colors">
                     {item.name[0]}
@@ -82,10 +78,7 @@ const Footer: React.FC = () => {
                 <ul className="mt-4 space-y-4">
                   {footerLinks.company.map((item) => (
                     <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-base text-gray-500 hover:text-gray-900"
-                      >
+                      <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
                         {item.name}
                       </a>
                     </li>
@@ -101,10 +94,7 @@ const Footer: React.FC = () => {
                 <ul className="mt-4 space-y-4">
                   {footerLinks.resources.map((item) => (
                     <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className="text-base text-gray-500 hover:text-gray-900"
-                      >
+                      <a href={item.href} className="text-base text-gray-500 hover:text-gray-900">
                         {item.name}
                       </a>
                     </li>
@@ -117,26 +107,17 @@ const Footer: React.FC = () => {
                 </h3>
                 <ul className="mt-4 space-y-4">
                   <li>
-                    <a
-                      href="#"
-                      className="text-base text-gray-500 hover:text-gray-900"
-                    >
+                    <a href="#" className="text-base text-gray-500 hover:text-gray-900">
                       Privacy Policy
                     </a>
                   </li>
                   <li>
-                    <a
-                      href="#"
-                      className="text-base text-gray-500 hover:text-gray-900"
-                    >
+                    <a href="#" className="text-base text-gray-500 hover:text-gray-900">
                       Terms of Service
                     </a>
                   </li>
                   <li>
-                    <a
-                      href="#"
-                      className="text-base text-gray-500 hover:text-gray-900"
-                    >
+                    <a href="#" className="text-base text-gray-500 hover:text-gray-900">
                       Cookie Policy
                     </a>
                   </li>
@@ -147,8 +128,7 @@ const Footer: React.FC = () => {
         </div>
         <div className="mt-12 border-t border-gray-200 pt-8">
           <p className="text-base text-gray-400 text-center">
-            &copy; {new Date().getFullYear()} Algorithmic Dev, Inc. All rights
-            reserved.
+            &copy; {new Date().getFullYear()} Algorithmic Dev, Inc. All rights reserved.
           </p>
         </div>
       </div>

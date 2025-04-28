@@ -1,16 +1,15 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/db";
-import { tutorialTopicSchema } from "@/validations/tutorialValidation";
-import { z } from "zod";
+import { prisma } from '@/lib/db';
+import { tutorialTopicSchema } from '@/validations/tutorialValidation';
+import { z } from 'zod';
 
 export const createTopic = async (
   chapterSlug: string,
   values: z.infer<typeof tutorialTopicSchema>,
 ) => {
   try {
-    const { success, data, error } =
-      await tutorialTopicSchema.safeParseAsync(values);
+    const { success, data, error } = await tutorialTopicSchema.safeParseAsync(values);
 
     if (!success) {
       return {
@@ -34,13 +33,13 @@ export const createTopic = async (
       if (isExists)
         return {
           success: false,
-          message: "topic with this slug already exists.",
+          message: 'topic with this slug already exists.',
         };
     } catch (error) {
       console.error(error);
       return {
         success: false,
-        message: "Failed to check topic",
+        message: 'Failed to check topic',
       };
     }
 
@@ -71,19 +70,19 @@ export const createTopic = async (
     if (topic) {
       return {
         success: success,
-        message: "Topic created successfully!",
+        message: 'Topic created successfully!',
       };
     } else {
       return {
         success: false,
-        message: "Failed to create new topic",
+        message: 'Failed to create new topic',
       };
     }
   } catch (error) {
     console.error(error);
     return {
       success: false,
-      message: "Internal server error",
+      message: 'Internal server error',
     };
   }
 };
@@ -96,7 +95,7 @@ export const updateTopic = async (
     if (!topicSlug) {
       return {
         success: false,
-        message: "Topic Slug is required for updating.",
+        message: 'Topic Slug is required for updating.',
       };
     }
 
@@ -107,7 +106,7 @@ export const updateTopic = async (
     if (!existingTopic) {
       return {
         success: false,
-        message: "Topic not found.",
+        message: 'Topic not found.',
       };
     }
 
@@ -123,13 +122,13 @@ export const updateTopic = async (
 
     return {
       success: true,
-      message: "Topic Updated Successfully!",
+      message: 'Topic Updated Successfully!',
     };
   } catch (error) {
     console.error(error);
     return {
       success: false,
-      message: "Failed to update topic!",
+      message: 'Failed to update topic!',
     };
   }
 };

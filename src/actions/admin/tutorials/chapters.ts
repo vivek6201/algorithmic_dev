@@ -1,16 +1,15 @@
-"use server";
+'use server';
 
-import { Prisma } from "@/generated/prisma";
-import { prisma } from "@/lib/db";
-import { tutorialChapterSchema } from "@/validations/tutorialValidation";
-import { z } from "zod";
+import { Prisma } from '@/generated/prisma';
+import { prisma } from '@/lib/db';
+import { tutorialChapterSchema } from '@/validations/tutorialValidation';
+import { z } from 'zod';
 
 export const createChapter = async (
   tutorialSlug: string,
   values: z.infer<typeof tutorialChapterSchema>,
 ) => {
-  const { success, data, error } =
-    await tutorialChapterSchema.safeParseAsync(values);
+  const { success, data, error } = await tutorialChapterSchema.safeParseAsync(values);
 
   if (!success) {
     return {
@@ -34,59 +33,57 @@ export const createChapter = async (
     if (isExists)
       return {
         success: false,
-        message: "Chapter with this slug already exists.",
+        message: 'Chapter with this slug already exists.',
       };
   } catch (error) {
     console.error(error);
     return {
       success: false,
-      message: "Failed to check chapter",
+      message: 'Failed to check chapter',
     };
   }
 
   try {
-    const chapter = await prisma.$transaction(
-      async (tx: Prisma.TransactionClient) => {
-        const tutorial = await tx.tutorial.findUnique({
-          where: {
-            slug: tutorialSlug,
-          },
-        });
+    const chapter = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+      const tutorial = await tx.tutorial.findUnique({
+        where: {
+          slug: tutorialSlug,
+        },
+      });
 
-        if (!tutorial) {
-          return null;
-        }
+      if (!tutorial) {
+        return null;
+      }
 
-        const newChapter = await tx.chapter.create({
-          data: {
-            tutorialId: tutorial.id,
-            slug: data.slug,
-            title: data.title,
-            description: data.description,
-            order: data.order,
-          },
-        });
+      const newChapter = await tx.chapter.create({
+        data: {
+          tutorialId: tutorial.id,
+          slug: data.slug,
+          title: data.title,
+          description: data.description,
+          order: data.order,
+        },
+      });
 
-        return newChapter;
-      },
-    );
+      return newChapter;
+    });
 
     if (chapter) {
       return {
         success: false,
-        message: "Chapter created successfully!",
+        message: 'Chapter created successfully!',
       };
     } else {
       return {
         success: false,
-        message: "Failed to create new chapter",
+        message: 'Failed to create new chapter',
       };
     }
   } catch (error) {
     console.error(error);
     return {
       success: false,
-      message: "Internal server error",
+      message: 'Internal server error',
     };
   }
 };

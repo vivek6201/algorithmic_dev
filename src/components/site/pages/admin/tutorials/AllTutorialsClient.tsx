@@ -1,5 +1,5 @@
-"use client";
-import React, { useMemo, useRef, useState } from "react";
+'use client';
+import React, { useMemo, useRef, useState } from 'react';
 import {
   Dialog,
   DialogClose,
@@ -8,12 +8,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { Edit, Plus, Trash2 } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { useDebounce } from "use-debounce";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { Edit, Plus, Trash2 } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { useDebounce } from 'use-debounce';
 import {
   Table,
   TableBody,
@@ -21,20 +21,20 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { useQuery } from "@tanstack/react-query";
-import { Tutorial } from "@/generated/prisma";
-import { CreateTutorialModal } from "./CreateTutorialModal";
-import { createTutorial } from "@/actions/admin/tutorials/tutorial";
-import { toast } from "sonner";
-import { tutorialSchema } from "@/validations/tutorialValidation";
-import { z } from "zod";
-import StatusSelector from "../shared/StatusSelector";
-import { updateTutorialStatus } from "@/actions/admin/tutorials/publish";
-import { useRouter } from "nextjs-toploader/app";
+} from '@/components/ui/table';
+import { useQuery } from '@tanstack/react-query';
+import { Tutorial } from '@/generated/prisma';
+import { CreateTutorialModal } from './CreateTutorialModal';
+import { createTutorial } from '@/actions/admin/tutorials/tutorial';
+import { toast } from 'sonner';
+import { tutorialSchema } from '@/validations/tutorialValidation';
+import { z } from 'zod';
+import StatusSelector from '../shared/StatusSelector';
+import { updateTutorialStatus } from '@/actions/admin/tutorials/publish';
+import { useRouter } from 'nextjs-toploader/app';
 
 export default function AllTutorialsClient() {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [debouncedSearch] = useDebounce(search, 300);
   const deleteModelRef = useRef<HTMLButtonElement>(null);
@@ -45,9 +45,9 @@ export default function AllTutorialsClient() {
     error,
     refetch,
   } = useQuery({
-    queryKey: ["tutorials"],
+    queryKey: ['tutorials'],
     queryFn: async () => {
-      const response = await fetch("/api/admin/tutorials");
+      const response = await fetch('/api/admin/tutorials');
       const data = await response.json();
       return data.tutorials || [];
     },
@@ -69,7 +69,7 @@ export default function AllTutorialsClient() {
 
     toast.success(message);
     refetch();
-    (document.querySelector("#close-btn") as HTMLButtonElement)?.click();
+    (document.querySelector('#close-btn') as HTMLButtonElement)?.click();
   };
 
   const filteredTutorials = useMemo(() => {
@@ -80,9 +80,7 @@ export default function AllTutorialsClient() {
 
   const sortedTutorials = useMemo(() => {
     return [...filteredTutorials].sort((a, b) => {
-      return (
-        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-      );
+      return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
     });
   }, [filteredTutorials]);
 
@@ -138,10 +136,7 @@ export default function AllTutorialsClient() {
                 </TableRow>
               ) : error ? (
                 <TableRow>
-                  <TableCell
-                    colSpan={6}
-                    className="text-center py-4 text-red-500"
-                  >
+                  <TableCell colSpan={6} className="text-center py-4 text-red-500">
                     Error loading Tutorials
                   </TableCell>
                 </TableRow>
@@ -162,9 +157,7 @@ export default function AllTutorialsClient() {
                       <TableCell>
                         <StatusSelector
                           status={tutorial.published}
-                          handleStatusChange={(status) =>
-                            handleStatusUpdate(tutorial.id, status)
-                          }
+                          handleStatusChange={(status) => handleStatusUpdate(tutorial.id, status)}
                         />
                       </TableCell>
                       <TableCell className="text-right space-x-2">
@@ -182,14 +175,10 @@ export default function AllTutorialsClient() {
                           <DialogContent className="max-w-sm">
                             <DialogHeader>
                               <DialogTitle>Confirm Delete</DialogTitle>
-                              <DialogDescription>
-                                This action cannot be undone.
-                              </DialogDescription>
+                              <DialogDescription>This action cannot be undone.</DialogDescription>
                             </DialogHeader>
 
-                            <p className="mb-4">
-                              Are you sure you want to delete this tutorial?
-                            </p>
+                            <p className="mb-4">Are you sure you want to delete this tutorial?</p>
                             <div className="flex justify-end gap-2">
                               <DialogClose asChild ref={deleteModelRef}>
                                 <Button variant="outline">Cancel</Button>

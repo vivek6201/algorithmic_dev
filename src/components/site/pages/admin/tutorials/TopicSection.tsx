@@ -1,7 +1,7 @@
-"use client";
-import { useSearchParams } from "next/navigation";
-import React from "react";
-import TopicForm from "./TopicForm";
+'use client';
+import { useSearchParams } from 'next/navigation';
+import React from 'react';
+import TopicForm from './TopicForm';
 
 export default function TopicSection({
   topic,
@@ -22,8 +22,8 @@ export default function TopicSection({
 }) {
   const searchParams = useSearchParams();
 
-  const chapterSlug = searchParams.get("chapterSlug");
-  const topicSlug = searchParams.get("topicSlug");
+  const chapterSlug = searchParams.get('chapterSlug');
+  const topicSlug = searchParams.get('topicSlug');
 
   if (!chapterSlug)
     return (
@@ -35,14 +35,8 @@ export default function TopicSection({
 
   return (
     <div className="flex flex-col gap-y-5 ">
-      <p className="font-semibold text-2xl mb-5">
-        {topicSlug ? "Edit Topic" : "Create Topic"}
-      </p>
-      <TopicForm
-        isEdit={topicSlug ? true : false}
-        slug={chapterSlug}
-        topic={topic}
-      />
+      <p className="font-semibold text-2xl mb-5">{topicSlug ? 'Edit Topic' : 'Create Topic'}</p>
+      <TopicForm isEdit={topicSlug ? true : false} slug={chapterSlug} topic={topic} />
     </div>
   );
 }

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import React from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface CategoryType {
   name: string;
@@ -16,7 +16,7 @@ const TutorialFilters = ({ data }: { data: CategoryType[] }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const selected = searchParams.get("category")?.split(",") ?? [];
+  const selected = searchParams.get('category')?.split(',') ?? [];
 
   const toggleFilter = (category: CategoryType) => {
     const newSelected = selected.includes(category.slug)
@@ -25,9 +25,9 @@ const TutorialFilters = ({ data }: { data: CategoryType[] }) => {
 
     const params = new URLSearchParams(searchParams.toString());
     if (newSelected.length > 0) {
-      params.set("category", newSelected.join(","));
+      params.set('category', newSelected.join(','));
     } else {
-      params.delete("category");
+      params.delete('category');
     }
 
     router.replace(`?${params.toString()}`);
@@ -35,7 +35,7 @@ const TutorialFilters = ({ data }: { data: CategoryType[] }) => {
 
   const clearFilters = () => {
     const params = new URLSearchParams(searchParams.toString());
-    params.delete("category");
+    params.delete('category');
     router.replace(`?${params.toString()}`);
   };
 
@@ -52,8 +52,8 @@ const TutorialFilters = ({ data }: { data: CategoryType[] }) => {
                 onClick={() => toggleFilter(category)}
                 className={`px-3 py-1 rounded-full border cursor-pointer transition-colors ${
                   isSelected
-                    ? "bg-blue-500 text-white dark:bg-blue-600 border-blue-500"
-                    : "hover:bg-blue-100 dark:hover:bg-blue-700 dark:text-gray-300 border dark:border-gray-600"
+                    ? 'bg-blue-500 text-white dark:bg-blue-600 border-blue-500'
+                    : 'hover:bg-blue-100 dark:hover:bg-blue-700 dark:text-gray-300 border dark:border-gray-600'
                 }`}
               >
                 {category.name}

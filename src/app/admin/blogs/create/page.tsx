@@ -1,5 +1,5 @@
-import BlogForm from "@/components/site/pages/admin/blogs/BlogForm";
-import React from "react";
+import BlogForm from '@/components/site/pages/admin/blogs/BlogForm';
+import React from 'react';
 
 export default function page() {
   return (

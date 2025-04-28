@@ -1,12 +1,12 @@
-import NextAuth from "next-auth";
-import { prisma } from "./db";
-import Credentials from "next-auth/providers/credentials";
-import Google from "next-auth/providers/google";
-import { loginValidation } from "@/validations/auth";
-import bcrypt from "bcryptjs";
-import { v4 as uuid } from "uuid";
+import NextAuth from 'next-auth';
+import { prisma } from './db';
+import Credentials from 'next-auth/providers/credentials';
+import Google from 'next-auth/providers/google';
+import { loginValidation } from '@/validations/auth';
+import bcrypt from 'bcryptjs';
+import { v4 as uuid } from 'uuid';
 
-declare module "next-auth" {
+declare module 'next-auth' {
   interface User {
     role?: string;
   }
@@ -21,8 +21,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {},
       },
       authorize: async (credentials) => {
-        const { success, data } =
-          await loginValidation.safeParseAsync(credentials);
+        const { success, data } = await loginValidation.safeParseAsync(credentials);
 
         if (!success) return null;
 
@@ -30,19 +29,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           where: { email: data.email },
         });
 
-        if (!user) throw new Error("User not found!");
+        if (!user) throw new Error('User not found!');
 
-        const matchPass =
-          user.password && (await bcrypt.compare(data.password, user.password));
+        const matchPass = user.password && (await bcrypt.compare(data.password, user.password));
 
-        if (!matchPass) throw new Error("Invalid credentials.");
+        if (!matchPass) throw new Error('Invalid credentials.');
 
         return user;
       },
     }),
   ],
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -64,7 +62,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async signIn({ user }) {
       // 🔥 Manually create a session in the database
       if (!user.id) {
-        throw new Error("User ID is undefined.");
+        throw new Error('User ID is undefined.');
       }
 
       await prisma.session.create({
@@ -77,7 +75,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async signOut(data) {
       // Extract userId from token or session safely
-      const userId = "token" in data ? data.token?.id : data.session?.userId;
+      const userId = 'token' in data ? data.token?.id : data.session?.userId;
 
       if (userId) {
         // Delete session from database if it exists
@@ -88,8 +86,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
   pages: {
-    signIn: "/login",
-    error: "/login",
+    signIn: '/login',
+    error: '/login',
   },
-  debug: process.env.NODE_ENV === "development" ? true : false,
+  debug: process.env.NODE_ENV === 'development' ? true : false,
 });

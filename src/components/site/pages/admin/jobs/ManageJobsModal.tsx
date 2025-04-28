@@ -1,8 +1,8 @@
-"use client";
-import { JobCategory } from "@/generated/prisma";
-import { jobCategorySchema } from "@/validations/jobValidation";
-import React from "react";
-import { z } from "zod";
+'use client';
+import { JobCategory } from '@/generated/prisma';
+import { jobCategorySchema } from '@/validations/jobValidation';
+import React from 'react';
+import { z } from 'zod';
 import {
   Form,
   FormControl,
@@ -11,20 +11,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+} from '@/components/ui/form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 
 export default function ManageJobsModal({
   open,
@@ -40,9 +40,9 @@ export default function ManageJobsModal({
   const form = useForm<z.infer<typeof jobCategorySchema>>({
     resolver: zodResolver(jobCategorySchema),
     defaultValues: {
-      name: "",
-      slug: "",
-      description: "",
+      name: '',
+      slug: '',
+      description: '',
     },
   });
 
@@ -52,13 +52,13 @@ export default function ManageJobsModal({
       form.reset({
         name: editData.name,
         slug: editData.slug,
-        description: editData.description ?? "",
+        description: editData.description ?? '',
       });
     } else {
       form.reset({
-        name: "",
-        slug: "",
-        description: "",
+        name: '',
+        slug: '',
+        description: '',
       });
     }
   }, [editData, form]);
@@ -66,12 +66,12 @@ export default function ManageJobsModal({
   // Watch for name changes to auto-generate slug
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
-      if (name === "name") {
+      if (name === 'name') {
         const generatedSlug = value.name
           ?.toLowerCase()
-          .replace(/\s+/g, "-")
-          .replace(/[^a-z0-9-]/g, "");
-        form.setValue("slug", generatedSlug || "");
+          .replace(/\s+/g, '-')
+          .replace(/[^a-z0-9-]/g, '');
+        form.setValue('slug', generatedSlug || '');
       }
     });
 
@@ -86,21 +86,14 @@ export default function ManageJobsModal({
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            {editData ? "Edit Category" : "Create Category"}
-          </DialogTitle>
+          <DialogTitle>{editData ? 'Edit Category' : 'Create Category'}</DialogTitle>
           <DialogDescription>
-            {editData
-              ? "Update an existing blog category"
-              : "Add a new blog category to your site"}
+            {editData ? 'Update an existing blog category' : 'Add a new blog category to your site'}
           </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-y-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-4">
             <FormField
               control={form.control}
               name="name"
@@ -121,10 +114,7 @@ export default function ManageJobsModal({
                 <FormItem>
                   <FormLabel>Category Description</FormLabel>
                   <FormControl>
-                    <Textarea
-                      placeholder="Enter category Description"
-                      {...field}
-                    />
+                    <Textarea placeholder="Enter category Description" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -136,17 +126,12 @@ export default function ManageJobsModal({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Slug{" "}
-                    <span className="text-black/50 dark:text-white/30">
-                      (auto-generated)
-                    </span>
+                    Slug <span className="text-black/50 dark:text-white/30">(auto-generated)</span>
                   </FormLabel>
                   <FormControl>
                     <Input placeholder="category-slug" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    Used in URLs for this category
-                  </FormDescription>
+                  <FormDescription>Used in URLs for this category</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -155,9 +140,7 @@ export default function ManageJobsModal({
               <Button type="button" variant="outline" onClick={handleClose}>
                 Cancel
               </Button>
-              <Button type="submit">
-                {editData ? "Update" : "Create"} Category
-              </Button>
+              <Button type="submit">{editData ? 'Update' : 'Create'} Category</Button>
             </div>
           </form>
         </Form>

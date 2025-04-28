@@ -1,12 +1,12 @@
-import TutorialsFilters from "@/components/site/pages/tutorials/TutorialsFilters";
-import TutorialsList from "@/components/site/pages/tutorials/TutorialsList";
-import { getClientTutorialsCategories } from "@/helpers/main/tutorialGetter";
-import { Metadata } from "next";
+import TutorialsFilters from '@/components/site/pages/tutorials/TutorialsFilters';
+import TutorialsList from '@/components/site/pages/tutorials/TutorialsList';
+import { getClientTutorialsCategories } from '@/helpers/main/tutorialGetter';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Tutorials - Algorithmic Dev",
+  title: 'Tutorials - Algorithmic Dev',
   description:
-    "A One-Stop Solution for all your tech related queries. Be it Jobs, tutorials, courses, blogs, helper mini apps",
+    'A One-Stop Solution for all your tech related queries. Be it Jobs, tutorials, courses, blogs, helper mini apps',
 };
 
 export default async function TutorialsPage() {

@@ -1,5 +1,5 @@
-import JobsForm from "@/components/site/pages/admin/jobs/JobsForm";
-import React from "react";
+import JobsForm from '@/components/site/pages/admin/jobs/JobsForm';
+import React from 'react';
 
 export default function page() {
   return (

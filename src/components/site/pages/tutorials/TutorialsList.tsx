@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import React from "react";
-import TutorialCard from "./TutorialCard";
-import { useSearchParams } from "next/navigation";
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
+import React from 'react';
+import TutorialCard from './TutorialCard';
+import { useSearchParams } from 'next/navigation';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
 export default function TutorialsList() {
   const searchParams = useSearchParams();
-  const categories = searchParams.get("category");
+  const categories = searchParams.get('category');
 
   const fetchTutorials = async (categories: string | null) => {
-    const response = await axios.get("/api/tutorials", {
+    const response = await axios.get('/api/tutorials', {
       params: { category: categories ?? undefined },
     });
     return response.data.data;
@@ -22,7 +22,7 @@ export default function TutorialsList() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["tutorials", categories],
+    queryKey: ['tutorials', categories],
     queryFn: () => fetchTutorials(categories),
   });
 

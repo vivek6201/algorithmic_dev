@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { JSX, useState } from "react";
-import clsx from "clsx";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { JSX, useState } from 'react';
+import clsx from 'clsx';
 import {
   Briefcase,
   BookOpen,
@@ -15,22 +15,16 @@ import {
   ChevronRight,
   FolderOpen,
   ListFilter,
-} from "lucide-react";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
+} from 'lucide-react';
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { signOut } from "next-auth/react";
+} from '@/components/ui/accordion';
+import { signOut } from 'next-auth/react';
 
 interface SidebarChildItem {
   name: string;
@@ -48,52 +42,52 @@ interface SidebarItem {
 // Define sidebar navigation data structure
 const sidebarItems = [
   {
-    name: "Jobs",
-    href: "/admin/jobs",
+    name: 'Jobs',
+    href: '/admin/jobs',
     icon: Briefcase,
     children: [
       {
-        name: "Categories",
-        href: "/admin/jobs/categories",
+        name: 'Categories',
+        href: '/admin/jobs/categories',
         icon: FolderOpen,
       },
       {
-        name: "All jobs",
-        href: "/admin/jobs",
+        name: 'All jobs',
+        href: '/admin/jobs',
         icon: FolderOpen,
       },
     ], // No children for Jobs section
   },
   {
-    name: "Tutorials",
-    href: "/admin/tutorials",
+    name: 'Tutorials',
+    href: '/admin/tutorials',
     icon: BookOpen,
     children: [
       {
-        name: "Categories",
-        href: "/admin/tutorials/categories",
+        name: 'Categories',
+        href: '/admin/tutorials/categories',
         icon: FolderOpen,
       },
       {
-        name: "All Tutorials",
-        href: "/admin/tutorials",
+        name: 'All Tutorials',
+        href: '/admin/tutorials',
         icon: ListFilter,
       },
     ],
   },
   {
-    name: "Blogs",
-    href: "/admin/blogs",
+    name: 'Blogs',
+    href: '/admin/blogs',
     icon: Newspaper,
     children: [
       {
-        name: "Categories",
-        href: "/admin/blogs/categories",
+        name: 'Categories',
+        href: '/admin/blogs/categories',
         icon: FolderOpen,
       },
       {
-        name: "All Blogs",
-        href: "/admin/blogs", // Fixed path - was missing '/all'
+        name: 'All Blogs',
+        href: '/admin/blogs', // Fixed path - was missing '/all'
         icon: ListFilter,
       },
     ],
@@ -138,11 +132,11 @@ const AdminSidebar = () => {
       key={item.href}
       href={item.href}
       className={clsx(
-        "flex items-center gap-3 px-4 py-2 rounded-md transition-all font-medium",
-        isMobile ? "" : collapsed ? "justify-center" : "",
+        'flex items-center gap-3 px-4 py-2 rounded-md transition-all font-medium',
+        isMobile ? '' : collapsed ? 'justify-center' : '',
         isLinkActive(item.href) && !hasActiveChild(item)
-          ? "bg-white text-gray-900 shadow-md"
-          : "hover:bg-gray-700 hover:shadow-sm",
+          ? 'bg-white text-gray-900 shadow-md'
+          : 'hover:bg-gray-700 hover:shadow-sm',
       )}
     >
       <item.icon className="w-5 h-5" />
@@ -151,28 +145,23 @@ const AdminSidebar = () => {
   );
 
   // Generate accordion for items with children
-  const renderAccordion = (
-    item: SidebarItem,
-    isMobile: boolean = false,
-  ): JSX.Element => {
+  const renderAccordion = (item: SidebarItem, isMobile: boolean = false): JSX.Element => {
     console.log({ isMobile });
     return (
       <Accordion
         type="single"
         collapsible
-        defaultValue={
-          hasActiveChild(item) ? item.name.toLowerCase() : undefined
-        }
+        defaultValue={hasActiveChild(item) ? item.name.toLowerCase() : undefined}
         className="border-none"
         key={item.href}
       >
         <AccordionItem value={item.name.toLowerCase()} className="border-none">
           <AccordionTrigger
             className={clsx(
-              "flex items-center gap-3 px-4 py-2 rounded-md transition-all font-medium",
+              'flex items-center gap-3 px-4 py-2 rounded-md transition-all font-medium',
               isLinkActive(item.href) && !hasActiveChild(item)
-                ? "bg-white text-gray-900 shadow-md"
-                : "hover:bg-gray-700 hover:shadow-sm",
+                ? 'bg-white text-gray-900 shadow-md'
+                : 'hover:bg-gray-700 hover:shadow-sm',
             )}
           >
             <div className="flex items-center gap-3">
@@ -186,10 +175,10 @@ const AdminSidebar = () => {
                 key={child.href}
                 href={child.href}
                 className={clsx(
-                  "flex items-center gap-3 px-4 py-2 rounded-md transition-all font-medium",
+                  'flex items-center gap-3 px-4 py-2 rounded-md transition-all font-medium',
                   isLinkActive(child.href)
-                    ? "bg-white text-gray-900 shadow-md"
-                    : "hover:bg-gray-700 hover:shadow-sm",
+                    ? 'bg-white text-gray-900 shadow-md'
+                    : 'hover:bg-gray-700 hover:shadow-sm',
                 )}
               >
                 <child.icon className="w-4 h-4" />
@@ -240,7 +229,7 @@ const AdminSidebar = () => {
               <Button
                 onClick={() =>
                   signOut({
-                    redirectTo: "/",
+                    redirectTo: '/',
                   })
                 }
                 className="w-full"
@@ -256,27 +245,21 @@ const AdminSidebar = () => {
       {/* Desktop Sidebar */}
       <aside
         className={clsx(
-          "hidden lg:flex flex-col justify-between bg-gradient-to-b from-neutral-900 to-neutral-800 text-white h-screen transition-all duration-300 ease-in-out shadow-lg",
-          collapsed ? "w-20" : "w-64",
+          'hidden lg:flex flex-col justify-between bg-gradient-to-b from-neutral-900 to-neutral-800 text-white h-screen transition-all duration-300 ease-in-out shadow-lg',
+          collapsed ? 'w-20' : 'w-64',
         )}
       >
         <div className="p-4">
           {/* Collapse Toggle */}
           <div className="flex justify-between items-center mb-6">
-            {!collapsed && (
-              <h2 className="text-xl font-bold">Algorithmic Dev</h2>
-            )}
+            {!collapsed && <h2 className="text-xl font-bold">Algorithmic Dev</h2>}
             <Button
               size="icon"
               variant="ghost"
               onClick={() => setCollapsed(!collapsed)}
               className="text-white"
             >
-              {collapsed ? (
-                <ChevronRight size={20} />
-              ) : (
-                <ChevronLeft size={20} />
-              )}
+              {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
             </Button>
           </div>
 
@@ -289,10 +272,10 @@ const AdminSidebar = () => {
                     key={item.href}
                     href={item.href}
                     className={clsx(
-                      "flex items-center justify-center px-4 py-2 rounded-md transition-all",
+                      'flex items-center justify-center px-4 py-2 rounded-md transition-all',
                       isLinkActive(item.href) && !hasActiveChild(item)
-                        ? "bg-white text-gray-900 shadow-md"
-                        : "hover:bg-gray-700 hover:shadow-sm",
+                        ? 'bg-white text-gray-900 shadow-md'
+                        : 'hover:bg-gray-700 hover:shadow-sm',
                     )}
                   >
                     <item.icon className="w-5 h-5" />
@@ -300,9 +283,7 @@ const AdminSidebar = () => {
                 ))
               : // Expanded view with accordions
                 sidebarItems.map((item) =>
-                  item.children.length === 0
-                    ? renderMainLink(item)
-                    : renderAccordion(item),
+                  item.children.length === 0 ? renderMainLink(item) : renderAccordion(item),
                 )}
           </nav>
         </div>
@@ -319,7 +300,7 @@ const AdminSidebar = () => {
           <Button
             onClick={() =>
               signOut({
-                redirectTo: "/",
+                redirectTo: '/',
               })
             }
             className="w-full flex items-center justify-center"

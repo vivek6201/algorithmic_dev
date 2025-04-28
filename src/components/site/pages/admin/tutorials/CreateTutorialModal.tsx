@@ -1,5 +1,5 @@
-"use client";
-import { Button } from "@/components/ui/button";
+'use client';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -8,11 +8,11 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { tutorialSchema } from "@/validations/tutorialValidation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from '@/components/ui/dialog';
+import { tutorialSchema } from '@/validations/tutorialValidation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import {
   Form,
   FormControl,
@@ -20,12 +20,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import CustomSelect from "@/components/ui/custom-select";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import CustomSelect from '@/components/ui/custom-select';
 
 export function CreateTutorialModal({
   open,
@@ -47,9 +47,9 @@ export function CreateTutorialModal({
   const form = useForm<z.infer<typeof tutorialSchema>>({
     resolver: zodResolver(tutorialSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      slug: "",
+      title: '',
+      description: '',
+      slug: '',
     },
   });
 
@@ -57,9 +57,9 @@ export function CreateTutorialModal({
 
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
-      if (name === "title") {
-        const generatedSlug = value.title?.toLowerCase().replace(/\s+/g, "-");
-        form.setValue("slug", generatedSlug || "");
+      if (name === 'title') {
+        const generatedSlug = value.title?.toLowerCase().replace(/\s+/g, '-');
+        form.setValue('slug', generatedSlug || '');
       }
     });
 
@@ -71,9 +71,9 @@ export function CreateTutorialModal({
     isPending,
     error,
   } = useQuery({
-    queryKey: ["tutorial-categories"],
+    queryKey: ['tutorial-categories'],
     queryFn: async () => {
-      const response = await fetch("/api/admin/tutorials/category");
+      const response = await fetch('/api/admin/tutorials/category');
       const data = await response.json();
       return data.categories || [];
     },
@@ -87,19 +87,14 @@ export function CreateTutorialModal({
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>
-            {!isEdit ? "Create Tutorial" : "Edit Tutorial"}
-          </DialogTitle>
+          <DialogTitle>{!isEdit ? 'Create Tutorial' : 'Edit Tutorial'}</DialogTitle>
           <DialogDescription>
-            This modal helps you {isEdit ? "edit" : "create"} tutorial
+            This modal helps you {isEdit ? 'edit' : 'create'} tutorial
           </DialogDescription>
         </DialogHeader>
         <div className="">
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-y-5 "
-            >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-5 ">
               <FormField
                 control={form.control}
                 name="title"
@@ -179,17 +174,13 @@ export function CreateTutorialModal({
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant={"outline"} id="close-btn">
+            <Button variant={'outline'} id="close-btn">
               Cancel
             </Button>
           </DialogClose>
           <Button
             type="submit"
-            onClick={() =>
-              (
-                document.querySelector("#create-btn") as HTMLButtonElement
-              )?.click()
-            }
+            onClick={() => (document.querySelector('#create-btn') as HTMLButtonElement)?.click()}
           >
             Save changes
           </Button>

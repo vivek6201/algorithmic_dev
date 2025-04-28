@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   CommandDialog,
   CommandEmpty,
@@ -6,8 +6,8 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
-import React from "react";
+} from '@/components/ui/command';
+import React from 'react';
 
 export default function SearchModal({
   open,
@@ -18,13 +18,13 @@ export default function SearchModal({
 }) {
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         handleModalState();
       }
     };
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
+    document.addEventListener('keydown', down);
+    return () => document.removeEventListener('keydown', down);
   }, [handleModalState]);
 
   return (

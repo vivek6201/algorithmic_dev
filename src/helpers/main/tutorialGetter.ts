@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+import { prisma } from '@/lib/db';
 
 export const getClientTutorialsCategories = async () => {
   try {
@@ -8,7 +8,7 @@ export const getClientTutorialsCategories = async () => {
     return { success: true, data };
   } catch (error) {
     console.error(error);
-    return { success: false, message: "Error getting data" };
+    return { success: false, message: 'Error getting data' };
   }
 };
 
@@ -23,12 +23,12 @@ export const getClientTutorialChapters = async (tutorialSlug: string) => {
       include: {
         topics: {
           orderBy: {
-            order: "asc",
+            order: 'asc',
           },
         },
       },
       orderBy: {
-        order: "asc",
+        order: 'asc',
       },
     });
 
@@ -37,7 +37,7 @@ export const getClientTutorialChapters = async (tutorialSlug: string) => {
     console.error(error);
     return {
       success: false,
-      message: "Failed to fetch data",
+      message: 'Failed to fetch data',
     };
   }
 };
@@ -51,7 +51,7 @@ export const getClientTutorialBySlug = async (slug: string) => {
           include: {
             topics: {
               orderBy: {
-                order: "asc",
+                order: 'asc',
               },
             },
           },
@@ -64,7 +64,7 @@ export const getClientTutorialBySlug = async (slug: string) => {
     console.error(error);
     return {
       success: false,
-      message: "Failed to fetch data",
+      message: 'Failed to fetch data',
     };
   }
 };
@@ -86,7 +86,7 @@ export const getClientTutorialTopicBySlug = async (slug: string) => {
     if (!currentTopic) {
       return {
         success: false,
-        message: "Topic not found",
+        message: 'Topic not found',
       };
     }
 
@@ -101,7 +101,7 @@ export const getClientTutorialTopicBySlug = async (slug: string) => {
         },
       },
       orderBy: {
-        order: "asc", // Sort ascending by order
+        order: 'asc', // Sort ascending by order
       },
     });
 
@@ -115,12 +115,12 @@ export const getClientTutorialTopicBySlug = async (slug: string) => {
           },
         },
         orderBy: {
-          order: "asc", // Ascending order to get the next chapter
+          order: 'asc', // Ascending order to get the next chapter
         },
         include: {
           topics: {
             orderBy: {
-              order: "asc", // Get the first topic in the next chapter
+              order: 'asc', // Get the first topic in the next chapter
             },
             take: 1, // Only take the first topic
           },
@@ -139,7 +139,7 @@ export const getClientTutorialTopicBySlug = async (slug: string) => {
         },
       },
       orderBy: {
-        order: "desc", // Sort descending to get the previous topic
+        order: 'desc', // Sort descending to get the previous topic
       },
     });
 
@@ -153,12 +153,12 @@ export const getClientTutorialTopicBySlug = async (slug: string) => {
           },
         },
         orderBy: {
-          order: "desc", // Sort descending to get the previous chapter
+          order: 'desc', // Sort descending to get the previous chapter
         },
         include: {
           topics: {
             orderBy: {
-              order: "desc", // Get the last topic in the previous chapter
+              order: 'desc', // Get the last topic in the previous chapter
             },
             take: 1, // Only take the last topic
           },
@@ -178,7 +178,7 @@ export const getClientTutorialTopicBySlug = async (slug: string) => {
     console.error(error);
     return {
       success: false,
-      message: "Failed to fetch data",
+      message: 'Failed to fetch data',
     };
   }
 };

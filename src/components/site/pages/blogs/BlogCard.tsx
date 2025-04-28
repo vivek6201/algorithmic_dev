@@ -1,5 +1,5 @@
-import Link from "next/link";
-import React from "react";
+import Link from 'next/link';
+import React from 'react';
 
 interface BlogCardProps {
   title: string;
@@ -34,9 +34,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
       </Link>
 
       {/* Description */}
-      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-        {description}
-      </p>
+      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">{description}</p>
 
       {/* Author + Date */}
       <div className="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">

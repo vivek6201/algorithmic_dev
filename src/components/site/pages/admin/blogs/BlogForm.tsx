@@ -1,10 +1,10 @@
-"use client";
-import React, { useEffect } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { blogFormSchema } from "@/validations/blogValidations";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
+'use client';
+import React, { useEffect } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { blogFormSchema } from '@/validations/blogValidations';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -12,14 +12,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import RichTextEditor from "@/components/site/shared/editor/TextEditor";
-import { useQuery } from "@tanstack/react-query";
-import CustomSelect from "@/components/ui/custom-select";
-import createBlog, { updateBlog } from "@/actions/admin/blogs/blog";
-import { toast } from "sonner";
-import { useRouter } from "nextjs-toploader/app";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import RichTextEditor from '@/components/site/shared/editor/TextEditor';
+import { useQuery } from '@tanstack/react-query';
+import CustomSelect from '@/components/ui/custom-select';
+import createBlog, { updateBlog } from '@/actions/admin/blogs/blog';
+import { toast } from 'sonner';
+import { useRouter } from 'nextjs-toploader/app';
 
 function BlogForm({
   blog,
@@ -31,13 +31,13 @@ function BlogForm({
   const form = useForm<z.infer<typeof blogFormSchema>>({
     resolver: zodResolver(blogFormSchema),
     defaultValues: {
-      author: "",
-      categoryId: "",
-      content: "",
-      coverImage: "",
-      description: "",
-      title: "",
-      slug: "",
+      author: '',
+      categoryId: '',
+      content: '',
+      coverImage: '',
+      description: '',
+      title: '',
+      slug: '',
     },
   });
   const {
@@ -45,9 +45,9 @@ function BlogForm({
     isPending,
     error,
   } = useQuery({
-    queryKey: ["blog-categories"],
+    queryKey: ['blog-categories'],
     queryFn: async () => {
-      const response = await fetch("/api/admin/blogs/category");
+      const response = await fetch('/api/admin/blogs/category');
       const data = await response.json();
       return data.categories || [];
     },
@@ -62,9 +62,9 @@ function BlogForm({
 
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
-      if (name === "title") {
-        const generatedSlug = value.title?.toLowerCase().replace(/\s+/g, "-");
-        form.setValue("slug", generatedSlug || "");
+      if (name === 'title') {
+        const generatedSlug = value.title?.toLowerCase().replace(/\s+/g, '-');
+        form.setValue('slug', generatedSlug || '');
       }
     });
 
@@ -74,7 +74,7 @@ function BlogForm({
   async function onSubmit(values: z.infer<typeof blogFormSchema>) {
     if (isEdit) {
       if (!blog) {
-        toast.error("Blog data is missing.");
+        toast.error('Blog data is missing.');
         return;
       }
       const { success, message } = await updateBlog(blog.slug, values);
@@ -84,8 +84,8 @@ function BlogForm({
         return;
       }
 
-      toast.success("Blog updated successfully!");
-      router.push("/admin/blogs");
+      toast.success('Blog updated successfully!');
+      router.push('/admin/blogs');
     } else {
       const { success, error, message } = await createBlog(values);
 
@@ -95,8 +95,8 @@ function BlogForm({
         return;
       }
 
-      toast.success("Blog created successfully");
-      router.push("/admin/blogs");
+      toast.success('Blog created successfully');
+      router.push('/admin/blogs');
     }
   }
 
@@ -124,11 +124,7 @@ function BlogForm({
               <FormItem>
                 <FormLabel>Slug</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Enter category Slug"
-                    {...field}
-                    readOnly
-                  />
+                  <Input placeholder="Enter category Slug" {...field} readOnly />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -182,10 +178,7 @@ function BlogForm({
               <FormItem>
                 <FormLabel>Cover Image</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Enter cover image url of the blog.."
-                    {...field}
-                  />
+                  <Input placeholder="Enter cover image url of the blog.." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -198,10 +191,7 @@ function BlogForm({
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Enter description url of the blog.."
-                    {...field}
-                  />
+                  <Input placeholder="Enter description url of the blog.." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

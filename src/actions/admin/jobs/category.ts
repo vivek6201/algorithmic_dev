@@ -1,15 +1,12 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/db";
-import { jobCategorySchema } from "@/validations/jobValidation";
-import { z } from "zod";
+import { prisma } from '@/lib/db';
+import { jobCategorySchema } from '@/validations/jobValidation';
+import { z } from 'zod';
 
-export const handleJobCategory = async (
-  values: z.infer<typeof jobCategorySchema>,
-) => {
+export const handleJobCategory = async (values: z.infer<typeof jobCategorySchema>) => {
   try {
-    const { data, success, error } =
-      await jobCategorySchema.safeParseAsync(values);
+    const { data, success, error } = await jobCategorySchema.safeParseAsync(values);
 
     if (!success) {
       console.error(error);
@@ -40,14 +37,14 @@ export const handleJobCategory = async (
 
     return {
       success: true,
-      message: "Category action performed successfully",
+      message: 'Category action performed successfully',
       data: category,
     };
   } catch (error) {
     console.error(error);
     return {
       success: false,
-      message: "Failed to handle Job Category",
+      message: 'Failed to handle Job Category',
     };
   }
 };

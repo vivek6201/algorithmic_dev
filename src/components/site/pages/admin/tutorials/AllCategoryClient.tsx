@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState, useMemo } from "react";
-import { useDebounce } from "use-debounce";
+import { useState, useMemo } from 'react';
+import { useDebounce } from 'use-debounce';
 import {
   Table,
   TableBody,
@@ -9,10 +9,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Plus, Edit, Trash2 } from "lucide-react";
+} from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Plus, Edit, Trash2 } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -20,21 +20,21 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { blogCategorySchema } from "@/validations/blogValidations";
-import { z } from "zod";
+} from '@/components/ui/dialog';
+import { blogCategorySchema } from '@/validations/blogValidations';
+import { z } from 'zod';
 
-import { useQuery } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { BlogCategory } from "@/generated/prisma";
-import CategoryModal from "../blogs/ManageCategoryModal";
-import createCategory from "@/actions/admin/tutorials/category";
-import StatusSelector from "../shared/StatusSelector";
-import { updateTutorialCategoryStatus } from "@/actions/admin/tutorials/publish";
-import { useRouter } from "nextjs-toploader/app";
+import { useQuery } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { BlogCategory } from '@/generated/prisma';
+import CategoryModal from '../blogs/ManageCategoryModal';
+import createCategory from '@/actions/admin/tutorials/category';
+import StatusSelector from '../shared/StatusSelector';
+import { updateTutorialCategoryStatus } from '@/actions/admin/tutorials/publish';
+import { useRouter } from 'nextjs-toploader/app';
 
 export default function AllCategoriesClient() {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [debouncedSearch] = useDebounce(search, 300);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const [editCategory, setEditCategory] = useState<BlogCategory | null>(null);
@@ -45,9 +45,9 @@ export default function AllCategoriesClient() {
     error,
     refetch,
   } = useQuery({
-    queryKey: ["tutorial-categories"],
+    queryKey: ['tutorial-categories'],
     queryFn: async () => {
-      const response = await fetch("/api/admin/tutorials/category");
+      const response = await fetch('/api/admin/tutorials/category');
       const data = await response.json();
       return data.categories || [];
     },
@@ -92,9 +92,7 @@ export default function AllCategoriesClient() {
     setEditCategory(null);
   };
 
-  const handleSaveCategory = async (
-    data: z.infer<typeof blogCategorySchema>,
-  ): Promise<void> => {
+  const handleSaveCategory = async (data: z.infer<typeof blogCategorySchema>): Promise<void> => {
     try {
       if (editCategory) {
       } else {
@@ -102,14 +100,14 @@ export default function AllCategoriesClient() {
         const { success, message, newCategory } = await createCategory(data);
 
         if (success && newCategory) {
-          toast.success("Category created successfully");
+          toast.success('Category created successfully');
           refetch(); // Refresh the data after creation
         } else {
-          toast.error(message || "Failed to create category");
+          toast.error(message || 'Failed to create category');
         }
       }
     } catch (error) {
-      toast.error("An error occurred");
+      toast.error('An error occurred');
       console.error(error);
     }
 
@@ -168,10 +166,7 @@ export default function AllCategoriesClient() {
                 </TableRow>
               ) : error ? (
                 <TableRow>
-                  <TableCell
-                    colSpan={6}
-                    className="text-center py-4 text-red-500"
-                  >
+                  <TableCell colSpan={6} className="text-center py-4 text-red-500">
                     Error loading categories
                   </TableCell>
                 </TableRow>
@@ -187,15 +182,11 @@ export default function AllCategoriesClient() {
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{category.name}</TableCell>
                     <TableCell>{category.slug}</TableCell>
-                    <TableCell>
-                      {new Date(category.createdAt).toLocaleDateString()}
-                    </TableCell>
+                    <TableCell>{new Date(category.createdAt).toLocaleDateString()}</TableCell>
                     <TableCell>
                       <StatusSelector
                         status={category.published}
-                        handleStatusChange={(status) =>
-                          handleStatusUpdate(category.id, status)
-                        }
+                        handleStatusChange={(status) => handleStatusUpdate(category.id, status)}
                       />
                     </TableCell>
                     <TableCell className="text-right space-x-2">
@@ -219,18 +210,11 @@ export default function AllCategoriesClient() {
                         <DialogContent className="max-w-sm">
                           <DialogHeader>
                             <DialogTitle>Confirm Delete</DialogTitle>
-                            <DialogDescription>
-                              This action cannot be undone.
-                            </DialogDescription>
+                            <DialogDescription>This action cannot be undone.</DialogDescription>
                           </DialogHeader>
-                          <p className="mb-4">
-                            Are you sure you want to delete this category?
-                          </p>
+                          <p className="mb-4">Are you sure you want to delete this category?</p>
                           <div className="flex justify-end gap-2">
-                            <Button
-                              variant="destructive"
-                              onClick={() => handleDelete(category.id)}
-                            >
+                            <Button variant="destructive" onClick={() => handleDelete(category.id)}>
                               Delete
                             </Button>
                           </div>

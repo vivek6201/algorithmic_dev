@@ -1,6 +1,6 @@
-import BlogForm from "@/components/site/pages/admin/blogs/BlogForm";
-import { getBlogBySlug } from "@/helpers/admin/getter";
-import React, { Suspense } from "react";
+import BlogForm from '@/components/site/pages/admin/blogs/BlogForm';
+import { getBlogBySlug } from '@/helpers/admin/getter';
+import React, { Suspense } from 'react';
 
 interface BlogPageProps {
   params: Promise<{ slug: string }>;

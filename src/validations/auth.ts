@@ -1,4 +1,4 @@
-import * as z from "zod";
+import * as z from 'zod';
 
 export const loginValidation = z.object({
   email: z.string().email(),
@@ -11,9 +11,9 @@ export const signupValidation = z
     password: z.string().min(6).max(16),
     confirmPassword: z.string().min(6).max(16),
     email: z.string().email(),
-    role: z.enum(["User", "Employer", "Admin"]),
+    role: z.enum(['User', 'Employer', 'Admin']),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords must match",
-    path: ["confirmPassword"],
+    message: 'Passwords must match',
+    path: ['confirmPassword'],
   });

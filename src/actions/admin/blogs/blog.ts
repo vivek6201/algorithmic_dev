@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/db";
-import { blogFormSchema } from "@/validations/blogValidations";
-import { z } from "zod";
+import { prisma } from '@/lib/db';
+import { blogFormSchema } from '@/validations/blogValidations';
+import { z } from 'zod';
 
 const createBlog = async (values: z.infer<typeof blogFormSchema>) => {
   const { success, data, error } = await blogFormSchema.safeParseAsync(values);
@@ -27,7 +27,7 @@ const createBlog = async (values: z.infer<typeof blogFormSchema>) => {
     if (slugExists) {
       return {
         success: false,
-        message: "Slug Already exists",
+        message: 'Slug Already exists',
       };
     }
 
@@ -38,7 +38,7 @@ const createBlog = async (values: z.infer<typeof blogFormSchema>) => {
         authorName: data.author,
         content: data.content,
         categoryId: data.categoryId,
-        coverImage: data.coverImage ?? "",
+        coverImage: data.coverImage ?? '',
         description: data.description,
       },
     });
@@ -48,22 +48,19 @@ const createBlog = async (values: z.infer<typeof blogFormSchema>) => {
     console.error(error);
     return {
       success: false,
-      message: "Failed to create blog!",
+      message: 'Failed to create blog!',
     };
   }
 };
 
 export default createBlog;
 
-export const updateBlog = async (
-  slug: string,
-  values: Partial<z.infer<typeof blogFormSchema>>,
-) => {
+export const updateBlog = async (slug: string, values: Partial<z.infer<typeof blogFormSchema>>) => {
   try {
     if (!slug) {
       return {
         success: false,
-        message: "Blog Slug is required for updating.",
+        message: 'Blog Slug is required for updating.',
       };
     }
 
@@ -72,7 +69,7 @@ export const updateBlog = async (
     if (!existingBlog) {
       return {
         success: false,
-        message: "Blog not found.",
+        message: 'Blog not found.',
       };
     }
 
@@ -97,7 +94,7 @@ export const updateBlog = async (
     console.error(error);
     return {
       success: false,
-      message: "Failed to update blog!",
+      message: 'Failed to update blog!',
     };
   }
 };
@@ -111,13 +108,13 @@ export const deleteBlog = async (id: string) => {
     });
     return {
       success: true,
-      message: "Blog deleted Successfully!",
+      message: 'Blog deleted Successfully!',
     };
   } catch (error) {
     console.error(error);
     return {
       success: false,
-      message: "Failed to delete blog",
+      message: 'Failed to delete blog',
     };
   }
 };

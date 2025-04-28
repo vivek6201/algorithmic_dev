@@ -1,16 +1,16 @@
-"use client";
-import React from "react";
-import BlogCard from "./BlogCard";
-import { useSearchParams } from "next/navigation";
-import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
+'use client';
+import React from 'react';
+import BlogCard from './BlogCard';
+import { useSearchParams } from 'next/navigation';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
 function BlogsList() {
   const searchParams = useSearchParams();
-  const categories = searchParams.get("category");
+  const categories = searchParams.get('category');
 
   const fetchBlogs = async (categories: string | null) => {
-    const response = await axios.get("/api/blogs", {
+    const response = await axios.get('/api/blogs', {
       params: { category: categories ?? undefined },
     });
     return response.data.data;
@@ -21,7 +21,7 @@ function BlogsList() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["blogs", categories],
+    queryKey: ['blogs', categories],
     queryFn: () => fetchBlogs(categories),
   });
 

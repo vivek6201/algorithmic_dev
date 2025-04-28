@@ -1,8 +1,8 @@
-import React from "react";
-import { ArrowRight, BookIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "nextjs-toploader/app";
-import { usePathname } from "next/navigation";
+import React from 'react';
+import { ArrowRight, BookIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'nextjs-toploader/app';
+import { usePathname } from 'next/navigation';
 
 type Props = {
   title: string;
@@ -34,13 +34,11 @@ const TutorialCard = ({
         <h2 className="text-2xl font-bold mb-2 dark:text-white group-hover:cursor-pointer group-hover:underline">
           {title}
         </h2>
-        <Button variant={"ghost"} className="cursor-pointer">
+        <Button variant={'ghost'} className="cursor-pointer">
           <ArrowRight className="group-hover:translate-x-1.5 duration-150 transition-transform" />
         </Button>
       </div>
-      <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
-        {description}
-      </p>
+      <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">{description}</p>
 
       <div className="flex flex-wrap gap-2 text-sm mb-3">
         <span className="px-3 py-1 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded-full flex items-center gap-1">

@@ -1,13 +1,13 @@
-import BlogsFilters from "@/components/site/pages/blogs/BlogsFilters";
-import BlogsList from "@/components/site/pages/blogs/BlogsList";
-import { getClientBlogsCategories } from "@/helpers/main/blogGetter";
-import { Metadata } from "next";
-import React from "react";
+import BlogsFilters from '@/components/site/pages/blogs/BlogsFilters';
+import BlogsList from '@/components/site/pages/blogs/BlogsList';
+import { getClientBlogsCategories } from '@/helpers/main/blogGetter';
+import { Metadata } from 'next';
+import React from 'react';
 
 export const metadata: Metadata = {
-  title: "Blogs - Algorithmic Dev",
+  title: 'Blogs - Algorithmic Dev',
   description:
-    "A One-Stop Solution for all your tech related queries. Be it Jobs, tutorials, courses, blogs, helper mini apps",
+    'A One-Stop Solution for all your tech related queries. Be it Jobs, tutorials, courses, blogs, helper mini apps',
 };
 
 export default async function page() {

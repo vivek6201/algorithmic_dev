@@ -1,6 +1,6 @@
-import JobsForm from "@/components/site/pages/admin/jobs/JobsForm";
-import { getJobBySlug } from "@/helpers/admin/getter";
-import React from "react";
+import JobsForm from '@/components/site/pages/admin/jobs/JobsForm';
+import { getJobBySlug } from '@/helpers/admin/getter';
+import React from 'react';
 
 interface JobPageProps {
   params: Promise<{ slug: string }>;

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { ExperienceLevel, JobType } from "@/generated/prisma";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "nextjs-toploader/app";
+import { ExperienceLevel, JobType } from '@/generated/prisma';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 
 interface CategoryType {
   name: string;
@@ -13,27 +13,27 @@ interface CategoryType {
 }
 
 const types = [
-  { name: "Full-Time", value: JobType.FullTime },
-  { name: "Internship", value: JobType.Internship },
+  { name: 'Full-Time', value: JobType.FullTime },
+  { name: 'Internship', value: JobType.Internship },
 ];
 
 const experience = [
-  { name: "Entry Level (Freshers)", value: ExperienceLevel.ENTRY_LEVEL },
-  { name: "Mid Level (1 - 3 Years)", value: ExperienceLevel.MID_LEVEL },
-  { name: "Senior Level (3+ Years)", value: ExperienceLevel.SENIOR_LEVEL },
+  { name: 'Entry Level (Freshers)', value: ExperienceLevel.ENTRY_LEVEL },
+  { name: 'Mid Level (1 - 3 Years)', value: ExperienceLevel.MID_LEVEL },
+  { name: 'Senior Level (3+ Years)', value: ExperienceLevel.SENIOR_LEVEL },
 ];
 
 const JobFilters = ({ data }: { data: CategoryType[] }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const selectedCategories = searchParams.get("category")?.split(",") ?? [];
-  const selectedJobTypes = searchParams.get("type")?.split(",") ?? [];
-  const selectedExperience = searchParams.get("experience")?.split(",") ?? [];
+  const selectedCategories = searchParams.get('category')?.split(',') ?? [];
+  const selectedJobTypes = searchParams.get('type')?.split(',') ?? [];
+  const selectedExperience = searchParams.get('experience')?.split(',') ?? [];
 
   const updateParams = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    const current = params.get(key)?.split(",") ?? [];
+    const current = params.get(key)?.split(',') ?? [];
 
     let updated: string[];
     if (current.includes(value)) {
@@ -43,7 +43,7 @@ const JobFilters = ({ data }: { data: CategoryType[] }) => {
     }
 
     if (updated.length > 0) {
-      params.set(key, updated.join(","));
+      params.set(key, updated.join(','));
     } else {
       params.delete(key);
     }
@@ -53,9 +53,9 @@ const JobFilters = ({ data }: { data: CategoryType[] }) => {
 
   const clearFilters = () => {
     const params = new URLSearchParams(searchParams.toString());
-    params.delete("category");
-    params.delete("type");
-    params.delete("experience");
+    params.delete('category');
+    params.delete('type');
+    params.delete('experience');
     router.replace(`?${params.toString()}`);
   };
 
@@ -70,11 +70,11 @@ const JobFilters = ({ data }: { data: CategoryType[] }) => {
             return (
               <button
                 key={category.id}
-                onClick={() => updateParams("category", category.slug)}
+                onClick={() => updateParams('category', category.slug)}
                 className={`px-3 py-1 rounded-full border cursor-pointer transition-colors ${
                   isSelected
-                    ? "bg-blue-500 text-white dark:bg-blue-600 border-blue-500"
-                    : "hover:bg-blue-100 dark:hover:bg-blue-700 dark:text-gray-300 border dark:border-gray-600"
+                    ? 'bg-blue-500 text-white dark:bg-blue-600 border-blue-500'
+                    : 'hover:bg-blue-100 dark:hover:bg-blue-700 dark:text-gray-300 border dark:border-gray-600'
                 }`}
               >
                 {category.name}
@@ -93,11 +93,11 @@ const JobFilters = ({ data }: { data: CategoryType[] }) => {
             return (
               <button
                 key={t.value}
-                onClick={() => updateParams("type", t.value)}
+                onClick={() => updateParams('type', t.value)}
                 className={`px-3 py-1 rounded-full border cursor-pointer transition-colors ${
                   isSelected
-                    ? "bg-blue-500 text-white dark:bg-blue-600 border-blue-500"
-                    : "hover:bg-blue-100 dark:hover:bg-blue-700 dark:text-gray-300 border dark:border-gray-600"
+                    ? 'bg-blue-500 text-white dark:bg-blue-600 border-blue-500'
+                    : 'hover:bg-blue-100 dark:hover:bg-blue-700 dark:text-gray-300 border dark:border-gray-600'
                 }`}
               >
                 {t.name}
@@ -116,11 +116,11 @@ const JobFilters = ({ data }: { data: CategoryType[] }) => {
             return (
               <button
                 key={e.value}
-                onClick={() => updateParams("experience", e.value)}
+                onClick={() => updateParams('experience', e.value)}
                 className={`px-3 py-1 rounded-full border cursor-pointer transition-colors ${
                   isSelected
-                    ? "bg-blue-500 text-white dark:bg-blue-600 border-blue-500"
-                    : "hover:bg-blue-100 dark:hover:bg-blue-700 dark:text-gray-300 border dark:border-gray-600"
+                    ? 'bg-blue-500 text-white dark:bg-blue-600 border-blue-500'
+                    : 'hover:bg-blue-100 dark:hover:bg-blue-700 dark:text-gray-300 border dark:border-gray-600'
                 }`}
               >
                 {e.name}

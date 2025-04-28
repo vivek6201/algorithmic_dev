@@ -1,10 +1,10 @@
-"use client";
-import HTMLRenderer from "@/components/site/shared/HTMLRenderer";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Menu } from "lucide-react";
-import { usePathname } from "next/navigation";
-import { useRouter } from "nextjs-toploader/app";
-import React from "react";
+'use client';
+import HTMLRenderer from '@/components/site/shared/HTMLRenderer';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft, ChevronRight, Menu } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
+import React from 'react';
 
 export default function TutorialSection({
   data,
@@ -28,12 +28,12 @@ export default function TutorialSection({
   const router = useRouter();
   const pathname = usePathname();
 
-  const handlePageChange = (type: "next" | "prev") => {
-    if (!nextSlug && type === "next") return;
-    if (!prevSlug && type === "prev") return;
+  const handlePageChange = (type: 'next' | 'prev') => {
+    if (!nextSlug && type === 'next') return;
+    if (!prevSlug && type === 'prev') return;
 
-    const newSlug = type === "next" ? nextSlug : prevSlug;
-    const newPath = pathname.replace(/[^/]+$/, newSlug ?? "");
+    const newSlug = type === 'next' ? nextSlug : prevSlug;
+    const newPath = pathname.replace(/[^/]+$/, newSlug ?? '');
 
     router.push(newPath);
   };
@@ -48,8 +48,8 @@ export default function TutorialSection({
         <div className="flex justify-between items-center border-t mt-5 py-5">
           <Button
             disabled={!prevSlug}
-            onClick={() => handlePageChange("prev")}
-            size={"lg"}
+            onClick={() => handlePageChange('prev')}
+            size={'lg'}
             className="cursor-pointer"
           >
             <ChevronLeft />
@@ -57,8 +57,8 @@ export default function TutorialSection({
           </Button>
           <Button
             disabled={!nextSlug}
-            onClick={() => handlePageChange("next")}
-            size={"lg"}
+            onClick={() => handlePageChange('next')}
+            size={'lg'}
             className="cursor-pointer"
           >
             Next

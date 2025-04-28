@@ -1,5 +1,5 @@
-import Script from "next/script";
-import React from "react";
+import Script from 'next/script';
+import React from 'react';
 
 export default function AdSense({ pid }: { pid: string }) {
   return (

@@ -1,9 +1,9 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { BookOpen, GraduationCap, Home, LucideIcon, User } from "lucide-react";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import React from "react";
+'use client';
+import { Button } from '@/components/ui/button';
+import { BookOpen, GraduationCap, Home, LucideIcon, User } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import React from 'react';
 
 export default function BottomBar() {
   const session = useSession();
@@ -15,7 +15,7 @@ export default function BottomBar() {
       <MobileItem
         title="Profile"
         icon={User}
-        link={session.status === "authenticated" ? "/profile" : "/login"}
+        link={session.status === 'authenticated' ? '/profile' : '/login'}
       />
     </div>
   );
@@ -32,7 +32,7 @@ function MobileItem({
 }) {
   return (
     <Link href={link}>
-      <Button variant={"ghost"} className="flex flex-col gap-y-1">
+      <Button variant={'ghost'} className="flex flex-col gap-y-1">
         <Icon />
         <p>{title}</p>
       </Button>

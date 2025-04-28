@@ -1,6 +1,6 @@
-"use client";
-import { $Enums, JobType } from "@/generated/prisma";
-import React, { useEffect } from "react";
+'use client';
+import { $Enums, JobType } from '@/generated/prisma';
+import React, { useEffect } from 'react';
 import {
   Form,
   FormControl,
@@ -8,20 +8,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { jobSchema } from "@/validations/jobValidation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "nextjs-toploader/app";
-import { createJob, updateJob } from "@/actions/admin/jobs/job";
-import { toast } from "sonner";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import RichTextEditor from "@/components/site/shared/editor/TextEditor";
-import { Textarea } from "@/components/ui/textarea";
-import CustomSelect from "@/components/ui/custom-select";
-import { useQuery } from "@tanstack/react-query";
+} from '@/components/ui/form';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { jobSchema } from '@/validations/jobValidation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'nextjs-toploader/app';
+import { createJob, updateJob } from '@/actions/admin/jobs/job';
+import { toast } from 'sonner';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import RichTextEditor from '@/components/site/shared/editor/TextEditor';
+import { Textarea } from '@/components/ui/textarea';
+import CustomSelect from '@/components/ui/custom-select';
+import { useQuery } from '@tanstack/react-query';
 
 type JobProps = {
   jobCategories: {
@@ -39,28 +39,22 @@ type JobProps = {
 };
 
 const experienceLevel = Object.values($Enums.ExperienceLevel).map((value) => ({
-  label: value.split("_").join(" "),
+  label: value.split('_').join(' '),
   value: value,
 }));
 
-export default function JobsForm({
-  job,
-  isEdit = false,
-}: {
-  isEdit?: boolean;
-  job?: JobProps;
-}) {
+export default function JobsForm({ job, isEdit = false }: { isEdit?: boolean; job?: JobProps }) {
   console.log(job);
   const form = useForm<z.infer<typeof jobSchema>>({
     resolver: zodResolver(jobSchema),
     defaultValues: {
       categories: [],
-      description: "",
-      link: "",
-      salaryRange: "",
-      slug: "",
-      shortDescription: "",
-      title: "",
+      description: '',
+      link: '',
+      salaryRange: '',
+      slug: '',
+      shortDescription: '',
+      title: '',
     },
   });
   const router = useRouter();
@@ -76,9 +70,9 @@ export default function JobsForm({
 
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
-      if (name === "title") {
-        const generatedSlug = value.title?.toLowerCase().replace(/\s+/g, "-");
-        form.setValue("slug", generatedSlug || "");
+      if (name === 'title') {
+        const generatedSlug = value.title?.toLowerCase().replace(/\s+/g, '-');
+        form.setValue('slug', generatedSlug || '');
       }
     });
 
@@ -90,9 +84,9 @@ export default function JobsForm({
     isPending,
     error,
   } = useQuery({
-    queryKey: ["blog-categories"],
+    queryKey: ['blog-categories'],
     queryFn: async () => {
-      const response = await fetch("/api/admin/jobs/category");
+      const response = await fetch('/api/admin/jobs/category');
       const { data } = await response.json();
       return data;
     },
@@ -101,7 +95,7 @@ export default function JobsForm({
   async function onSubmit(values: z.infer<typeof jobSchema>) {
     if (isEdit) {
       if (!job) {
-        toast.error("Job data is missing.");
+        toast.error('Job data is missing.');
         return;
       }
       const { success, message } = await updateJob(job.slug, values);
@@ -111,8 +105,8 @@ export default function JobsForm({
         return;
       }
 
-      toast.success("Job updated successfully!");
-      router.push("/admin/jobs");
+      toast.success('Job updated successfully!');
+      router.push('/admin/jobs');
     } else {
       const { success, error, message } = await createJob(values);
 
@@ -122,8 +116,8 @@ export default function JobsForm({
         return;
       }
 
-      toast.success("Job created successfully");
-      router.push("/admin/jobs");
+      toast.success('Job created successfully');
+      router.push('/admin/jobs');
     }
   }
 
@@ -151,11 +145,7 @@ export default function JobsForm({
               <FormItem>
                 <FormLabel>Slug</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Enter category Slug"
-                    {...field}
-                    readOnly
-                  />
+                  <Input placeholder="Enter category Slug" {...field} readOnly />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -170,8 +160,8 @@ export default function JobsForm({
                 <FormControl>
                   <CustomSelect
                     options={[
-                      { label: "Internship", value: JobType.Internship },
-                      { label: "Full-Time", value: JobType.FullTime },
+                      { label: 'Internship', value: JobType.Internship },
+                      { label: 'Full-Time', value: JobType.FullTime },
                     ]}
                     onChange={field.onChange}
                     value={field.value}
@@ -237,10 +227,7 @@ export default function JobsForm({
               <FormItem>
                 <FormLabel>Short Description</FormLabel>
                 <FormControl>
-                  <Textarea
-                    placeholder="Enter short description of the job.."
-                    {...field}
-                  />
+                  <Textarea placeholder="Enter short description of the job.." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -267,10 +254,7 @@ export default function JobsForm({
               <FormItem>
                 <FormLabel>Salary Range</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Enter Salary Range of the job"
-                    {...field}
-                  />
+                  <Input placeholder="Enter Salary Range of the job" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

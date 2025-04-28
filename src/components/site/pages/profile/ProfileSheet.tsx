@@ -1,5 +1,5 @@
-"use client";
-import React from "react";
+'use client';
+import React from 'react';
 import {
   Sheet,
   SheetClose,
@@ -9,9 +9,9 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/sheet';
+import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 import {
   Bookmark,
   BookOpen,
@@ -22,11 +22,11 @@ import {
   LucideIcon,
   Target,
   X,
-} from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
-import Image from "next/image";
-import { useRouter } from "nextjs-toploader/app";
-import Link from "next/link";
+} from 'lucide-react';
+import { signOut, useSession } from 'next-auth/react';
+import Image from 'next/image';
+import { useRouter } from 'nextjs-toploader/app';
+import Link from 'next/link';
 
 const forYouLinks: {
   name: string;
@@ -34,28 +34,28 @@ const forYouLinks: {
   icon: LucideIcon;
 }[] = [
   {
-    name: "Jobs",
-    value: "/jobs",
+    name: 'Jobs',
+    value: '/jobs',
     icon: Briefcase,
   },
   {
-    name: "Blogs",
-    value: "/blogs",
+    name: 'Blogs',
+    value: '/blogs',
     icon: BookOpen,
   },
   {
-    name: "tutorials",
-    value: "/tutorials",
+    name: 'tutorials',
+    value: '/tutorials',
     icon: GraduationCap,
   },
   {
-    name: "Your Bookmarks",
-    value: "/profile/bookmarks",
+    name: 'Your Bookmarks',
+    value: '/profile/bookmarks',
     icon: Bookmark,
   },
   {
-    name: "Your Resources",
-    value: "/profile/resources",
+    name: 'Your Resources',
+    value: '/profile/resources',
     icon: Target,
   },
 ];
@@ -93,21 +93,17 @@ export default function ProfileSheet() {
               />
             ) : (
               <div className="w-24 aspect-square flex justify-center items-center p-5 rounded-full bg-blue-500">
-                <p className="text-white text-4xl">
-                  {session.data?.user?.name?.[0]}
-                </p>
+                <p className="text-white text-4xl">{session.data?.user?.name?.[0]}</p>
               </div>
             )}
             <div className="">
-              <h2 className="font-semibold text-lg">
-                {session.data?.user?.name}
-              </h2>
+              <h2 className="font-semibold text-lg">{session.data?.user?.name}</h2>
               <p className="text-sm opacity-70">{session.data?.user?.email}</p>
               <p className="text-sm opacity-70">{session.data?.user?.role}</p>
               <Button
-                variant={"outline"}
+                variant={'outline'}
                 className="w-full mt-2"
-                onClick={() => router.push("/profile")}
+                onClick={() => router.push('/profile')}
               >
                 Dashboard
               </Button>
@@ -134,23 +130,23 @@ export default function ProfileSheet() {
         <SheetFooter className="px-0">
           <Separator />
           <div className="w-full px-3 pt-2 flex flex-col gap-y-2">
-            {session.data?.user?.role === "Admin" && (
+            {session.data?.user?.role === 'Admin' && (
               <Button
-                size={"lg"}
-                variant={"secondary"}
+                size={'lg'}
+                variant={'secondary'}
                 className="cursor-pointer"
-                onClick={() => window.open("/admin", "_blank")}
+                onClick={() => window.open('/admin', '_blank')}
               >
                 Admin Dashboard
               </Button>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 flex-row ">
-              <Button variant={"outline"} size={"lg"} onClick={() => signOut()}>
+              <Button variant={'outline'} size={'lg'} onClick={() => signOut()}>
                 <LogOut />
                 Logout
               </Button>
-              <Button size={"lg"}>
+              <Button size={'lg'}>
                 <Github />
                 Contribute
               </Button>

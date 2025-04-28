@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/db";
-import { jobSchema } from "@/validations/jobValidation";
-import { z } from "zod";
+import { prisma } from '@/lib/db';
+import { jobSchema } from '@/validations/jobValidation';
+import { z } from 'zod';
 
 export const createJob = async (values: z.infer<typeof jobSchema>) => {
   const parsed = await jobSchema.safeParseAsync(values);
@@ -28,7 +28,7 @@ export const createJob = async (values: z.infer<typeof jobSchema>) => {
     if (slugExists) {
       return {
         success: false,
-        message: "Slug already exists",
+        message: 'Slug already exists',
       };
     }
 
@@ -44,22 +44,19 @@ export const createJob = async (values: z.infer<typeof jobSchema>) => {
 
     return {
       success: true,
-      message: "Job created successfully!",
+      message: 'Job created successfully!',
       data: newJob,
     };
   } catch (error) {
-    console.error("Create Job Error:", error);
+    console.error('Create Job Error:', error);
     return {
       success: false,
-      message: "Failed to create job!",
+      message: 'Failed to create job!',
     };
   }
 };
 
-export const updateJob = async (
-  slug: string,
-  values: Partial<z.infer<typeof jobSchema>>,
-) => {
+export const updateJob = async (slug: string, values: Partial<z.infer<typeof jobSchema>>) => {
   try {
     const data = await prisma.jobs.findUnique({
       where: { slug },
@@ -69,7 +66,7 @@ export const updateJob = async (
     });
 
     if (!data) {
-      return { success: false, message: "Job not found" };
+      return { success: false, message: 'Job not found' };
     }
 
     // Prepare disconnect array (disconnect all current categories)
@@ -99,13 +96,13 @@ export const updateJob = async (
 
     return {
       success: true,
-      message: "Job updated successfully",
+      message: 'Job updated successfully',
     };
   } catch (error) {
     console.error(error);
     return {
       success: false,
-      message: "Failed to update data",
+      message: 'Failed to update data',
     };
   }
 };
@@ -120,7 +117,7 @@ export const deleteJob = async (id: string) => {
     if (!existingJob) {
       return {
         success: false,
-        message: "Job not found",
+        message: 'Job not found',
       };
     }
 
@@ -128,13 +125,13 @@ export const deleteJob = async (id: string) => {
 
     return {
       success: true,
-      message: "Job deleted successfully!",
+      message: 'Job deleted successfully!',
     };
   } catch (error) {
-    console.error("Delete Job Error:", error);
+    console.error('Delete Job Error:', error);
     return {
       success: false,
-      message: "Internal Server Error",
+      message: 'Internal Server Error',
     };
   }
 };
