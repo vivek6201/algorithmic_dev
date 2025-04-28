@@ -15,3 +15,16 @@ export const getClientJobBySlug = async (slug: string) => {
     };
   }
 };
+
+export const getClientJobCategories = async () => {
+  try {
+    const data = await prisma.jobCategory.findMany({});
+    return { success: true, data };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: "Failed to find data ",
+    };
+  }
+};

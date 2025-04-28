@@ -3,7 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (request: NextRequest) => {
   const searchParams = request.nextUrl.searchParams;
-  const category = searchParams.get("category");
+
+  // Read category from query params
+  const rawCategory = searchParams.getAll("category"); // returns array
+
+  // Handle both multiple category fields and comma separated
+  const categories = rawCategory.flatMap((item) => item.split(",")).filter(Boolean);
+
   const page = parseInt(searchParams.get("page") || "1", 10);
   const limit = parseInt(searchParams.get("limit") || "10", 10);
 
@@ -11,10 +17,12 @@ export const GET = async (request: NextRequest) => {
     const blogs = await prisma.blog.findMany({
       where: {
         published: true,
-        ...(category
+        ...(categories.length > 0
           ? {
               category: {
-                slug: category,
+                slug: {
+                  in: categories, // match any category slug
+                },
               },
             }
           : {}),
@@ -23,7 +31,7 @@ export const GET = async (request: NextRequest) => {
       skip: (page - 1) * limit,
       include: {
         category: true,
-        reactions: true
+        reactions: true,
       },
     });
 

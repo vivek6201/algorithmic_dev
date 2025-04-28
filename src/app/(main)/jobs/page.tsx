@@ -1,6 +1,6 @@
-
 import JobFilters from "@/components/site/pages/jobs/JobsFilter";
 import JobListings from "@/components/site/pages/jobs/JobsListing";
+import { getClientJobCategories } from "@/helpers/main/jobsGetter";
 import { Metadata } from "next";
 import React from "react";
 
@@ -10,8 +10,8 @@ export const metadata: Metadata = {
     "A One-Stop Solution for all your tech related queries. Be it Jobs, tutorials, courses, blogs, helper mini apps",
 };
 
-export default function JobsPage() {
-
+export default async function JobsPage() {
+  const jobCategories = await getClientJobCategories();
   return (
     <div className="w-11/12 max-w-[1400px] mx-auto mt-5 min-h-screen">
       <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_2.4fr_0.8fr] md:px-0">
@@ -19,7 +19,7 @@ export default function JobsPage() {
         <aside className="space-y-4 hidden lg:block">
           <div className="py-4 md:p-4 rounded-2xl shadow-md border dark:bg-neutral-900">
             <h2 className="text-xl font-semibold mb-4">Filters</h2>
-            <JobFilters />
+            <JobFilters data={jobCategories.data ?? []} />
           </div>
         </aside>
 

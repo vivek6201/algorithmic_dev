@@ -1,36 +1,39 @@
 import { Button } from "@/components/ui/button";
-import { Jobs } from "@/generated/prisma";
+import { JobCategory, Jobs } from "@/generated/prisma";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-type JobCardProps = Jobs;
+type JobCardProps = { job: Jobs; categories: JobCategory[] };
 
-const JobCard = ({
-  title,
-  type,
-  experienceLevel,
-  slug,
-  createdAt,
-  link,
-}: JobCardProps) => {
+const JobCard = ({ job, categories }: JobCardProps) => {
   const pathname = usePathname();
   return (
     <Link
-      href={`${pathname}/${slug}`}
+      href={`${pathname}/${job?.slug}`}
       className="border rounded-xl p-5 bg-white dark:bg-zinc-900 shadow-sm group hover:shadow-md cursor-pointer transition min-h-[100px] flex flex-col gap-y-5"
     >
       <div>
-        <h2 className="text-xl font-semibold group-hover:underline">{title}</h2>
+        {categories.map((category) => (
+          <span
+            className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full inline-block mb-2"
+            key={category.id}
+          >
+            {category.name}
+          </span>
+        ))}
+        <h2 className="text-xl font-semibold group-hover:underline">
+          {job.title}
+        </h2>
         <div className="flex gap-x-2 items-center mt-2">
-          <Badge title={type} />
-          <Badge title={experienceLevel.split("_").join(" ")} />
+          <Badge title={job.type} />
+          <Badge title={job.experienceLevel.split("_").join(" ")} />
         </div>
       </div>
 
       <div className="w-full justify-between flex gap-2 items-center ">
         <span className="text-xs text-gray-500">
-          {new Date(createdAt).toDateString()}
+          {new Date(job.createdAt).toDateString()}
         </span>
 
         <Button className="cursor-pointer">

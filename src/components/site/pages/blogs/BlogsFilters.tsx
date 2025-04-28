@@ -12,26 +12,6 @@ interface CategoryType {
   updatedAt: Date;
 }
 
-const categories = [
-  "Web Development",
-  "Mobile Development",
-  "AI/ML",
-  "Cloud",
-  "DevOps",
-];
-const genres = ["Tutorial", "News", "Opinion", "Guide", "Interview"];
-const trending = ["Most Liked", "Most Viewed", "Recently Updated"];
-const tags = [
-  "JavaScript",
-  "React",
-  "Next.js",
-  "Node.js",
-  "Kubernetes",
-  "Docker",
-  "TailwindCSS",
-];
-const timeFilters = ["Last 24 Hours", "This Week", "This Month"];
-
 const BlogsFilters = ({ data }: { data: CategoryType[] }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -41,7 +21,7 @@ const BlogsFilters = ({ data }: { data: CategoryType[] }) => {
   const toggleFilter = (category: CategoryType) => {
     const newSelected = selected.includes(category.slug)
       ? selected.filter((l) => l !== category.slug)
-      : [...selected, category.slug]; // <- FIXED HERE
+      : [...selected, category.slug];
 
     const params = new URLSearchParams(searchParams.toString());
     if (newSelected.length > 0) {
