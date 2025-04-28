@@ -14,6 +14,14 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "nextjs-toploader/app";
 import React from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import ProfileSheet from "../pages/profile/ProfileSheet";
 import ThemeToggler from "./theme-toggler";
@@ -29,9 +37,25 @@ export default function Header() {
           Algorithmic Dev
         </Link>
         <div className="lg:hidden">
-          <Button variant={"ghost"}>
-            <Menu />
-          </Button>
+          {session.status === "authenticated" ? (
+            <ProfileSheet />
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant={"ghost"}>
+                  <Menu className="dark:text-white text-black" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => router.push("/login")}>
+                  Login
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push("/signup")}>
+                  Signup
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
         <div className="lg:flex gap-2 items-center hidden">
           <Button

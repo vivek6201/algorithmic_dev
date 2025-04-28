@@ -34,9 +34,6 @@ const CTASection: React.FC = () => {
             </Button>
           </div>
         </div>
-        <p className="mt-4 text-sm text-white/70 animate-fade-in" style={{animationDelay: '600ms'}}>
-          No credit card required • Free forever • Cancel anytime
-        </p>
       </div>
     </div>
   );

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function page() {
   return (
     <div className="min-h-[900px] flex flex-col gap-y-10 justify-center items-center">
-      <h2 className="text-4xl font-extrabold">
+      <h2 className="text-4xl font-extrabold text-center">
         Welcome, to{" "}
         <span className="bg-gradient-to-r from-blue-300 to-purple-500 text-transparent bg-clip-text">
           Algorithmic Dev

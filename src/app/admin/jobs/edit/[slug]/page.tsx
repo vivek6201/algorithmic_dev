@@ -10,8 +10,6 @@ export default async function page({ params }: JobPageProps) {
   const { slug } = await params;
   const { success, data } = await getJobBySlug(slug);
 
-  console.log({ data });
-
   if (!success || !data) return;
 
   return (

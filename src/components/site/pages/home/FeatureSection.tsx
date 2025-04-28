@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import FeatureCard from "./FeatureCard";
-import { BookOpen, Briefcase, Users } from "lucide-react";
+import { BookOpen, Briefcase, GraduationCap, Users } from "lucide-react";
 
 export default function FeatureSection() {
   return (
@@ -21,18 +21,21 @@ export default function FeatureSection() {
           description="Browse thousands of tech jobs from top companies. Filter by your skills, experience level, or location to find the perfect match."
           icon={Briefcase}
           buttonText="Explore Jobs"
+          link="/jobs"
         />
         <FeatureCard
-          title="Connect With Tech Community"
-          description="Join groups, participate in discussions, and network with other professionals. Build meaningful relationships that boost your career."
-          icon={Users}
-          buttonText="Explore Communities"
+          title="Learn new concepts from in-depth tutorials"
+          description="Tutorials are made with keeping in mind that beginners will learn and grow."
+          icon={GraduationCap}
+          buttonText="Explore Tutorials"
+          link="/tutorials"
         />
         <FeatureCard
-          title="Read & Write Tech Blogs"
+          title="Read and learn from Technical Blogs"
           description="Stay informed with the latest tech news and insights. Share your own knowledge by publishing articles and building your professional brand."
           icon={BookOpen}
-          buttonText="Explore Tutorials"
+          buttonText="Explore Blogs"
+          link="/blogs"
         />
       </div>
     </div>
