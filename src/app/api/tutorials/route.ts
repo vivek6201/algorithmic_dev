@@ -84,13 +84,13 @@ export async function GET(request: NextRequest) {
           totalCount: totalTutorials,
         },
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       { success: false, message: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

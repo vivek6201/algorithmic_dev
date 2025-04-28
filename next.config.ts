@@ -12,10 +12,7 @@ const nextConfig: NextConfig = {
   swcMinify: true,
   experimental: {
     serverActions: {
-      allowedOrigins: [
-        "localhost:3000",
-        "algorithmicdev.in",
-      ],
+      allowedOrigins: ["localhost:3000", "algorithmicdev.in"],
     },
   },
 };

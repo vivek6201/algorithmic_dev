@@ -56,8 +56,8 @@ const TestimonialsSection: React.FC = () => {
             Hear from our community
           </h2>
           <p className="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
-            Don&apos;t just take our word for it. See how our platform has helped
-            tech professionals succeed.
+            Don&apos;t just take our word for it. See how our platform has
+            helped tech professionals succeed.
           </p>
         </div>
 

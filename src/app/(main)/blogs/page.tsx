@@ -20,7 +20,7 @@ export default async function page() {
         <aside className="space-y-4 hidden lg:block">
           <div className="p-4 rounded-2xl shadow-md border dark:bg-neutral-900">
             <h2 className="text-xl font-semibold mb-4">Filters</h2>
-            <BlogsFilters data={categories ?? []}/>
+            <BlogsFilters data={categories ?? []} />
           </div>
         </aside>
 

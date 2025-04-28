@@ -46,7 +46,7 @@ export function AuthForm({ isLogin }: Proptype) {
       <CardContent>
         {isLogin ? <LoginForm /> : <SignupForm />}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
-          <Button type="button" variant={"outline"} >
+          <Button type="button" variant={"outline"}>
             Login with Google
           </Button>
           <Button type="button" variant={"outline"}>

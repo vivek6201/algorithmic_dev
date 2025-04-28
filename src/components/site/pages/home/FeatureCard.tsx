@@ -27,7 +27,9 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
       </div>
       <p className="text-2xl md:text-3xl font-bold text-center">{title}</p>
       <p className="text-center">{description}</p>
-      <Button onClick={() => router.push(link)} className="cursor-pointer">{buttonText}</Button>
+      <Button onClick={() => router.push(link)} className="cursor-pointer">
+        {buttonText}
+      </Button>
     </div>
   );
 };

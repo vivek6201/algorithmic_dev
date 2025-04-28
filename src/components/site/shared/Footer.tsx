@@ -147,7 +147,8 @@ const Footer: React.FC = () => {
         </div>
         <div className="mt-12 border-t border-gray-200 pt-8">
           <p className="text-base text-gray-400 text-center">
-            &copy; {new Date().getFullYear()} Algorithmic Dev, Inc. All rights reserved.
+            &copy; {new Date().getFullYear()} Algorithmic Dev, Inc. All rights
+            reserved.
           </p>
         </div>
       </div>

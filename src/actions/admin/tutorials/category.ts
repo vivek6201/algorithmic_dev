@@ -4,10 +4,11 @@ import { prisma } from "@/lib/db";
 import { tutorialCategorySchema } from "@/validations/tutorialValidation";
 import { z } from "zod";
 
-const createCategory = async (values: z.infer<typeof tutorialCategorySchema>) => {
-  const { success, data, error } = await tutorialCategorySchema.safeParseAsync(
-    values
-  );
+const createCategory = async (
+  values: z.infer<typeof tutorialCategorySchema>,
+) => {
+  const { success, data, error } =
+    await tutorialCategorySchema.safeParseAsync(values);
 
   if (!success) {
     return {
@@ -22,13 +23,15 @@ const createCategory = async (values: z.infer<typeof tutorialCategorySchema>) =>
   }
 
   try {
-    const slugExists = await prisma.tutorialCategory.findUnique({ where: { slug: values.slug } })
+    const slugExists = await prisma.tutorialCategory.findUnique({
+      where: { slug: values.slug },
+    });
 
     if (slugExists) {
       return {
         success: false,
-        message: "Slug Already exists"
-      }
+        message: "Slug Already exists",
+      };
     }
 
     const newCategory = await prisma.tutorialCategory.create({
@@ -52,7 +55,7 @@ export default createCategory;
 
 export const editCategory = async (
   id: string,
-  values: z.infer<ReturnType<(typeof tutorialCategorySchema)["partial"]>>
+  values: z.infer<ReturnType<(typeof tutorialCategorySchema)["partial"]>>,
 ) => {
   const { success, error } = await tutorialCategorySchema
     .partial()
@@ -91,7 +94,7 @@ export const editCategory = async (
       },
     });
   } catch (error) {
-    console.error(error)
+    console.error(error);
     return {
       success: false,
       message: "Error while editing category!",

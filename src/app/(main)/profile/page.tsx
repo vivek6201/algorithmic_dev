@@ -1,5 +1,5 @@
-import { Metadata } from 'next';
-import React from 'react'
+import { Metadata } from "next";
+import React from "react";
 
 export const metadata: Metadata = {
   title: "Profile - Algorithmic Dev",
@@ -8,9 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function page() {
-
-
-  return (
-    <div>page</div>
-  )
+  return <div>page</div>;
 }

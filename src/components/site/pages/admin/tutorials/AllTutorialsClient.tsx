@@ -74,7 +74,7 @@ export default function AllTutorialsClient() {
 
   const filteredTutorials = useMemo(() => {
     return tutorials.filter((tutorial: Tutorial) =>
-      tutorial.title?.toLowerCase().includes(debouncedSearch.toLowerCase())
+      tutorial.title?.toLowerCase().includes(debouncedSearch.toLowerCase()),
     );
   }, [debouncedSearch, tutorials]);
 

@@ -79,7 +79,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
         .chain()
         .focus()
         .insertContent(
-          `<video controls src="${videoUrl}" style="max-width: 100%"></video>`
+          `<video controls src="${videoUrl}" style="max-width: 100%"></video>`,
         )
         .run();
       e.target.value = ""; // Reset input
@@ -124,7 +124,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
         onClick={() => editor.chain().focus().toggleItalic().run()}
         className={cn(
           "p-2 h-auto",
-          editor.isActive("italic") ? "bg-muted" : ""
+          editor.isActive("italic") ? "bg-muted" : "",
         )}
         aria-label="Italic"
       >
@@ -138,7 +138,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
         className={cn(
           "p-2 h-auto",
-          editor.isActive("heading", { level: 1 }) ? "bg-muted" : ""
+          editor.isActive("heading", { level: 1 }) ? "bg-muted" : "",
         )}
         aria-label="Heading 1"
       >
@@ -152,7 +152,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
         className={cn(
           "p-2 h-auto",
-          editor.isActive("heading", { level: 2 }) ? "bg-muted" : ""
+          editor.isActive("heading", { level: 2 }) ? "bg-muted" : "",
         )}
         aria-label="Heading 2"
       >
@@ -166,7 +166,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         className={cn(
           "p-2 h-auto",
-          editor.isActive("bulletList") ? "bg-muted" : ""
+          editor.isActive("bulletList") ? "bg-muted" : "",
         )}
         aria-label="Bullet List"
       >
@@ -180,7 +180,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
         className={cn(
           "p-2 h-auto",
-          editor.isActive("orderedList") ? "bg-muted" : ""
+          editor.isActive("orderedList") ? "bg-muted" : "",
         )}
         aria-label="Ordered List"
       >
@@ -194,7 +194,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
         onClick={() => editor.chain().focus().setParagraph().run()}
         className={cn(
           "p-2 h-auto",
-          editor.isActive("paragraph") ? "bg-muted" : ""
+          editor.isActive("paragraph") ? "bg-muted" : "",
         )}
         aria-label="Paragraph"
       >
@@ -208,7 +208,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
         className={cn(
           "p-2 h-auto",
-          editor.isActive("codeBlock") ? "bg-muted" : ""
+          editor.isActive("codeBlock") ? "bg-muted" : "",
         )}
         aria-label="Code Block"
       >
@@ -280,7 +280,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
             size="sm"
             className={cn(
               "p-2 h-auto",
-              editor.isActive("link") ? "bg-muted" : ""
+              editor.isActive("link") ? "bg-muted" : "",
             )}
             aria-label="Link"
           >

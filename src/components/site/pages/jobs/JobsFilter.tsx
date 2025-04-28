@@ -130,7 +130,9 @@ const JobFilters = ({ data }: { data: CategoryType[] }) => {
         </div>
       </div>
 
-      {(selectedCategories.length > 0 || selectedJobTypes.length > 0 || selectedExperience.length > 0) && (
+      {(selectedCategories.length > 0 ||
+        selectedJobTypes.length > 0 ||
+        selectedExperience.length > 0) && (
         <button
           onClick={clearFilters}
           className="mt-4 text-sm px-4 py-1 bg-gray-200 rounded-full hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"

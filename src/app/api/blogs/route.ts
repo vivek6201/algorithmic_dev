@@ -8,7 +8,9 @@ export const GET = async (request: NextRequest) => {
   const rawCategory = searchParams.getAll("category"); // returns array
 
   // Handle both multiple category fields and comma separated
-  const categories = rawCategory.flatMap((item) => item.split(",")).filter(Boolean);
+  const categories = rawCategory
+    .flatMap((item) => item.split(","))
+    .filter(Boolean);
 
   const page = parseInt(searchParams.get("page") || "1", 10);
   const limit = parseInt(searchParams.get("limit") || "10", 10);
@@ -40,7 +42,7 @@ export const GET = async (request: NextRequest) => {
     console.error(error);
     return NextResponse.json(
       { success: false, message: "Failed to fetch blogs" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };

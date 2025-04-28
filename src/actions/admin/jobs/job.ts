@@ -58,7 +58,7 @@ export const createJob = async (values: z.infer<typeof jobSchema>) => {
 
 export const updateJob = async (
   slug: string,
-  values: Partial<z.infer<typeof jobSchema>>
+  values: Partial<z.infer<typeof jobSchema>>,
 ) => {
   try {
     const data = await prisma.jobs.findUnique({

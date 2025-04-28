@@ -7,11 +7,10 @@ import { z } from "zod";
 
 export const createChapter = async (
   tutorialSlug: string,
-  values: z.infer<typeof tutorialChapterSchema>
+  values: z.infer<typeof tutorialChapterSchema>,
 ) => {
-  const { success, data, error } = await tutorialChapterSchema.safeParseAsync(
-    values
-  );
+  const { success, data, error } =
+    await tutorialChapterSchema.safeParseAsync(values);
 
   if (!success) {
     return {
@@ -69,7 +68,7 @@ export const createChapter = async (
         });
 
         return newChapter;
-      }
+      },
     );
 
     if (chapter) {

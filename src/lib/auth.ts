@@ -1,10 +1,10 @@
 import NextAuth from "next-auth";
 import { prisma } from "./db";
 import Credentials from "next-auth/providers/credentials";
-import Google from "next-auth/providers/google"
+import Google from "next-auth/providers/google";
 import { loginValidation } from "@/validations/auth";
 import bcrypt from "bcryptjs";
-import { v4 as uuid } from "uuid"
+import { v4 as uuid } from "uuid";
 
 declare module "next-auth" {
   interface User {
@@ -21,9 +21,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {},
       },
       authorize: async (credentials) => {
-        const { success, data } = await loginValidation.safeParseAsync(
-          credentials
-        );
+        const { success, data } =
+          await loginValidation.safeParseAsync(credentials);
 
         if (!success) return null;
 

@@ -1,27 +1,25 @@
-"use client"
+"use client";
 // components/Breadcrumbs.tsx
-'use client';
+"use client";
 
-import { usePathname } from 'next/navigation';
-import Link from 'next/link';
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import {
   Breadcrumb,
   BreadcrumbList,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+} from "@/components/ui/breadcrumb";
 
 export default function Breadcrumbs() {
   const pathname = usePathname();
 
-  const segments = pathname
-    .split('/')
-    .filter((seg) => seg);
+  const segments = pathname.split("/").filter((seg) => seg);
 
   const breadcrumbs = segments.map((seg, index) => {
-    const href = '/' + segments.slice(0, index + 1).join('/');
-    const label = decodeURIComponent(seg.replace(/-/g, ' '));
+    const href = "/" + segments.slice(0, index + 1).join("/");
+    const label = decodeURIComponent(seg.replace(/-/g, " "));
 
     return {
       label,
@@ -45,10 +43,14 @@ export default function Breadcrumbs() {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               {index === breadcrumbs.length - 1 ? (
-                <span className="text-muted-foreground capitalize">{crumb.label}</span>
+                <span className="text-muted-foreground capitalize">
+                  {crumb.label}
+                </span>
               ) : (
                 <BreadcrumbLink asChild>
-                  <Link href={crumb.href} className='capitalize'>{crumb.label}</Link>
+                  <Link href={crumb.href} className="capitalize">
+                    {crumb.label}
+                  </Link>
                 </BreadcrumbLink>
               )}
             </BreadcrumbItem>

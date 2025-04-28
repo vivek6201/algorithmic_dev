@@ -42,7 +42,11 @@ export default async function page({
 
   return (
     <div className="w-full h-full">
-      <TutorialSection data={data} nextSlug={nextTopic?.slug} prevSlug={prevTopic?.slug}/>
+      <TutorialSection
+        data={data}
+        nextSlug={nextTopic?.slug}
+        prevSlug={prevTopic?.slug}
+      />
     </div>
   );
 }

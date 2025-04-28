@@ -52,7 +52,7 @@ export default function AllCategoriesClient() {
     // Ensure categories is an array before filtering
     return Array.isArray(categories)
       ? categories.filter((category) =>
-          category.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+          category.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
         )
       : [];
   }, [debouncedSearch, categories]);
@@ -89,7 +89,7 @@ export default function AllCategoriesClient() {
   };
 
   const handleSaveCategory = async (
-    values: z.infer<typeof jobCategorySchema>
+    values: z.infer<typeof jobCategorySchema>,
   ): Promise<void> => {
     try {
       const { success, message, data } = await handleJobCategory(values);

@@ -57,7 +57,7 @@ export default function AllCategoriesClient() {
     // Ensure categories is an array before filtering
     return Array.isArray(categories)
       ? categories.filter((category) =>
-          category.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+          category.name.toLowerCase().includes(debouncedSearch.toLowerCase()),
         )
       : [];
   }, [debouncedSearch, categories]);
@@ -93,7 +93,7 @@ export default function AllCategoriesClient() {
   };
 
   const handleSaveCategory = async (
-    data: z.infer<typeof blogCategorySchema>
+    data: z.infer<typeof blogCategorySchema>,
   ): Promise<void> => {
     try {
       if (editCategory) {

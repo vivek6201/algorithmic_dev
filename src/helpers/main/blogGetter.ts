@@ -29,10 +29,10 @@ export const getClientBlogBySlug = async (slug: string) => {
         category: {
           slug: data?.category.slug,
         },
-      },  
+      },
     });
 
-    relatedPosts = relatedPosts.filter(item => item.id != data?.id)
+    relatedPosts = relatedPosts.filter((item) => item.id != data?.id);
 
     return { success: true, data, relatedPosts };
   } catch (error) {

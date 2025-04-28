@@ -45,14 +45,14 @@ export default function TutorialSidebar({
                     "flex gap-2 items-center text-sm max-w-11/12 mb-1 hover:bg-gray-100 dark:hover:bg-neutral-900 rounded-md px-2 cursor-pointer duration-150 transition-colors group py-1.5",
                     topicSlug === topic.slug
                       ? "bg-gray-200 dark:bg-neutral-800"
-                      : ""
+                      : "",
                   )}
                 >
                   <BookOpen size={14} />
                   <p
                     className={cn(
                       "opacity-70 group-hover:opacity-100 duration-150 transition-opacity",
-                      topicSlug === topic.slug ? "opacity-100" : ""
+                      topicSlug === topic.slug ? "opacity-100" : "",
                     )}
                   >
                     {topic.title}

@@ -60,7 +60,7 @@ export default function AllBlogsClient() {
   };
 
   const handleSaveCategory = async (
-    data: z.infer<typeof blogCategorySchema>
+    data: z.infer<typeof blogCategorySchema>,
   ): Promise<void> => {
     try {
       // Add new category
@@ -92,7 +92,7 @@ export default function AllBlogsClient() {
 
   const filteredBlogs = useMemo(() => {
     return blogs.filter((blog: Blog) =>
-      blog.title.toLowerCase().includes(debouncedSearch.toLowerCase())
+      blog.title.toLowerCase().includes(debouncedSearch.toLowerCase()),
     );
   }, [debouncedSearch, blogs]);
 

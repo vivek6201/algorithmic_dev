@@ -5,12 +5,11 @@ import { jobCategorySchema } from "@/validations/jobValidation";
 import { z } from "zod";
 
 export const handleJobCategory = async (
-  values: z.infer<typeof jobCategorySchema>
+  values: z.infer<typeof jobCategorySchema>,
 ) => {
   try {
-    const { data, success, error } = await jobCategorySchema.safeParseAsync(
-      values
-    );
+    const { data, success, error } =
+      await jobCategorySchema.safeParseAsync(values);
 
     if (!success) {
       console.error(error);

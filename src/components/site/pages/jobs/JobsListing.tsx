@@ -13,7 +13,7 @@ const JobListings = () => {
   const fetchJobs = async (
     category: string | null,
     type: string | null,
-    experience: string | null
+    experience: string | null,
   ) => {
     const response = await axios.get("/api/jobs", {
       params: {
@@ -40,7 +40,9 @@ const JobListings = () => {
       {isError && <p>Failed to load jobs.</p>}
       {!isLoading && jobs.length <= 0 && <p>No jobs found</p>}
       {jobs?.map((job: any) => {
-        return <JobCard key={job.id} categories={job.jobCategories} job={job} />;
+        return (
+          <JobCard key={job.id} categories={job.jobCategories} job={job} />
+        );
       })}
     </main>
   );

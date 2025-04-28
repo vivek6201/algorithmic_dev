@@ -18,7 +18,7 @@ export default async function page({
 
   if (topicSlug) {
     const chapterData = data?.chapters.find(
-      (item) => item.slug === chapterSlug
+      (item) => item.slug === chapterSlug,
     );
     topicData = chapterData?.topics.find((topic) => topic.slug === topicSlug);
   }

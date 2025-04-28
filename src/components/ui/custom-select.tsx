@@ -102,8 +102,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           backgroundColor: isSelected
             ? colors.selected
             : isFocused
-            ? colors.optionHover
-            : "transparent",
+              ? colors.optionHover
+              : "transparent",
           color: isSelected ? "white" : colors.text,
           cursor: "pointer",
         }),

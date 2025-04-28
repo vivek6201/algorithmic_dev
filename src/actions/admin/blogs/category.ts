@@ -5,9 +5,8 @@ import { blogCategorySchema } from "@/validations/blogValidations";
 import { z } from "zod";
 
 const createCategory = async (values: z.infer<typeof blogCategorySchema>) => {
-  const { success, data, error } = await blogCategorySchema.safeParseAsync(
-    values
-  );
+  const { success, data, error } =
+    await blogCategorySchema.safeParseAsync(values);
 
   if (!success) {
     return {
@@ -22,13 +21,15 @@ const createCategory = async (values: z.infer<typeof blogCategorySchema>) => {
   }
 
   try {
-    const slugExists = await prisma.blogCategory.findUnique({ where: { slug: values.slug } })
+    const slugExists = await prisma.blogCategory.findUnique({
+      where: { slug: values.slug },
+    });
 
     if (slugExists) {
       return {
         success: false,
-        message: "Slug Already exists"
-      }
+        message: "Slug Already exists",
+      };
     }
 
     const newCategory = await prisma.blogCategory.create({
@@ -52,7 +53,7 @@ export default createCategory;
 
 export const editCategory = async (
   id: string,
-  values: z.infer<ReturnType<(typeof blogCategorySchema)["partial"]>>
+  values: z.infer<ReturnType<(typeof blogCategorySchema)["partial"]>>,
 ) => {
   const { success, error } = await blogCategorySchema
     .partial()
@@ -91,7 +92,7 @@ export const editCategory = async (
       },
     });
   } catch (error) {
-    console.error(error)
+    console.error(error);
     return {
       success: false,
       message: "Error while editing category!",

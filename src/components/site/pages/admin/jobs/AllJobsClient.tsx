@@ -60,7 +60,7 @@ export default function AllJobsClient() {
   };
 
   const handleSaveCategory = async (
-    values: z.infer<typeof jobCategorySchema>
+    values: z.infer<typeof jobCategorySchema>,
   ): Promise<void> => {
     try {
       // Add new category
@@ -92,7 +92,7 @@ export default function AllJobsClient() {
 
   const filteredJobs = useMemo(() => {
     return jobs.filter((job: Jobs) =>
-      job.title.toLowerCase().includes(debouncedSearch.toLowerCase())
+      job.title.toLowerCase().includes(debouncedSearch.toLowerCase()),
     );
   }, [debouncedSearch, jobs]);
 
@@ -193,7 +193,7 @@ export default function AllJobsClient() {
                               slug: string;
                               description: string;
                               id: string;
-                            }) => category.name
+                            }) => category.name,
                           )
                           .join(",")}
                       </TableCell>

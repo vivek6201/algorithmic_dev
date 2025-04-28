@@ -17,5 +17,5 @@ export const jobSchema = z.object({
   type: z.nativeEnum(JobType),
   link: z.string().min(3),
   image: z.any().optional(),
-  categories: z.array(z.string())
+  categories: z.array(z.string()),
 });

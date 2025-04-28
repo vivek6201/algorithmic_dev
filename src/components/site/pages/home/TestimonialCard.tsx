@@ -34,7 +34,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
     <Card
       className={cn(
         "rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 h-full transform hover:scale-[1.02] flex flex-col justify-between",
-        className
+        className,
       )}
     >
       <CardContent className="p-6 pt-8 relative">
@@ -42,7 +42,9 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           size={32}
           className="text-purple-300 absolute top-2 left-2 transform -rotate-6"
         />
-        <p className="text-gray-700 dark:text-gray-400 text-lg leading-relaxed">&ldquo;{content}&ldquo;</p>
+        <p className="text-gray-700 dark:text-gray-400 text-lg leading-relaxed">
+          &ldquo;{content}&ldquo;
+        </p>
       </CardContent>
       <CardFooter className="p-4 border-t flex items-center space-x-4">
         <Avatar className="h-12 w-12 ring-2 ring-tech-purple/20 transition-all hover:ring-tech-purple">
@@ -54,7 +56,9 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
           </AvatarFallback>
         </Avatar>
         <div>
-          <p className="text-sm font-semibold text-gray-900 dark:text-gray-200">{author.name}</p>
+          <p className="text-sm font-semibold text-gray-900 dark:text-gray-200">
+            {author.name}
+          </p>
           <p className="text-xs text-neutral-400">{author.title}</p>
         </div>
       </CardFooter>

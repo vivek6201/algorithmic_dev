@@ -17,7 +17,7 @@ export const GET = async () => {
         success: false,
         message: "Internal server error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };

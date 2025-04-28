@@ -24,13 +24,13 @@ export default function JobHeaderBlock({
 
   const shareOnLinkedIn = () => {
     openSharePopup(
-      `https://www.linkedin.com/sharing/share-offsite/?url=${jobUrl}`
+      `https://www.linkedin.com/sharing/share-offsite/?url=${jobUrl}`,
     );
   };
 
   const shareOnTwitter = () => {
     openSharePopup(
-      `https://twitter.com/intent/tweet?url=${jobUrl}&text=${message}`
+      `https://twitter.com/intent/tweet?url=${jobUrl}&text=${message}`,
     );
   };
 

@@ -61,7 +61,7 @@ export default function ChapterList({
   const navigateTo = (
     chapterSlug: string,
     type: "new" | "edit",
-    topicSlug?: string
+    topicSlug?: string,
   ) => {
     const query = new URLSearchParams();
     query.set("chapterSlug", chapterSlug);
@@ -87,7 +87,9 @@ export default function ChapterList({
                 key={chapter.id}
                 value={chapter.id}
                 className={`rounded px-2.5 border-none ${
-                  expandedChapterId === chapter.id ? "bg-gray-200 dark:bg-neutral-600/20" : ""
+                  expandedChapterId === chapter.id
+                    ? "bg-gray-200 dark:bg-neutral-600/20"
+                    : ""
                 }`}
               >
                 <AccordionTrigger className="hover:no-underline">
@@ -103,7 +105,9 @@ export default function ChapterList({
                           navigateTo(chapter.slug, "edit", topic.slug)
                         }
                         className={`group flex justify-between items-center hover:bg-gray-700/40 dark:hover:bg-neutral-700/60 rounded-md cursor-pointer transition-colors duration-150 ${
-                          topicSlug === topic.slug ? "bg-gray-300 dark:bg-neutral-500/60" : ""
+                          topicSlug === topic.slug
+                            ? "bg-gray-300 dark:bg-neutral-500/60"
+                            : ""
                         }`}
                       >
                         <div className="flex gap-2 items-center px-2 py-1">

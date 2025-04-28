@@ -142,7 +142,7 @@ const AdminSidebar = () => {
         isMobile ? "" : collapsed ? "justify-center" : "",
         isLinkActive(item.href) && !hasActiveChild(item)
           ? "bg-white text-gray-900 shadow-md"
-          : "hover:bg-gray-700 hover:shadow-sm"
+          : "hover:bg-gray-700 hover:shadow-sm",
       )}
     >
       <item.icon className="w-5 h-5" />
@@ -153,7 +153,7 @@ const AdminSidebar = () => {
   // Generate accordion for items with children
   const renderAccordion = (
     item: SidebarItem,
-    isMobile: boolean = false
+    isMobile: boolean = false,
   ): JSX.Element => {
     console.log({ isMobile });
     return (
@@ -172,7 +172,7 @@ const AdminSidebar = () => {
               "flex items-center gap-3 px-4 py-2 rounded-md transition-all font-medium",
               isLinkActive(item.href) && !hasActiveChild(item)
                 ? "bg-white text-gray-900 shadow-md"
-                : "hover:bg-gray-700 hover:shadow-sm"
+                : "hover:bg-gray-700 hover:shadow-sm",
             )}
           >
             <div className="flex items-center gap-3">
@@ -189,7 +189,7 @@ const AdminSidebar = () => {
                   "flex items-center gap-3 px-4 py-2 rounded-md transition-all font-medium",
                   isLinkActive(child.href)
                     ? "bg-white text-gray-900 shadow-md"
-                    : "hover:bg-gray-700 hover:shadow-sm"
+                    : "hover:bg-gray-700 hover:shadow-sm",
                 )}
               >
                 <child.icon className="w-4 h-4" />
@@ -224,7 +224,7 @@ const AdminSidebar = () => {
               {sidebarItems.map((item) =>
                 item.children.length === 0
                   ? renderMainLink(item, true)
-                  : renderAccordion(item, true)
+                  : renderAccordion(item, true),
               )}
             </nav>
 
@@ -257,7 +257,7 @@ const AdminSidebar = () => {
       <aside
         className={clsx(
           "hidden lg:flex flex-col justify-between bg-gradient-to-b from-neutral-900 to-neutral-800 text-white h-screen transition-all duration-300 ease-in-out shadow-lg",
-          collapsed ? "w-20" : "w-64"
+          collapsed ? "w-20" : "w-64",
         )}
       >
         <div className="p-4">
@@ -292,7 +292,7 @@ const AdminSidebar = () => {
                       "flex items-center justify-center px-4 py-2 rounded-md transition-all",
                       isLinkActive(item.href) && !hasActiveChild(item)
                         ? "bg-white text-gray-900 shadow-md"
-                        : "hover:bg-gray-700 hover:shadow-sm"
+                        : "hover:bg-gray-700 hover:shadow-sm",
                     )}
                   >
                     <item.icon className="w-5 h-5" />
@@ -302,7 +302,7 @@ const AdminSidebar = () => {
                 sidebarItems.map((item) =>
                   item.children.length === 0
                     ? renderMainLink(item)
-                    : renderAccordion(item)
+                    : renderAccordion(item),
                 )}
           </nav>
         </div>

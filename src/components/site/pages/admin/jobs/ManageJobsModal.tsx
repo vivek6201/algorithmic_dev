@@ -97,7 +97,10 @@ export default function ManageJobsModal({
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-y-4"
+          >
             <FormField
               control={form.control}
               name="name"
