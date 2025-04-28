@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowRight, BookIcon, ChevronRight, ClockIcon } from "lucide-react";
+import { ArrowRight, BookIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "nextjs-toploader/app";
 import { usePathname } from "next/navigation";

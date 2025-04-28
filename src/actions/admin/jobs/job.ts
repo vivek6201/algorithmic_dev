@@ -78,20 +78,22 @@ export const updateJob = async (
     }));
 
     // Prepare connect array (connect new categories if provided)
-    const connectCategories = values.categories?.map((category) => ({
-      id: category
-    })) || [];
+    const connectCategories =
+      values.categories?.map((category) => ({
+        id: category,
+      })) || [];
 
     const { categories, ...rest } = values;
+    console.log(categories);
 
     await prisma.jobs.update({
       where: { slug },
       data: {
-      ...rest,
-      jobCategories: {
-        disconnect: disconnectCategories,
-        connect: connectCategories,
-      },
+        ...rest,
+        jobCategories: {
+          disconnect: disconnectCategories,
+          connect: connectCategories,
+        },
       },
     });
 
@@ -107,7 +109,6 @@ export const updateJob = async (
     };
   }
 };
-
 
 export const deleteJob = async (id: string) => {
   try {

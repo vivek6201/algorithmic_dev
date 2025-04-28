@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import parse, { domToReact } from "html-react-parser";
+import parse from "html-react-parser";
 import CodeBlock from "./editor/CodeBlock";
 import ImageBlock from "./editor/ImageBlock";
 

@@ -5,12 +5,9 @@ import {
   Briefcase,
   GraduationCap,
   Menu,
-  Moon,
   PackageSearch,
-  Sun,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "nextjs-toploader/app";
 import React from "react";
@@ -18,8 +15,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 

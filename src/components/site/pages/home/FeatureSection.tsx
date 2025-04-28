@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import FeatureCard from "./FeatureCard";
-import { BookOpen, Briefcase, GraduationCap, Users } from "lucide-react";
+import { BookOpen, Briefcase, GraduationCap } from "lucide-react";
 
 export default function FeatureSection() {
   return (

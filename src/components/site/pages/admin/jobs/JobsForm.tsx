@@ -1,5 +1,5 @@
 "use client";
-import { $Enums, JobCategory, Jobs, JobType } from "@/generated/prisma";
+import { $Enums, JobType } from "@/generated/prisma";
 import React, { useEffect } from "react";
 import {
   Form,

@@ -13,6 +13,7 @@ export default function JobHeaderBlock({
   title: string;
   slug: string;
 }) {
+  console.log({ slug });
   const fullUrl = `${window.location.origin}${window.location.pathname}`;
   const openSharePopup = (url: string) => {
     window.open(url, "_blank", "width=600,height=600");
@@ -42,6 +43,7 @@ export default function JobHeaderBlock({
       navigator.clipboard.writeText(fullUrl);
       toast.success("copied to clipboard");
     } catch (error) {
+      console.error(error);
       toast.error("failed to copy");
     }
   };

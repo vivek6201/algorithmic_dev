@@ -29,7 +29,7 @@ export default async function page({
   params: Promise<{ slug: string; topicSlug: string }>;
 }) {
   const { topicSlug } = await params;
-  const { success, data, nextTopic, prevTopic, message } =
+  const { success, data, nextTopic, prevTopic } =
     await getClientTutorialTopicBySlug(topicSlug);
 
   if (!success || !data) {
