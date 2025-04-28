@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <AdSense pid={process.env.PUBLISH_ID ?? ''} />
+        <AdSense pid={process.env.NEXT_PUBLIC_PUBLISH_ID ?? ''} />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Provider>{children}</Provider>
