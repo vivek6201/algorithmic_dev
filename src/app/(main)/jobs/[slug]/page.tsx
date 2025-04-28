@@ -7,6 +7,27 @@ import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const { success, data } = await getClientJobBySlug(slug);
+
+  if (!success || !data) {
+    return {
+      title: "Job not found",
+      description: "This job does not exist.",
+    };
+  }
+
+  return {
+    title: `${data.title} | Algorithmic Dev`,
+    description: data.shortDescription,
+  };
+}
+
 export default async function page({
   params,
 }: {

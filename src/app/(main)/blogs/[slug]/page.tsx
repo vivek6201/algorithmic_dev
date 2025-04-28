@@ -5,6 +5,27 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const { success, data } = await getClientBlogBySlug(slug);
+
+  if (!success || !data) {
+    return {
+      title: "Blog not found",
+      description: "This blog does not exist.",
+    };
+  }
+
+  return {
+    title: `${data.title} | Algorithmic Dev`,
+    description: data.description,
+  };
+}
+
 export default async function BlogDetailPage({
   params,
 }: {
