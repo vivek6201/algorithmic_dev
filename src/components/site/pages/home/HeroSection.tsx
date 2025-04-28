@@ -63,7 +63,7 @@ export default function HeroSection() {
 
         <div
           onClick={handleModalState}
-          className="rounded-full w-11/12 max-w-[800px] mx-auto border bg-transparent px-8 py-2 mt-8 hover:bg-neutral-900 transition-colors duration-200 cursor-pointer"
+          className="rounded-full w-11/12 max-w-[800px] mx-auto border bg-transparent px-8 py-2 mt-8 hover:bg-gray-100 dark:hover:bg-neutral-900 transition-colors duration-200 cursor-pointer"
         >
           <p className="text-neutral-600 text-sm">
             Search for{" "}
