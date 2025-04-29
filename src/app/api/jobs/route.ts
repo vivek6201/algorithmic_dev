@@ -13,6 +13,7 @@ export async function GET(req: NextRequest) {
 
     const jobs = await prisma.jobs.findMany({
       where: {
+        published: true,
         ...(category.length > 0 && {
           jobCategories: {
             some: {
