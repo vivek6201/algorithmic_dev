@@ -14,7 +14,10 @@ declare module 'next-auth' {
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
-    Google,
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
     Credentials({
       credentials: {
         email: {},
@@ -31,6 +34,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (!user) throw new Error('User not found!');
 
+        if (!user.emailVerified) {
+          throw new Error('Please verify your email before logging in.');
+        }
+
         const matchPass = user.password && (await bcrypt.compare(data.password, user.password));
 
         if (!matchPass) throw new Error('Invalid credentials.');
@@ -43,11 +50,39 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     strategy: 'jwt',
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
+      // Handle Google sign-in
+      if (account?.provider === 'google') {
+        // Check if user exists, if not, create new user
+        const existingUser = await prisma.user.findUnique({
+          where: { email: user?.email! },
+        });
+
+        if (!existingUser) {
+          // Create new user if they don't exist
+          const newUser = await prisma.user.create({
+            data: {
+              email: user?.email!,
+              name: user?.name ?? '',
+              image: user?.image ?? '',
+              emailVerified: new Date(),
+            },
+          });
+          token.id = newUser.id;
+          token.role = newUser.role;
+        } else {
+          // Existing user
+          token.id = existingUser.id;
+          token.role = existingUser.role;
+        }
+      }
+
+      // Add user ID and role to the JWT token
       if (user) {
         token.id = user.id;
         token.role = user.role;
       }
+
       return token;
     },
     async session({ session, token }) {
@@ -58,36 +93,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
   },
-  events: {
-    async signIn({ user }) {
-      // 🔥 Manually create a session in the database
-      if (!user.id) {
-        throw new Error('User ID is undefined.');
-      }
-
-      await prisma.session.create({
-        data: {
-          userId: user.id,
-          sessionToken: uuid(),
-          expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
-        },
-      });
-    },
-    async signOut(data) {
-      // Extract userId from token or session safely
-      const userId = 'token' in data ? data.token?.id : data.session?.userId;
-
-      if (userId) {
-        // Delete session from database if it exists
-        await prisma.session.deleteMany({
-          where: { userId },
-        });
-      }
-    },
-  },
   pages: {
-    signIn: '/login',
-    error: '/login',
+    signIn: '/login', // Custom sign-in page if needed
+    error: '/login', // Error handling page
   },
-  debug: process.env.NODE_ENV === 'development' ? true : false,
+  debug: process.env.NODE_ENV === 'development', // Enable debug mode in dev
 });

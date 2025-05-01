@@ -19,6 +19,7 @@ import { useRouter } from 'nextjs-toploader/app';
 import signupAction from '@/actions/auth/signup';
 import { toast } from 'sonner';
 import { signIn } from 'next-auth/react';
+import { CheckCircle } from 'lucide-react';
 
 interface Proptype extends React.ComponentPropsWithoutRef<'div'> {
   isLogin: boolean;
@@ -38,7 +39,7 @@ export function AuthForm({ isLogin }: Proptype) {
       <CardContent>
         {isLogin ? <LoginForm /> : <SignupForm />}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
-          <Button type="button" variant={'outline'}>
+          <Button type="button" variant={'outline'} onClick={() => signIn('google')}>
             Login with Google
           </Button>
           <Button type="button" variant={'outline'}>
@@ -142,6 +143,7 @@ function LoginForm() {
 
 function SignupForm() {
   const [showPass, setShowPass] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [showConfPass, setConfShowPass] = useState(false);
   const router = useRouter();
 
@@ -163,118 +165,111 @@ function SignupForm() {
 
     if (!success) {
       toast.error(message);
+      setIsSuccess(false);
       return;
     }
 
     toast.success(message);
-    const timeout = toast.loading('Signing in, please wait');
-
-    //signing in
-    const response = await signIn('credentials', {
-      email: values.email,
-      password: values.password,
-      redirect: false,
-    });
-
-    toast.dismiss(timeout);
-
-    if (response?.ok) {
-      router.push('/');
-      toast.success('login successful');
-    } else {
-      toast.error('Error while Signing in!');
-    }
+    setIsSuccess(true);
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-y-5 flex-col">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="John Doe" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="name@example.com" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <div className="relative flex flex-col">
-                  <Input type={showPass ? 'text' : 'password'} placeholder="......." {...field} />
-                  <Button
-                    variant={'ghost'}
-                    size={'icon'}
-                    type="button"
-                    onClick={() => setShowPass((prev) => !prev)}
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm"
-                  >
-                    {showPass ? 'Hide' : 'Show'}
-                  </Button>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="confirmPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
-              <FormControl>
-                <div className="relative flex flex-col">
-                  <Input
-                    type={showConfPass ? 'text' : 'password'}
-                    placeholder="......."
-                    {...field}
-                  />
-                  <Button
-                    variant={'ghost'}
-                    size={'icon'}
-                    type="button"
-                    onClick={() => setConfShowPass((prev) => !prev)}
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm"
-                  >
-                    {showConfPass ? 'Hide' : 'Show'}
-                  </Button>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-        <p className="text-center text-sm">
-          Already have an account?{' '}
-          <span className="text-blue-400 cursor-pointer" onClick={() => router.push('/login')}>
-            Login
-          </span>
-        </p>
-      </form>
-    </Form>
+    <>
+      {isSuccess && (
+        <div className="bg-green-700 px-5 py-2 rounded-md border flex gap-2 items-center">
+          <CheckCircle color="white" size={18} />
+          <p className="text-white">Check your email and verify it.</p>
+        </div>
+      )}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-y-5 flex-col mt-5">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="John Doe" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="name@example.com" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <div className="relative flex flex-col">
+                    <Input type={showPass ? 'text' : 'password'} placeholder="......." {...field} />
+                    <Button
+                      variant={'ghost'}
+                      size={'icon'}
+                      type="button"
+                      onClick={() => setShowPass((prev) => !prev)}
+                      className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm"
+                    >
+                      {showPass ? 'Hide' : 'Show'}
+                    </Button>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <div className="relative flex flex-col">
+                    <Input
+                      type={showConfPass ? 'text' : 'password'}
+                      placeholder="......."
+                      {...field}
+                    />
+                    <Button
+                      variant={'ghost'}
+                      size={'icon'}
+                      type="button"
+                      onClick={() => setConfShowPass((prev) => !prev)}
+                      className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm"
+                    >
+                      {showConfPass ? 'Hide' : 'Show'}
+                    </Button>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit">Submit</Button>
+          <p className="text-center text-sm">
+            Already have an account?{' '}
+            <span className="text-blue-400 cursor-pointer" onClick={() => router.push('/login')}>
+              Login
+            </span>
+          </p>
+        </form>
+      </Form>
+    </>
   );
 }

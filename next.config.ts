@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
       {
         hostname: 'uploads.sitepoint.com',
       },
+      {
+        hostname: 'lh3.googleusercontent.com',
+      },
     ],
   },
   experimental: {
