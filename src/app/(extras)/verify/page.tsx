@@ -4,18 +4,16 @@ import axios from 'axios';
 import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
-export default function page() {
+export default function VerifyPage() {
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
   const email = decodeURIComponent(searchParams.get('email') ?? '');
 
-  console.log({ token, email });
-
-  const handleEmailVerification = async () => {
+  const handleEmailVerification = useCallback(async () => {
     setLoading(true);
 
     try {
@@ -37,11 +35,11 @@ export default function page() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token, email]);
 
   useEffect(() => {
     handleEmailVerification();
-  }, []);
+  }, [handleEmailVerification]);
 
   const renderContent = (success: boolean) => {
     if (!success) {
