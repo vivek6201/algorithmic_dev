@@ -4,7 +4,7 @@ import Credentials from 'next-auth/providers/credentials';
 import Google from 'next-auth/providers/google';
 import { loginValidation } from '@/validations/auth';
 import bcrypt from 'bcryptjs';
-import { v4 as uuid } from 'uuid';
+import GitHub from 'next-auth/providers/github';
 
 declare module 'next-auth' {
   interface User {
@@ -14,6 +14,7 @@ declare module 'next-auth' {
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
+    GitHub,
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,

@@ -67,9 +67,19 @@ export default function ProfileSheet() {
   return (
     <Sheet>
       <SheetTrigger className="cursor-pointer" asChild>
-        <div className="w-5 h-5 flex justify-center items-center p-5 rounded-full bg-blue-500">
-          <p className="text-white">{session.data?.user?.name?.[0]}</p>
-        </div>
+        {session.data?.user?.image ? (
+          <Image
+            src={session.data.user.image}
+            alt="profile image"
+            width={500}
+            height={500}
+            className="w-10 aspect-square rounded-full"
+          />
+        ) : (
+          <div className="w-5 h-5 flex justify-center items-center p-5 rounded-full bg-blue-500">
+            <p className="text-white">{session.data?.user?.name?.[0]}</p>
+          </div>
+        )}
       </SheetTrigger>
       <SheetContent className="[&>button:first-of-type]:hidden">
         <SheetHeader className="px-3 flex w-full justify-between items-center flex-row">
@@ -89,7 +99,7 @@ export default function ProfileSheet() {
                 alt="profile image"
                 width={500}
                 height={500}
-                className="w-32 h-32 rounded-full"
+                className="w-24 aspect-square rounded-full"
               />
             ) : (
               <div className="w-24 aspect-square flex justify-center items-center p-5 rounded-full bg-blue-500">

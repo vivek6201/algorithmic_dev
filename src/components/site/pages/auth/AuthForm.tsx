@@ -26,6 +26,12 @@ interface Proptype extends React.ComponentPropsWithoutRef<'div'> {
 }
 
 export function AuthForm({ isLogin }: Proptype) {
+  const handleLogin = async (type: 'github' | 'google') => {
+    await signIn(type, {
+      redirectTo: '/',
+    });
+  };
+
   return (
     <Card className="w-11/12 max-w-[450px]">
       <CardHeader>
@@ -39,10 +45,10 @@ export function AuthForm({ isLogin }: Proptype) {
       <CardContent>
         {isLogin ? <LoginForm /> : <SignupForm />}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
-          <Button type="button" variant={'outline'} onClick={() => signIn('google')}>
+          <Button type="button" variant={'outline'} onClick={() => handleLogin('google')}>
             Login with Google
           </Button>
-          <Button type="button" variant={'outline'}>
+          <Button type="button" variant={'outline'} onClick={() => handleLogin('github')}>
             Login with Github
           </Button>
         </div>
