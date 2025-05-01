@@ -53,7 +53,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, user, account }) {
       // Handle Google sign-in
-      if (account?.provider === 'google') {
+      if (account && (account?.provider === 'google' || account?.provider === 'github')) {
         // Check if user exists, if not, create new user
         const existingUser = await prisma.user.findUnique({
           where: { email: user.email ?? '' },
@@ -76,14 +76,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           token.id = existingUser.id;
           token.role = existingUser.role;
         }
-      }
-
-      // Add user ID and role to the JWT token
-      if (user) {
+      } else if (user && !account) {
         token.id = user.id;
         token.role = user.role;
       }
-
       return token;
     },
     async session({ session, token }) {
