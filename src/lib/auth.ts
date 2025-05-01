@@ -52,6 +52,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   callbacks: {
     async jwt({ token, user, account }) {
+      if (user) {
+        token.id = user.id;
+        token.role = user.role;
+      }
       // Handle Google sign-in
       if (account && (account?.provider === 'google' || account?.provider === 'github')) {
         // Check if user exists, if not, create new user
@@ -76,9 +80,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           token.id = existingUser.id;
           token.role = existingUser.role;
         }
-      } else if (user && !account) {
-        token.id = user.id;
-        token.role = user.role;
       }
       return token;
     },
