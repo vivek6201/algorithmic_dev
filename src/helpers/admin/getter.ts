@@ -8,7 +8,7 @@ export const getBlogBySlug = async (slug: string) => {
 
     const decodedSlug = decodeURIComponent(slug);
 
-    let blog = await cache.get<Blog>('admin-blog', [slug]);
+    let blog = await cache.get<Blog>('admin-blog', [decodedSlug]);
 
     if (!blog) {
       blog = await prisma.blog.findUnique({
@@ -17,7 +17,7 @@ export const getBlogBySlug = async (slug: string) => {
         },
       });
 
-      if (blog) cache.set('admin-blog', [slug], blog);
+      if (blog) cache.set('admin-blog', [decodedSlug], blog);
     }
 
     return { success: true, blog };
