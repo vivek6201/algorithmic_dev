@@ -22,6 +22,8 @@ import {
   Youtube,
 } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import uploadFileToCloud from '@/actions/common/upload-file';
+import { toast } from 'sonner';
 
 interface MenuBarProps {
   editor: Editor | null;
@@ -53,14 +55,24 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
     }
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // In a real application, upload to a storage service
-      // For demo purposes, we're creating an object URL
-      const imageUrl = URL.createObjectURL(file);
-      addImage(imageUrl);
-      e.target.value = ''; // Reset input
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const toastId = toast.loading('Uploading image...');
+
+      try {
+        const result = await uploadFileToCloud(formData);
+        addImage(result.secure_url);
+        toast.success('Image uploaded!', { id: toastId });
+      } catch (error) {
+        console.error(error);
+        toast.error('Image upload failed.', { id: toastId });
+      } finally {
+        e.target.value = ''; // Reset input
+      }
     }
   };
 

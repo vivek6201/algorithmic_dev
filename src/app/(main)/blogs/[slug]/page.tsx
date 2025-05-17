@@ -1,7 +1,6 @@
 import Breadcrumbs from '@/components/site/shared/Breadcrumb';
 import HTMLRenderer from '@/components/site/shared/HTMLRenderer';
 import { getClientBlogBySlug } from '@/helpers/main/blogGetter';
-import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
@@ -60,14 +59,14 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
       {/* Action Tab */}
       <div className="flex items-center gap-2"></div>
 
-      {/* Cover Image */}
+      {/* Cover Image
       <Image
         src={data.coverImage}
         alt="Kubernetes Cluster"
         width={1000}
         height={2000}
         className="w-full rounded-2xl mb-8 shadow-md"
-      />
+      /> */}
 
       {/* Blog Content */}
       <article className="prose lg:prose-lg dark:prose-invert max-w-none">
@@ -91,7 +90,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
       </div> */}
 
       {/* Related Posts */}
-      {relatedPosts.length > 0 ? (
+      {relatedPosts && relatedPosts.length > 0 ? (
         <div className="mt-16">
           <h2 className="text-2xl font-bold mb-4">Related Posts</h2>
           <div className="grid sm:grid-cols-2 gap-4">

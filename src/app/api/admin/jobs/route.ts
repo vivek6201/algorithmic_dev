@@ -1,13 +1,19 @@
+import { Jobs } from '@/generated/prisma';
+import cache from '@/lib/cache';
 import { prisma } from '@/lib/db';
 import { NextResponse } from 'next/server';
 
 export const GET = async () => {
   try {
-    const data = await prisma.jobs.findMany({
-      include: {
-        jobCategories: true,
-      },
-    });
+    let data = await cache.get<Jobs[]>('admin-jobs', []);
+    if (!data) {
+      data = await prisma.jobs.findMany({
+        include: {
+          jobCategories: true,
+        },
+      });
+      cache.set('admin-jobs', [], data);
+    }
 
     return NextResponse.json({ success: true, data }, { status: 200 });
   } catch (error) {

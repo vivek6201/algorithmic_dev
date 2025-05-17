@@ -1,20 +1,27 @@
-// middleware.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from './lib/auth';
 
 export async function middleware(request: NextRequest) {
   const session = await auth();
 
-  const isAdmin = session?.user?.role === 'Admin';
+  const pathname = request.nextUrl.pathname;
 
-  if (request.nextUrl.pathname.startsWith('/admin') && !isAdmin) {
-    return NextResponse.redirect(new URL('/not-found', request.url));
+  if (pathname.startsWith('/admin')) {
+    const isAdmin = session?.user?.role === 'Admin';
+    if (!isAdmin) {
+      return NextResponse.redirect(new URL('/not-found', request.url));
+    }
+  }
+
+  if (pathname.startsWith('/profile')) {
+    if (!session) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
   }
 
   return NextResponse.next();
 }
 
-// Apply only to admin routes
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/profile/:path*'],
 };

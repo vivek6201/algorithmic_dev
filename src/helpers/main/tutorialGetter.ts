@@ -1,10 +1,16 @@
+import { Chapter, Topic, Tutorial, TutorialCategory } from '@/generated/prisma';
+import cache from '@/lib/cache';
 import { prisma } from '@/lib/db';
 
 export const getClientTutorialsCategories = async () => {
   try {
-    const data = await prisma.tutorialCategory.findMany({
-      where: { published: true },
-    });
+    let data = await cache.get<TutorialCategory[]>('client-tutorial-categories', []);
+    if (!data) {
+      data = await prisma.tutorialCategory.findMany({
+        where: { published: true },
+      });
+      cache.set('client-tutorial-categories', [], data);
+    }
     return { success: true, data };
   } catch (error) {
     console.error(error);
@@ -12,25 +18,35 @@ export const getClientTutorialsCategories = async () => {
   }
 };
 
+type ChapterWithTopic = Chapter & {
+  topics: Topic[];
+};
+
 export const getClientTutorialChapters = async (tutorialSlug: string) => {
   try {
-    const data = await prisma.chapter.findMany({
-      where: {
-        tutorial: {
-          slug: tutorialSlug,
-        },
-      },
-      include: {
-        topics: {
-          orderBy: {
-            order: 'asc',
+    let data = await cache.get<ChapterWithTopic[]>('client-tutorial-chapters', [tutorialSlug]);
+
+    if (!data) {
+      data = await prisma.chapter.findMany({
+        where: {
+          tutorial: {
+            slug: tutorialSlug,
           },
         },
-      },
-      orderBy: {
-        order: 'asc',
-      },
-    });
+        include: {
+          topics: {
+            orderBy: {
+              order: 'asc',
+            },
+          },
+        },
+        orderBy: {
+          order: 'asc',
+        },
+      });
+
+      cache.set('client-tutorial-chapters', [tutorialSlug], data);
+    }
 
     return { success: true, data };
   } catch (error) {
@@ -42,22 +58,36 @@ export const getClientTutorialChapters = async (tutorialSlug: string) => {
   }
 };
 
+type TutorialWithChapters = Tutorial & {
+  chapters: (Chapter & {
+    topics: Topic[];
+  })[];
+};
+
 export const getClientTutorialBySlug = async (slug: string) => {
   try {
-    const data = await prisma.tutorial.findUnique({
-      where: { slug },
-      include: {
-        chapters: {
-          include: {
-            topics: {
-              orderBy: {
-                order: 'asc',
+    let data = await cache.get<TutorialWithChapters>('tutorial-with-chapters', [slug]);
+
+    if (!data) {
+      data = await prisma.tutorial.findUnique({
+        where: { slug, published: true },
+        include: {
+          chapters: {
+            include: {
+              topics: {
+                orderBy: {
+                  order: 'asc',
+                },
               },
             },
           },
         },
-      },
-    });
+      });
+
+      if (data) {
+        cache.set('tutorial-with-chapters', [slug], data);
+      }
+    }
 
     return { success: true, data };
   } catch (error) {
@@ -67,21 +97,32 @@ export const getClientTutorialBySlug = async (slug: string) => {
       message: 'Failed to fetch data',
     };
   }
+};
+
+type CurrentTopicType = Topic & {
+  chapter: Chapter & {
+    tutorial: Tutorial;
+  };
 };
 
 export const getClientTutorialTopicBySlug = async (slug: string) => {
   try {
     // Fetch the current topic
-    const currentTopic = await prisma.topic.findUnique({
-      where: { slug },
-      include: {
-        chapter: {
-          include: {
-            tutorial: true, // Include tutorial info for chapter navigation
+    let currentTopic = await cache.get<CurrentTopicType>('client-topic-by-slug', [slug]);
+    if (!currentTopic === undefined) {
+      currentTopic = await prisma.topic.findUnique({
+        where: { slug, published: true },
+        include: {
+          chapter: {
+            include: {
+              tutorial: true, // Include tutorial info for chapter navigation
+            },
           },
         },
-      },
-    });
+      });
+
+      if (currentTopic) cache.set('client-topic-by-slug', [slug], currentTopic);
+    }
 
     if (!currentTopic) {
       return {
@@ -93,17 +134,23 @@ export const getClientTutorialTopicBySlug = async (slug: string) => {
     const { chapter } = currentTopic;
 
     // Find the next topic in the same chapter
-    let nextTopic = await prisma.topic.findFirst({
-      where: {
-        chapterId: chapter.id,
-        order: {
-          gt: currentTopic.order, // Find the topic with order greater than the current one
+    let nextTopic = await cache.get<Topic | null>('client-topic-next', [slug]);
+
+    if (!nextTopic === undefined) {
+      nextTopic = await prisma.topic.findFirst({
+        where: {
+          chapterId: chapter.id,
+          order: {
+            gt: currentTopic.order, // Find the topic with order greater than the current one
+          },
         },
-      },
-      orderBy: {
-        order: 'asc', // Sort ascending by order
-      },
-    });
+        orderBy: {
+          order: 'asc', // Sort ascending by order
+        },
+      });
+
+      cache.set('client-topic-next', [slug], nextTopic ?? null);
+    }
 
     // If no next topic in the current chapter, move to the next chapter's first topic
     if (!nextTopic) {
@@ -128,20 +175,27 @@ export const getClientTutorialTopicBySlug = async (slug: string) => {
       });
 
       nextTopic = nextChapter?.topics[0] || null;
+      cache.set('client-topic-next', [slug], nextTopic ?? null);
     }
 
     // Find the previous topic in the same chapter
-    let prevTopic = await prisma.topic.findFirst({
-      where: {
-        chapterId: chapter.id,
-        order: {
-          lt: currentTopic.order, // Find the topic with order less than the current one
+    let prevTopic = await cache.get<Topic | null>('client-topic-prev', [slug]);
+
+    if (!prevTopic === undefined) {
+      prevTopic = await prisma.topic.findFirst({
+        where: {
+          chapterId: chapter.id,
+          order: {
+            lt: currentTopic.order, // Find the topic with order less than the current one
+          },
         },
-      },
-      orderBy: {
-        order: 'desc', // Sort descending to get the previous topic
-      },
-    });
+        orderBy: {
+          order: 'desc', // Sort descending to get the previous topic
+        },
+      });
+
+      cache.set('client-topic-prev', [slug], prevTopic ?? null);
+    }
 
     // If no previous topic in the current chapter, move to the previous chapter's last topic
     if (!prevTopic) {
@@ -166,6 +220,7 @@ export const getClientTutorialTopicBySlug = async (slug: string) => {
       });
 
       prevTopic = prevChapter?.topics[0] || null;
+      cache.set('client-topic-prev', [slug], prevTopic ?? null);
     }
 
     return {

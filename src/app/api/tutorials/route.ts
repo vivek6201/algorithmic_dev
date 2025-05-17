@@ -1,7 +1,32 @@
+import cache from '@/lib/cache';
 import { prisma } from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server';
+import { Prisma } from '@/generated/prisma';
 
-export async function GET(request: NextRequest) {
+// Define the type for tutorials with related data
+type TutorialWithRelations = Prisma.TutorialGetPayload<{
+  include: {
+    categories: {
+      include: {
+        category: true;
+      };
+    };
+    chapters: {
+      take: 1;
+      include: {
+        topics: {
+          take: 1;
+          orderBy: {
+            order: 'asc';
+          };
+        };
+      };
+    };
+    _count: true;
+  };
+}>;
+
+export async function GET(request: NextRequest): Promise<NextResponse> {
   const searchParams = request.nextUrl.searchParams;
   const categorySlugs = searchParams.get('category');
   const page = parseInt(searchParams.get('page') || '1', 10);
@@ -10,71 +35,94 @@ export async function GET(request: NextRequest) {
   try {
     const categories = categorySlugs ? categorySlugs.split(',') : null;
 
-    const tutorials = await prisma.tutorial.findMany({
-      where: {
-        published: true,
-        ...(categories
-          ? {
-              categories: {
-                some: {
-                  category: {
-                    slug: {
-                      in: categories,
+    // Create cache key arguments
+    const cacheArgs = [
+      `page=${page}`,
+      `limit=${limit}`,
+      ...(categories ? categories.map((c) => `category=${c}`) : []),
+    ];
+
+    // Attempt to retrieve tutorials from cache
+    let tutorials = await cache.get<TutorialWithRelations[]>('tutorials', cacheArgs);
+
+    if (!tutorials) {
+      // Fetch tutorials from the database if not in cache
+      tutorials = await prisma.tutorial.findMany({
+        where: {
+          published: true,
+          ...(categories
+            ? {
+                categories: {
+                  some: {
+                    category: {
+                      slug: {
+                        in: categories,
+                      },
+                      published: true,
                     },
-                    published: true,
                   },
                 },
-              },
-            }
-          : {}),
-      },
-      include: {
-        categories: {
-          include: {
-            category: true,
-          },
+              }
+            : {}),
         },
-        chapters: {
-          take: 1,
-          include: {
-            topics: {
-              take: 1,
-              orderBy: {
-                order: 'asc',
+        include: {
+          categories: {
+            include: {
+              category: true,
+            },
+          },
+          chapters: {
+            take: 1,
+            include: {
+              topics: {
+                take: 1,
+                orderBy: {
+                  order: 'asc',
+                },
               },
             },
           },
+          _count: true,
         },
-        _count: true,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-      skip: (page - 1) * limit,
-      take: limit,
-    });
+        orderBy: {
+          createdAt: 'desc',
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
 
-    // Return the response with pagination data
-    const totalTutorials = await prisma.tutorial.count({
-      where: {
-        published: true,
-        ...(categories
-          ? {
-              categories: {
-                some: {
-                  category: {
-                    slug: {
-                      in: categories,
+      // Cache the fetched tutorials
+      cache.set('tutorials', cacheArgs, tutorials, 3600); // Cache for 1 hour (3600 seconds)
+    }
+
+    // Fetch the total count of tutorials for pagination
+
+    let totalTutorials = await cache.get<number>('tut-count', cacheArgs);
+
+    if (!totalTutorials) {
+      totalTutorials = await prisma.tutorial.count({
+        where: {
+          published: true,
+          ...(categories
+            ? {
+                categories: {
+                  some: {
+                    category: {
+                      slug: {
+                        in: categories,
+                      },
+                      published: true,
                     },
-                    published: true,
                   },
                 },
-              },
-            }
-          : {}),
-      },
-    });
+              }
+            : {}),
+        },
+      });
+      cache.set('tut-count', cacheArgs, totalTutorials);
+    }
 
+    // Return the response with pagination data
     return NextResponse.json(
       {
         data: tutorials,

@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { BookOpen, Briefcase, GraduationCap, Menu, PackageSearch } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'nextjs-toploader/app';
@@ -14,6 +14,7 @@ import {
 
 import ProfileSheet from '../pages/profile/ProfileSheet';
 import ThemeToggler from './theme-toggler';
+import { headerLinks } from '@/lib/constants';
 
 export default function Header() {
   const session = useSession();
@@ -25,7 +26,7 @@ export default function Header() {
         <Link className="font-bold text-xl " href={'/'}>
           Algorithmic Dev
         </Link>
-        <div className="lg:hidden">
+        <div className="lg:hidden flex gap-2 items-center">
           {session.status === 'authenticated' ? (
             <ProfileSheet />
           ) : (
@@ -35,38 +36,27 @@ export default function Header() {
                   <Menu className="dark:text-white text-black" />
                 </Button>
               </DropdownMenuTrigger>
+
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => router.push('/login')}>Login</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => router.push('/signup')}>Signup</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           )}
+          <ThemeToggler />
         </div>
         <div className="lg:flex gap-2 items-center hidden">
-          <Button variant={'link'} className="cursor-pointer" onClick={() => router.push('/jobs')}>
-            <Briefcase />
-            <span>Jobs</span>
-          </Button>
-          <Button
-            variant={'link'}
-            className="cursor-pointer"
-            onClick={() => router.push('/tutorials')}
-          >
-            <GraduationCap />
-            <span>Tutorials</span>
-          </Button>
-          <Button variant={'link'} className="cursor-pointer" onClick={() => router.push('/blogs')}>
-            <BookOpen />
-            <span>Blogs</span>
-          </Button>
-          <Button
-            variant={'link'}
-            className="cursor-pointer"
-            onClick={() => router.push('/products')}
-          >
-            <PackageSearch />
-            <span>Products</span>
-          </Button>
+          {headerLinks.map((item) => (
+            <Button
+              key={item.link}
+              variant={'link'}
+              className="cursor-pointer"
+              onClick={() => router.push(item.link)}
+            >
+              <item.icon />
+              <span>{item.name}</span>
+            </Button>
+          ))}
           <div className="flex gap-2 items-center ml-5">
             {session.status === 'authenticated' ? (
               <ProfileSheet />

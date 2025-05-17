@@ -1,20 +1,17 @@
 model Profile {
-  id          String     @id @default(cuid())
+  id          String  @id @default(cuid())
   image       String
-  phoneNumber String? 
-  bio         String 
-  
-  city        String 
-  state       String 
-  country     String 
-  pincode     String
+  phoneNumber String?
+  bio         String
 
-  urls        Json? 
-  resumeUrl   String? 
-  skills      String[] 
-  languages   String[] 
-  dateOfBirth DateTime 
-  hobbies     String[] 
+  address Address?
+
+  urls        Json?
+  resumeUrl   String?
+  skills      String[]
+  languages   String[]
+  dateOfBirth DateTime
+  hobbies     String[]
   personType  PersonType
 
   blogReaction BlogReaction[] // Reactions for blogs
@@ -27,7 +24,6 @@ model Profile {
   educationDetails  Education[]
   experienceDetails Experience[]
   projects          Project[]
-  achievements      Achievement[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -39,6 +35,20 @@ enum PersonType {
   WORKING_PROFESSIONAL
   SELF_EMPLOYED
   OTHER
+}
+
+model Address {
+  id String @id @default(cuid())
+
+  city      String
+  state     String
+  country   String
+  pincode   String
+  Profile   Profile? @relation(fields: [profileId], references: [id])
+  profileId String?  @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // Education details
@@ -82,19 +92,6 @@ model Project {
   startDate   DateTime
   endDate     DateTime
   projectLink String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-// Achievements
-model Achievement {
-  id              String   @id @default(cuid())
-  profileId       String
-  profile         Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  achievementName String
-  description     String
-  date            DateTime
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -1,10 +1,18 @@
+import { Blog, BlogCategory } from '@/generated/prisma';
+import cache from '@/lib/cache';
 import { prisma } from '@/lib/db';
 
 export const getClientBlogsCategories = async () => {
   try {
-    const data = await prisma.blogCategory.findMany({
-      where: { published: true },
-    });
+    let data = await cache.get<BlogCategory[]>('client-blogs', []);
+
+    if (!data) {
+      data = await prisma.blogCategory.findMany({
+        where: { published: true },
+      });
+      cache.set<BlogCategory[]>('client-blogs', [], data);
+    }
+
     return { success: true, data };
   } catch (error) {
     console.error(error);
@@ -12,27 +20,41 @@ export const getClientBlogsCategories = async () => {
   }
 };
 
+type BlogWithCategoryAndReactions = Blog & {
+  category: BlogCategory;
+  reactions: any[];
+};
+
 export const getClientBlogBySlug = async (slug: string) => {
   try {
-    const data = await prisma.blog.findUnique({
-      where: {
-        slug: slug,
-      },
-      include: {
-        category: true,
-        reactions: true,
-      },
-    });
+    const decodedSlug = decodeURIComponent(slug);
+    let data = await cache.get<BlogWithCategoryAndReactions>('client-blog-by-slug', [decodedSlug]);
+    let relatedPosts = await cache.get<Blog[]>('client-related-posts', [decodedSlug]);
 
-    let relatedPosts = await prisma.blog.findMany({
-      where: {
-        category: {
-          slug: data?.category.slug,
+    if (!data) {
+      data = await prisma.blog.findUnique({
+        where: {
+          slug: decodedSlug,
+          published: true,
         },
-      },
-    });
+        include: {
+          category: true,
+          reactions: true,
+        },
+      });
+      relatedPosts = await prisma.blog.findMany({
+        where: {
+          category: {
+            slug: data?.category.slug,
+          },
+        },
+      });
 
-    relatedPosts = relatedPosts.filter((item) => item.id != data?.id);
+      cache.set('client-blog-by-slug', [decodedSlug], data);
+      cache.set('client-related-posts', [decodedSlug], relatedPosts);
+    }
+
+    relatedPosts = relatedPosts?.filter((item) => item.id != data?.id) || null;
 
     return { success: true, data, relatedPosts };
   } catch (error) {

@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["cuid", "Dont", "Proptype", "sonner", "toploader", "uuidv"],
+  "cSpell.words": ["cuid", "Dont", "Pilcrow", "Proptype", "sonner", "toploader", "uuidv"],
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "prettier.configPath": ".prettierrc",

@@ -1,3 +1,5 @@
+import { BlogCategory } from '@/generated/prisma';
+import cache from '@/lib/cache';
 import { prisma } from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -5,11 +7,17 @@ export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: 
   const { id } = await params;
 
   try {
-    const category = await prisma.blogCategory.findUnique({
-      where: {
-        id,
-      },
-    });
+    let category = await cache.get<BlogCategory>('blog-category-with-id', [id]);
+
+    if (!category) {
+      category = await prisma.blogCategory.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      cache.set('blog-category-with-id', [id], category);
+    }
 
     if (!category) {
       return NextResponse.json({ category: null, message: 'Category not found' }, { status: 200 });
