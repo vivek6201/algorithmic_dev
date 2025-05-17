@@ -12,7 +12,7 @@ export const GET = async () => {
           jobCategories: true,
         },
       });
-      cache.set('admin-jobs', [], data);
+      if (data) cache.set('admin-jobs', [], data, 10);
     }
 
     return NextResponse.json({ success: true, data }, { status: 200 });

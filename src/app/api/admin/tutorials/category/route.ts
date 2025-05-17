@@ -9,7 +9,7 @@ export async function GET() {
 
     if (!res) {
       res = await prisma.tutorialCategory.findMany();
-      if (res) cache.set('admin-tutorial-categories', [], res);
+      if (res) cache.set('admin-tutorial-categories', [], res, 10);
     }
     return NextResponse.json({ categories: res }, { status: 200 });
   } catch (error) {

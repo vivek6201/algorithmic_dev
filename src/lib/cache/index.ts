@@ -27,7 +27,7 @@ export class Cache implements ICache {
     type: string,
     args: string[],
     value: T,
-    expirySeconds: number = parseInt(process.env.CACHE_EXPIRE_S || '10', 10),
+    expirySeconds: number = parseInt(process.env.CACHE_EXPIRE_S || '600', 10),
   ): Promise<void> {
     return this.delegate.set(type, args, value, expirySeconds);
   }

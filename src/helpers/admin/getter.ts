@@ -17,7 +17,7 @@ export const getBlogBySlug = async (slug: string) => {
         },
       });
 
-      if (blog) cache.set('admin-blog', [decodedSlug], blog);
+      if (blog) cache.set('admin-blog', [decodedSlug], blog, 10);
     }
 
     return { success: true, blog };
@@ -79,7 +79,7 @@ export const getTutorialChaptersWithTopics = async (
         },
       });
 
-      if (data) cache.set('admin-tutorial-chapters-with-topics', [slug], data);
+      if (data) cache.set('admin-tutorial-chapters-with-topics', [slug], data, 10);
     }
 
     if (!data) {
@@ -123,7 +123,7 @@ export const getJobBySlug = async (
         },
       });
 
-      if (data) cache.set('admin-job', [decodedSlug], data);
+      if (data) cache.set('admin-job', [decodedSlug], data, 10);
     }
 
     return { success: true, data };

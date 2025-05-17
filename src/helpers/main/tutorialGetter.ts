@@ -111,7 +111,8 @@ export const getClientTutorialTopicBySlug = async (slug: string) => {
     // Fetch the current topic
     const decodedSlug = decodeURIComponent(slug);
     let currentTopic = await cache.get<CurrentTopicType>('client-topic-by-slug', [decodedSlug]);
-    if (!currentTopic === undefined) {
+
+    if (!currentTopic) {
       currentTopic = await prisma.topic.findUnique({
         where: { slug: decodedSlug, published: true },
         include: {
@@ -138,7 +139,7 @@ export const getClientTutorialTopicBySlug = async (slug: string) => {
     // Find the next topic in the same chapter
     let nextTopic = await cache.get<Topic | null>('client-topic-next', [decodedSlug]);
 
-    if (!nextTopic === undefined) {
+    if (!nextTopic) {
       nextTopic = await prisma.topic.findFirst({
         where: {
           chapterId: chapter.id,
@@ -183,7 +184,7 @@ export const getClientTutorialTopicBySlug = async (slug: string) => {
     // Find the previous topic in the same chapter
     let prevTopic = await cache.get<Topic | null>('client-topic-prev', [decodedSlug]);
 
-    if (!prevTopic === undefined) {
+    if (!prevTopic) {
       prevTopic = await prisma.topic.findFirst({
         where: {
           chapterId: chapter.id,

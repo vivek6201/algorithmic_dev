@@ -15,7 +15,7 @@ export const GET = async () => {
         },
       });
 
-      if (tutorials) cache.set('admin-tutorials', [], tutorials);
+      if (tutorials) cache.set('admin-tutorials', [], tutorials, 10);
     }
 
     return NextResponse.json({ tutorials }, { status: 200 });

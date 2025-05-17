@@ -10,14 +10,16 @@ export const metadata: Metadata = {
     'A One-Stop Solution for all your tech related queries. Be it Jobs, tutorials, courses, blogs, helper mini apps',
 };
 
+export const revalidate = 60;
+
 export default async function page() {
   const { data: categories } = await getClientBlogsCategories();
 
   return (
     <div className="w-full max-w-[1400px] mx-auto mt-5 min-h-screen">
-      <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_2.4fr_0.8fr] md:px-8 lg:px-0">
+      <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-5 w-11/12 mx-auto px-0">
         {/* Left Sidebar: Filters */}
-        <aside className="space-y-4 hidden lg:block">
+        <aside className="space-y-4 hidden lg:block w-full">
           <div className="p-4 rounded-2xl shadow-md border dark:bg-neutral-900">
             <h2 className="text-xl font-semibold mb-4">Filters</h2>
             <BlogsFilters data={categories ?? []} />
@@ -25,7 +27,7 @@ export default async function page() {
         </aside>
 
         {/* Center Content: Blogs List */}
-        <main className="space-y-4 mx-6">
+        <main className="space-y-4">
           {/* Header and Search bar */}
           <div className="flex justify-between p-4">
             <h1 className="text-2xl font-bold mb-2 flex-1">All Blogs</h1>
@@ -41,16 +43,6 @@ export default async function page() {
             <BlogsList />
           </div>
         </main>
-
-        {/* Right Sidebar: Ads */}
-        <aside className="space-y-4 hidden lg:block">
-          <div className=" p-4 rounded-2xl shadow-md border text-center">
-            <p className="text-lg font-semibold">Advertisement</p>
-            <div className="h-48 mt-4 rounded-xl flex items-center justify-center">
-              <span className="text-gray-500">Ad Space</span>
-            </div>
-          </div>
-        </aside>
       </div>
     </div>
   );

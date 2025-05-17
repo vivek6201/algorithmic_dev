@@ -16,7 +16,7 @@ export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: 
         },
       });
 
-      cache.set('blog-category-with-id', [id], category);
+      cache.set('blog-category-with-id', [id], category, 10);
     }
 
     if (!category) {

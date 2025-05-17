@@ -2,14 +2,18 @@ import TutorialSection from '@/components/site/pages/tutorials/tutorial/Tutorial
 import { getClientTutorialTopicBySlug } from '@/helpers/main/tutorialGetter';
 import React from 'react';
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const { success, data } = await getClientTutorialTopicBySlug(slug);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string; topicSlug: string }>;
+}) {
+  const { topicSlug } = await params;
+  const { success, data } = await getClientTutorialTopicBySlug(topicSlug);
 
   if (!success || !data) {
     return {
-      title: 'Blog not found',
-      description: 'This blog does not exist.',
+      title: 'Tutorial not found',
+      description: 'This Tutorial does not exist.',
     };
   }
 

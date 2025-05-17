@@ -9,7 +9,7 @@ export async function GET() {
 
     if (!res) {
       res = await prisma.blogCategory.findMany();
-      cache.set('blog-category', [], res);
+      cache.set('blog-category', [], res, 10);
     }
 
     return NextResponse.json({ categories: res }, { status: 200 });

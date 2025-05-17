@@ -9,7 +9,7 @@ export const GET = async () => {
 
     if (!data) {
       data = await prisma.jobCategory.findMany();
-      if (data) cache.set('admin-job-category', [], data);
+      if (data) cache.set('admin-job-category', [], data, 10);
     }
 
     return NextResponse.json({ success: true, data });

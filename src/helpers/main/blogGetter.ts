@@ -4,13 +4,13 @@ import { prisma } from '@/lib/db';
 
 export const getClientBlogsCategories = async () => {
   try {
-    let data = await cache.get<BlogCategory[]>('client-blogs', []);
+    let data = await cache.get<BlogCategory[]>('client-blogs-categories', []);
 
     if (!data) {
       data = await prisma.blogCategory.findMany({
         where: { published: true },
       });
-      cache.set<BlogCategory[]>('client-blogs', [], data);
+      cache.set<BlogCategory[]>('client-blogs-categories', [], data);
     }
 
     return { success: true, data };
@@ -30,6 +30,8 @@ export const getClientBlogBySlug = async (slug: string) => {
     const decodedSlug = decodeURIComponent(slug);
     let data = await cache.get<BlogWithCategoryAndReactions>('client-blog-by-slug', [decodedSlug]);
     let relatedPosts = await cache.get<Blog[]>('client-related-posts', [decodedSlug]);
+
+    console.log({ data });
 
     if (!data) {
       data = await prisma.blog.findUnique({

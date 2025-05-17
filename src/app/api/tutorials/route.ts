@@ -36,7 +36,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const categories = categorySlugs ? categorySlugs.split(',') : null;
 
     // Create cache key arguments
+    const cachePrefix = categories ? 'filtered' : 'all';
     const cacheArgs = [
+      cachePrefix,
       `page=${page}`,
       `limit=${limit}`,
       ...(categories ? categories.map((c) => `category=${c}`) : []),

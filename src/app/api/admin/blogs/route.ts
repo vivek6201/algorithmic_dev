@@ -21,7 +21,7 @@ export async function GET() {
           _count: true,
         },
       });
-      cache.set('blogs', [], res);
+      cache.set('blogs', [], res, 10);
     }
 
     return NextResponse.json({ blogs: res }, { status: 200 });
