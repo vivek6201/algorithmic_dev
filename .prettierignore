@@ -5,3 +5,4 @@ public
 dist
 build
 coverage
+packages/db/generated

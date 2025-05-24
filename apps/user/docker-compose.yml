@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  app:
+    image: vivek6201/algorithmicdev
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+    restart: always
+    command: ['node', 'server.js']
+    deploy:
+      resources:
+        limits:
+          memory: 512M # Limit memory usage to 512MB
+          cpus: '0.5' # Limit to 0.5 vCPU
