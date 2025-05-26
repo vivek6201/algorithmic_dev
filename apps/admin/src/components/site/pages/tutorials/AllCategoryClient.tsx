@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { useDebounce } from 'use-debounce';
 import {
   Table,
@@ -15,6 +15,7 @@ import { Input } from '@repo/ui/components/ui/input';
 import { Plus, Edit, Trash2 } from '@repo/ui';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -28,10 +29,13 @@ import { useQuery } from '@tanstack/react-query';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { BlogCategory } from '@repo/db';
 import CategoryModal from '../blogs/ManageCategoryModal';
-import createCategory from '@/actions/tutorials/category';
+import createCategory, {
+  deleteTutorialCategory,
+  editTutorialCategory,
+} from '@/actions/tutorials/category';
 import StatusSelector from '../shared/StatusSelector';
-import { updateTutorialCategoryStatus } from '@/actions/tutorials/publish';
 import { useRouter } from 'nextjs-toploader/app';
+import { updateTutorialCategoryStatus } from '@/actions/tutorials/publish';
 
 export default function AllCategoriesClient() {
   const [search, setSearch] = useState('');
@@ -39,6 +43,7 @@ export default function AllCategoriesClient() {
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const [editCategory, setEditCategory] = useState<BlogCategory | null>(null);
   const router = useRouter();
+  const deleteDialogRef = useRef<HTMLButtonElement>(null);
   const {
     data: categories = [],
     isPending,
@@ -74,7 +79,15 @@ export default function AllCategoriesClient() {
   }, [filteredCategories]);
 
   const handleDelete = async (id: string) => {
-    console.log(id);
+    const { message, success } = await deleteTutorialCategory(id);
+    deleteDialogRef.current?.click();
+
+    if (!success) {
+      toast.error(message);
+      return;
+    }
+    toast.success(message);
+    refetch();
   };
 
   const handleAddCategory = () => {
@@ -92,9 +105,20 @@ export default function AllCategoriesClient() {
     setEditCategory(null);
   };
 
-  const handleSaveCategory = async (data: z.infer<typeof blogCategorySchema>): Promise<void> => {
+  const handleSaveCategory = async (
+    data: z.infer<typeof blogCategorySchema>,
+    categoryId?: string,
+  ): Promise<void> => {
     try {
-      if (editCategory) {
+      if (editCategory && categoryId) {
+        const { success, message } = await editTutorialCategory(data, categoryId);
+
+        if (success) {
+          toast.success('Category Edited successfully');
+          refetch(); // Refresh the data after creation
+        } else {
+          toast.error(message || 'Failed to create category');
+        }
       } else {
         // Add new category
         const { success, message, newCategory } = await createCategory(data);
@@ -182,7 +206,7 @@ export default function AllCategoriesClient() {
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{category.name}</TableCell>
                     <TableCell>{category.slug}</TableCell>
-                    <TableCell>{new Date(category.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell>{new Date(category.createdAt).toDateString()}</TableCell>
                     <TableCell>
                       <StatusSelector
                         status={category.published}
@@ -199,14 +223,11 @@ export default function AllCategoriesClient() {
                       </Button>
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => handleDelete(category.id)}
-                          >
+                          <Button size="sm" variant="destructive">
                             <Trash2 className="w-4 h-4" />
                           </Button>
                         </DialogTrigger>
+                        <DialogClose ref={deleteDialogRef} />
                         <DialogContent className="max-w-sm">
                           <DialogHeader>
                             <DialogTitle>Confirm Delete</DialogTitle>

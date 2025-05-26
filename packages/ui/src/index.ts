@@ -4,3 +4,4 @@ export * as z from 'zod';
 export * as hookForm from 'react-hook-form';
 export * from 'date-fns';
 export { clsx } from 'clsx';
+export * as ReactCalendar from 'react-calendar';

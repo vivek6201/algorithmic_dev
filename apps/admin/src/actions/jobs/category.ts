@@ -4,7 +4,10 @@ import { prisma } from '@repo/db';
 import { jobCategorySchema } from '@repo/shared/validations';
 import { z } from '@repo/ui';
 
-export const handleJobCategory = async (values: z.infer<typeof jobCategorySchema>) => {
+export const handleJobCategory = async (
+  values: z.infer<typeof jobCategorySchema>,
+  categoryId?: string,
+) => {
   try {
     const { data, success, error } = await jobCategorySchema.safeParseAsync(values);
 
@@ -21,7 +24,7 @@ export const handleJobCategory = async (values: z.infer<typeof jobCategorySchema
 
     const category = await prisma.jobCategory.upsert({
       where: {
-        slug: values.slug,
+        id: categoryId ?? '-1',
       },
       update: {
         slug: data.slug,
@@ -45,6 +48,27 @@ export const handleJobCategory = async (values: z.infer<typeof jobCategorySchema
     return {
       success: false,
       message: 'Failed to handle Job Category',
+    };
+  }
+};
+
+export const deleteJobCategory = async (id: string) => {
+  try {
+    await prisma.jobCategory.delete({
+      where: {
+        id,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Job Category Deleted Successfully!',
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Error while deleting job category!',
     };
   }
 };

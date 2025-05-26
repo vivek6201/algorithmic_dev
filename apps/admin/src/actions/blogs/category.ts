@@ -4,7 +4,7 @@ import { prisma } from '@repo/db';
 import { blogCategorySchema } from '@repo/shared/validations';
 import { z } from '@repo/ui';
 
-const createCategory = async (values: z.infer<typeof blogCategorySchema>) => {
+const createBlogCategory = async (values: z.infer<typeof blogCategorySchema>) => {
   const { success, data, error } = await blogCategorySchema.safeParseAsync(values);
 
   if (!success) {
@@ -48,9 +48,9 @@ const createCategory = async (values: z.infer<typeof blogCategorySchema>) => {
   }
 };
 
-export default createCategory;
+export default createBlogCategory;
 
-export const editCategory = async (
+export const editBlogCategory = async (
   id: string,
   values: z.infer<ReturnType<(typeof blogCategorySchema)['partial']>>,
 ) => {
@@ -82,17 +82,56 @@ export const editCategory = async (
       };
     }
 
-    category = await prisma.blogCategory.update({
-      where: { id },
-      data: {
-        ...values,
-      },
+    category = await prisma.$transaction(async (tx) => {
+      const checkSlug = await tx.blogCategory.findUnique({
+        where: {
+          slug: values.slug,
+        },
+      });
+
+      if (checkSlug) {
+        throw new Error('New Category slug already exists!');
+      }
+
+      const updatedCategory = await tx.blogCategory.update({
+        where: { id },
+        data: {
+          ...values,
+        },
+      });
+      return updatedCategory;
     });
+
+    return {
+      success: true,
+      message: 'Category updated successfully!',
+    };
   } catch (error) {
     console.error(error);
     return {
       success: false,
       message: 'Error while editing category!',
+    };
+  }
+};
+
+export const deleteBlogCategory = async (id: string) => {
+  try {
+    await prisma.blogCategory.delete({
+      where: {
+        id,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Blog Category Deleted Successfully!',
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Failed to delete blog category!',
     };
   }
 };

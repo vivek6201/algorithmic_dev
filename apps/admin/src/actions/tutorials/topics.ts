@@ -132,3 +132,24 @@ export const updateTopic = async (
     };
   }
 };
+
+export const deleteTutorialTopic = async (id: string) => {
+  try {
+    await prisma.topic.delete({
+      where: {
+        id,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'topic deleted successfully!',
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Failed to delete topic',
+    };
+  }
+};

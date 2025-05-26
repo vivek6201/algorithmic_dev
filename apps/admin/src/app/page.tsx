@@ -1,5 +1,5 @@
 import { AuthForm } from '@/components/site/pages/auth/AuthForm';
-import { auth } from '@/lib/auth';
+import { nextAuthResult } from '@/lib/auth';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import React from 'react';
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function page() {
-  const session = await auth();
+  const session = await nextAuthResult.auth();
 
   if (session?.user) redirect('/dashboard');
 

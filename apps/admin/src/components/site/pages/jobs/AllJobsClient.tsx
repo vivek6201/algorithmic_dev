@@ -29,7 +29,7 @@ import { toast } from '@repo/ui/components/ui/sonner';
 import { z } from '@repo/ui';
 import { useRouter } from 'nextjs-toploader/app';
 import StatusSelector from '../shared/StatusSelector';
-import ManageJobsModal from './ManageJobsModal';
+import ManageJobsModal from './ManageJobsCategoryModal';
 import { jobCategorySchema } from '@repo/shared/validations';
 import { handleJobCategory } from '@/actions/jobs/category';
 import { updateJobStatus } from '@/actions/jobs/publish';
@@ -123,7 +123,7 @@ export default function AllJobsClient() {
               <Plus className="w-4 h-4 mr-1" /> New Category
             </Button>
 
-            <Link href="/admin/jobs/create">
+            <Link href="/dashboard/jobs/create">
               <Button>
                 <Plus className="w-4 h-4 mr-1" /> New Job
               </Button>
@@ -199,7 +199,7 @@ export default function AllJobsClient() {
                       <TableCell>{job.experienceLevel.split('_').join(' ')}</TableCell>
                       <TableCell>{job.type}</TableCell>
                       <TableCell className="text-right space-x-2">
-                        <Link href={`/admin/jobs/edit/${job.slug}`}>
+                        <Link href={`/dashboard/jobs/edit/${job.slug}`}>
                           <Button size="sm" variant="outline">
                             <Edit className="w-4 h-4" />
                           </Button>

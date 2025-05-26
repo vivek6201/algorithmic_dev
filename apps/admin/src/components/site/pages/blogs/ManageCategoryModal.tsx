@@ -33,7 +33,7 @@ export default function CategoryModal({
 }: {
   open: boolean;
   handleClose: () => void;
-  onSave: (data: z.infer<typeof blogCategorySchema>) => void;
+  onSave: (data: z.infer<typeof blogCategorySchema>, categoryId?: string) => void;
   editData?: BlogCategory | null;
 }) {
   const form = hookForm.useForm<z.infer<typeof blogCategorySchema>>({
@@ -75,7 +75,7 @@ export default function CategoryModal({
   }, [form]);
 
   function onSubmit(values: z.infer<typeof blogCategorySchema>) {
-    onSave(values);
+    onSave(values, editData?.id);
   }
 
   return (

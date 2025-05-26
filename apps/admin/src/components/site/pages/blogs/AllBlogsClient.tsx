@@ -29,7 +29,7 @@ import { toast } from '@repo/ui/components/ui/sonner';
 import { deleteBlog } from '@/actions/blogs/blog';
 import CategoryModal from './ManageCategoryModal';
 import { z } from '@repo/ui';
-import { blogCategorySchema } from '@repo/shared';
+import { blogCategorySchema } from '@repo/shared/validations';
 import createCategory from '@/actions/blogs/category';
 import { updateBlogStatus } from '@/actions/blogs/publish';
 import { useRouter } from 'nextjs-toploader/app';
@@ -123,7 +123,7 @@ export default function AllBlogsClient() {
               <Plus className="w-4 h-4 mr-1" /> New Category
             </Button>
 
-            <Link href="/admin/blogs/create">
+            <Link href="/dashboard/blogs/create">
               <Button>
                 <Plus className="w-4 h-4 mr-1" /> New Blog
               </Button>
@@ -186,7 +186,7 @@ export default function AllBlogsClient() {
                       </TableCell>
                       <TableCell>{blog.authorName}</TableCell>
                       <TableCell className="text-right space-x-2">
-                        <Link href={`/admin/blogs/edit/${blog.slug}`}>
+                        <Link href={`/dashboard/blogs/edit/${blog.slug}`}>
                           <Button size="sm" variant="outline">
                             <Edit className="w-4 h-4" />
                           </Button>

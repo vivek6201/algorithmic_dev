@@ -15,7 +15,7 @@ export const revalidate = 60;
 export default async function JobsPage() {
   const jobCategories = await getClientJobCategories();
   return (
-    <div className="w-11/12 max-w-[1400px] mx-auto mt-5 min-h-screen">
+    <div className="w-11/12 max-w-[1400px] mx-auto mt-24 min-h-screen">
       <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] md:px-0">
         {/* Left Sidebar: Filters */}
         <aside className="space-y-4 hidden lg:block">

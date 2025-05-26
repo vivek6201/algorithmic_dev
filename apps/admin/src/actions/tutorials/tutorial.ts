@@ -108,7 +108,7 @@ export const deleteTutorial = async (id: string) => {
 
     const tutExists = await prisma.tutorial.findUnique({ where: { id } });
 
-    if (tutExists)
+    if (!tutExists)
       return {
         success: false,
         message: 'Tutorial does not exist',

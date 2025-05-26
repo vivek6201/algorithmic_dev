@@ -6,7 +6,7 @@ import React from 'react';
 
 export default function Home() {
   return (
-    <div className="w-full px-5 md:px-10 max-w-[1400px] mx-auto">
+    <div className="w-full">
       <HeroSection />
       <FeatureSection />
       <TestimonialSection />

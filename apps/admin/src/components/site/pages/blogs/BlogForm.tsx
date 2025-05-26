@@ -85,7 +85,7 @@ function BlogForm({
       }
 
       toast.success('Blog updated successfully!');
-      router.push('/admin/blogs');
+      router.push('/dashboard/blogs');
     } else {
       const { success, error, message } = await createBlog(values);
 
@@ -96,7 +96,7 @@ function BlogForm({
       }
 
       toast.success('Blog created successfully');
-      router.push('/admin/blogs');
+      router.push('/dashboard/blogs');
     }
   }
 

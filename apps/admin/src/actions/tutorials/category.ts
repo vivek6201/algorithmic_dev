@@ -4,7 +4,7 @@ import { prisma } from '@repo/db';
 import { tutorialCategorySchema } from '@repo/shared/validations';
 import { z } from '@repo/ui';
 
-const createCategory = async (values: z.infer<typeof tutorialCategorySchema>) => {
+const createTutorialCategory = async (values: z.infer<typeof tutorialCategorySchema>) => {
   const { success, data, error } = await tutorialCategorySchema.safeParseAsync(values);
 
   if (!success) {
@@ -48,11 +48,11 @@ const createCategory = async (values: z.infer<typeof tutorialCategorySchema>) =>
   }
 };
 
-export default createCategory;
+export default createTutorialCategory;
 
-export const editCategory = async (
-  id: string,
+export const editTutorialCategory = async (
   values: z.infer<ReturnType<(typeof tutorialCategorySchema)['partial']>>,
+  id: string,
 ) => {
   const { success, error } = await tutorialCategorySchema.partial().safeParseAsync(values);
 
@@ -82,17 +82,55 @@ export const editCategory = async (
       };
     }
 
-    category = await prisma.tutorialCategory.update({
-      where: { id },
-      data: {
-        ...values,
-      },
+    category = await prisma.$transaction(async (tx) => {
+      const checkNewSlug = await tx.tutorialCategory.findUnique({
+        where: {
+          slug: values.slug,
+        },
+      });
+
+      if (checkNewSlug) throw new Error('New slug already exists!');
+
+      const updatedCategory = await tx.tutorialCategory.update({
+        where: { id },
+        data: {
+          ...values,
+        },
+      });
+
+      return updatedCategory;
     });
+
+    return {
+      success: true,
+      message: 'Category updated successfully!',
+    };
   } catch (error) {
     console.error(error);
     return {
       success: false,
       message: 'Error while editing category!',
+    };
+  }
+};
+
+export const deleteTutorialCategory = async (id: string) => {
+  try {
+    await prisma.tutorialCategory.delete({
+      where: {
+        id,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Category Deleted Successfully',
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Failed to delete category!',
     };
   }
 };

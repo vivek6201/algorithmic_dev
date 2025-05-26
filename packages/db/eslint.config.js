@@ -11,25 +11,28 @@ const compat = new FlatCompat({
   allConfig: js.configs.all,
 });
 
-module.exports = defineConfig([
-  {
-    extends: compat.extends('@repo/eslint-config/library.js'),
+module.exports = defineConfig(
+  [
+    {
+      extends: compat.extends('@repo/eslint-config/library.js'),
 
-    languageOptions: {
-      parser: tsParser,
+      languageOptions: {
+        parser: tsParser,
 
-      parserOptions: {
-        project: true,
+        parserOptions: {
+          project: true,
+        },
+      },
+
+      rules: {
+        'turbo/no-undeclared-env-vars': [
+          'error',
+          {
+            allowList: ['NODE_ENV'],
+          },
+        ],
       },
     },
-
-    rules: {
-      'turbo/no-undeclared-env-vars': [
-        'error',
-        {
-          allowList: ['NODE_ENV'],
-        },
-      ],
-    },
-  },
-]);
+  ],
+  globalIgnores(['src/generated/', 'node_modules/.prisma']),
+);

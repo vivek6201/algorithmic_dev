@@ -16,7 +16,7 @@ interface CustomSelectProps {
   placeholder?: string;
 }
 
-const CustomSelect: React.FC<CustomSelectProps> = ({
+export const CustomSelect: React.FC<CustomSelectProps> = ({
   value,
   options,
   onChange,
@@ -29,7 +29,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   const isDark = theme === 'dark';
 
   const colors = {
-    bg: isDark ? '#171717' : '#ffffff',
+    bg: isDark ? '#020817' : '#ffffff',
     border: isDark ? '#3f3f46' : '#e5e5e5',
     text: isDark ? '#f5f5f5' : '#111827',
     placeholder: isDark ? '#a3a3a3' : '#6b7280',
@@ -117,5 +117,3 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     />
   );
 };
-
-export default CustomSelect;

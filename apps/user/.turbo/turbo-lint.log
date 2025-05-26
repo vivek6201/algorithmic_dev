@@ -3,7 +3,7 @@
 > user@0.1.0 lint /home/vivek/Desktop/Personal Projects/algorithmic_dev/apps/user
 > next lint
 
-(node:341767) ESLintIgnoreWarning: The ".eslintignore" file is no longer supported. Switch to using the "ignores" property in "eslint.config.js": https://eslint.org/docs/latest/use/configure/migration-guide#ignoring-files
+(node:501356) ESLintIgnoreWarning: The ".eslintignore" file is no longer supported. Switch to using the "ignores" property in "eslint.config.js": https://eslint.org/docs/latest/use/configure/migration-guide#ignoring-files
 (Use `node --trace-warnings ...` to show where the warning was created)
 
 [36m./src/actions/common/send-email.ts[39m
@@ -13,13 +13,34 @@
 [36m./src/components/shared/email-templates/verify-email.tsx[39m
 [33m10[39m:[33m19[39m  [33m[1mWarning[22m[39m: AUTH_URL is not listed as a dependency in turbo.json  [90m[1mturbo/no-undeclared-env-vars[22m[39m
 
+[36m./src/components/site/pages/home/HeroSection.tsx[39m
+[33m4[39m:[33m33[39m  [33m[1mWarning[22m[39m: 'Play' is defined but never used.  [90m[1mno-unused-vars[22m[39m
+
+[36m./src/components/site/pages/jobs/JobHeaderBlock.tsx[39m
+[33m9[39m:[33m49[39m  [33m[1mWarning[22m[39m: 'slug' is defined but never used.  [90m[1mno-unused-vars[22m[39m
+
+[36m./src/components/site/pages/profile/project/ProjectBlock.tsx[39m
+[33m10[39m:[33m11[39m  [33m[1mWarning[22m[39m: 'profileData' is assigned a value but never used.  [90m[1mno-unused-vars[22m[39m
+
+[36m./src/components/site/pages/profile/project/ProjectModal.tsx[39m
+[33m15[39m:[33m3[39m  [33m[1mWarning[22m[39m: 'FormDescription' is defined but never used.  [90m[1mno-unused-vars[22m[39m
+[33m23[39m:[33m10[39m  [33m[1mWarning[22m[39m: 'Switch' is defined but never used.  [90m[1mno-unused-vars[22m[39m
+[33m25[39m:[33m10[39m  [33m[1mWarning[22m[39m: 'educationValidation' is defined but never used.  [90m[1mno-unused-vars[22m[39m
+
+[36m./src/components/site/pages/profile/user/UserBlock.tsx[39m
+[33m6[39m:[33m17[39m  [33m[1mWarning[22m[39m: 'useEffect' is defined but never used.  [90m[1mno-unused-vars[22m[39m
+
+[36m./src/contexts/ProfileContext.tsx[39m
+[33m7[39m:[33m48[39m  [33m[1mWarning[22m[39m: 'useEffect' is defined but never used.  [90m[1mno-unused-vars[22m[39m
+[33m7[39m:[33m59[39m  [33m[1mWarning[22m[39m: 'useState' is defined but never used.  [90m[1mno-unused-vars[22m[39m
+
 [36m./src/hooks/useEditorConfig.ts[39m
 [33m11[39m:[33m14[39m  [33m[1mWarning[22m[39m: 'content' is defined but never used.  [90m[1mno-unused-vars[22m[39m
 
 [36m./src/lib/auth.ts[39m
 [33m10[39m:[33m13[39m  [33m[1mWarning[22m[39m: 'User' is defined but never used.  [90m[1mno-unused-vars[22m[39m
-[33m19[39m:[33m17[39m  [33m[1mWarning[22m[39m: GOOGLE_CLIENT_ID is not listed as a dependency in turbo.json  [90m[1mturbo/no-undeclared-env-vars[22m[39m
-[33m20[39m:[33m21[39m  [33m[1mWarning[22m[39m: GOOGLE_CLIENT_SECRET is not listed as a dependency in turbo.json  [90m[1mturbo/no-undeclared-env-vars[22m[39m
-[33m98[39m:[33m10[39m  [33m[1mWarning[22m[39m: NODE_ENV is not listed as a dependency in turbo.json  [90m[1mturbo/no-undeclared-env-vars[22m[39m
+[33m20[39m:[33m17[39m  [33m[1mWarning[22m[39m: GOOGLE_CLIENT_ID is not listed as a dependency in turbo.json  [90m[1mturbo/no-undeclared-env-vars[22m[39m
+[33m21[39m:[33m21[39m  [33m[1mWarning[22m[39m: GOOGLE_CLIENT_SECRET is not listed as a dependency in turbo.json  [90m[1mturbo/no-undeclared-env-vars[22m[39m
+[33m135[39m:[33m10[39m  [33m[1mWarning[22m[39m: NODE_ENV is not listed as a dependency in turbo.json  [90m[1mturbo/no-undeclared-env-vars[22m[39m
 
 [36minfo[39m  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules

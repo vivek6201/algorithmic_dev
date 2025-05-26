@@ -15,20 +15,16 @@
 [33m19[39m:[33m27[39m  [33m[1mWarning[22m[39m: 'signupValidation' is defined but never used.  [90m[1mno-unused-vars[22m[39m
 [33m31[39m:[33m28[39m  [33m[1mWarning[22m[39m: 'isLogin' is defined but never used.  [90m[1mno-unused-vars[22m[39m
 
-[36m./src/components/site/pages/blogs/AllCategoriesClient.tsx[39m
-[33m107[39m:[33m25[39m  [33m[1mWarning[22m[39m: Empty block statement.  [90m[1mno-empty[22m[39m
-
 [36m./src/components/site/pages/blogs/ManageCategoryModal.tsx[39m
 [33m36[39m:[33m12[39m  [33m[1mWarning[22m[39m: 'data' is defined but never used.  [90m[1mno-unused-vars[22m[39m
+[33m36[39m:[33m54[39m  [33m[1mWarning[22m[39m: 'categoryId' is defined but never used.  [90m[1mno-unused-vars[22m[39m
 
-[36m./src/components/site/pages/jobs/ManageJobsModal.tsx[39m
+[36m./src/components/site/pages/jobs/ManageJobsCategoryModal.tsx[39m
 [33m35[39m:[33m12[39m  [33m[1mWarning[22m[39m: 'values' is defined but never used.  [90m[1mno-unused-vars[22m[39m
+[33m35[39m:[33m55[39m  [33m[1mWarning[22m[39m: 'categoryId' is defined but never used.  [90m[1mno-unused-vars[22m[39m
 
 [36m./src/components/site/pages/shared/StatusSelector.tsx[39m
 [33m14[39m:[33m24[39m  [33m[1mWarning[22m[39m: 'curr' is defined but never used.  [90m[1mno-unused-vars[22m[39m
-
-[36m./src/components/site/pages/tutorials/AllCategoryClient.tsx[39m
-[33m97[39m:[33m25[39m  [33m[1mWarning[22m[39m: Empty block statement.  [90m[1mno-empty[22m[39m
 
 [36m./src/components/site/pages/tutorials/CreateTutorialModal.tsx[39m
 [33m42[39m:[33m12[39m  [33m[1mWarning[22m[39m: 'values' is defined but never used.  [90m[1mno-unused-vars[22m[39m
@@ -41,6 +37,7 @@
 
 [36m./src/lib/auth.ts[39m
 [33m8[39m:[33m13[39m  [33m[1mWarning[22m[39m: 'User' is defined but never used.  [90m[1mno-unused-vars[22m[39m
-[33m91[39m:[33m10[39m  [33m[1mWarning[22m[39m: NODE_ENV is not listed as a dependency in turbo.json  [90m[1mturbo/no-undeclared-env-vars[22m[39m
+[33m43[39m:[33m30[39m  [33m[1mWarning[22m[39m: 'account' is defined but never used.  [90m[1mno-unused-vars[22m[39m
+[33m62[39m:[33m10[39m  [33m[1mWarning[22m[39m: NODE_ENV is not listed as a dependency in turbo.json  [90m[1mturbo/no-undeclared-env-vars[22m[39m
 
 [36minfo[39m  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules

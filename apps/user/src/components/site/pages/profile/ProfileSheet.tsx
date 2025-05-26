@@ -1,169 +1,77 @@
-'use client';
-import React from 'react';
 import {
   Sheet,
-  SheetClose,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from '@repo/ui/components/ui/sheet';
-import { Separator } from '@repo/ui/components/ui/separator';
+import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/components/ui/avatar';
 import { Button } from '@repo/ui/components/ui/button';
-import {
-  Bookmark,
-  BookOpen,
-  Briefcase,
-  Github,
-  GraduationCap,
-  LogOut,
-  LucideIcon,
-  Target,
-  X,
-} from '@repo/ui';
+import { User, LogOut, BookOpen } from '@repo/ui';
 import { signOut, useSession } from 'next-auth/react';
-import Image from 'next/image';
 import { useRouter } from 'nextjs-toploader/app';
-import Link from 'next/link';
 
-const forYouLinks: {
-  name: string;
-  value: string;
-  icon: LucideIcon;
-}[] = [
-  {
-    name: 'Jobs',
-    value: '/jobs',
-    icon: Briefcase,
-  },
-  {
-    name: 'Blogs',
-    value: '/blogs',
-    icon: BookOpen,
-  },
-  {
-    name: 'tutorials',
-    value: '/tutorials',
-    icon: GraduationCap,
-  },
-  {
-    name: 'Your Bookmarks',
-    value: '/profile/bookmarks',
-    icon: Bookmark,
-  },
-  {
-    name: 'Your Resources',
-    value: '/profile/resources',
-    icon: Target,
-  },
-];
+interface UserProfileSheetProps {
+  children: React.ReactNode;
+}
 
-export default function ProfileSheet() {
+const UserProfileSheet = ({ children }: UserProfileSheetProps) => {
   const session = useSession();
   const router = useRouter();
 
   return (
     <Sheet>
-      <SheetTrigger className="cursor-pointer" asChild>
-        {session.data?.user?.image ? (
-          <Image
-            src={session.data.user.image}
-            alt="profile image"
-            width={500}
-            height={500}
-            className="w-10 aspect-square rounded-full"
-          />
-        ) : (
-          <div className="w-5 h-5 flex justify-center items-center p-5 rounded-full bg-blue-500">
-            <p className="text-white">{session.data?.user?.name?.[0]}</p>
-          </div>
-        )}
-      </SheetTrigger>
-      <SheetContent className="">
-        <SheetHeader className=" flex w-full justify-between items-center flex-row">
-          <SheetTitle className="text-2xl">Profile</SheetTitle>
-          <SheetDescription></SheetDescription>
-          <SheetClose>
-            <X />
-          </SheetClose>
+      <SheetTrigger asChild>{children}</SheetTrigger>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle className="text-left">Profile</SheetTitle>
         </SheetHeader>
-        <Separator className="-translate-y-3.5" />
+        <div className="flex flex-col space-y-6 mt-6 h-[90%] sm:h-[95%]">
+          {/* User Info */}
+          <div className="flex items-center space-x-4">
+            <Avatar className="h-16 w-16">
+              <AvatarImage src={session.data?.user?.image ?? ''} alt="User" />
+              <AvatarFallback className="text-xl">{session.data?.user?.name?.[0]}</AvatarFallback>
+            </Avatar>
+            <div>
+              <h3 className="text-lg font-semibold">{session.data?.user?.name}</h3>
+              <p className="text-sm text-muted-foreground">{session.data?.user?.email}</p>
+            </div>
+          </div>
 
-        <div className="rounded-xl px-5 flex flex-col gap-y-5 overflow-y-auto">
-          <div className="rounded-lg border p-4 md:p-5 grid grid-cols-1 gap-y-2 md:grid-cols-[40%_1fr] items-center">
-            {session.data?.user?.image ? (
-              <Image
-                src={session.data.user.image}
-                alt="profile image"
-                width={500}
-                height={500}
-                className="w-24 aspect-square rounded-full"
-              />
-            ) : (
-              <div className="w-24 aspect-square flex justify-center items-center p-5 rounded-full bg-blue-500">
-                <p className="text-white text-4xl">{session.data?.user?.name?.[0]}</p>
-              </div>
-            )}
-            <div className="">
-              <h2 className="font-semibold text-lg">{session.data?.user?.name}</h2>
-              <p className="text-sm opacity-70">{session.data?.user?.email}</p>
-              <p className="text-sm opacity-70">{session.data?.user?.role}</p>
-              <Button
-                variant={'outline'}
-                className="w-full mt-2"
-                onClick={() => router.push('/profile')}
-              >
-                Dashboard
-              </Button>
-            </div>
+          {/* Navigation Links */}
+          <div className="space-y-2 flex-1">
+            <Button
+              variant="ghost"
+              className="w-full justify-start"
+              size="lg"
+              onClick={() => router.push('/profile')}
+            >
+              <User className="h-4 w-4 mr-3" />
+              My Profile
+            </Button>
+            <Button
+              variant="ghost"
+              className="w-full justify-start"
+              size="lg"
+              onClick={() => router.push('/profile/bookmarks')}
+            >
+              <BookOpen className="h-4 w-4 mr-3" />
+              My Bookmarks
+            </Button>
           </div>
-          <div className=" flex-1">
-            <Separator />
-            <p className="text-sm p-2 opacity-70">For You</p>
-            <div className="flex flex-col gap-y-1">
-              {forYouLinks.map((fu) => (
-                <Link
-                  href={fu.value}
-                  key={fu.value}
-                  className="w-full rounded-lg text-normal font-light hover:bg-gray-100 dark:hover:bg-neutral-900 flex p-2 duration-150 transition-colors gap-2 justify-start items-center cursor-pointer"
-                >
-                  <fu.icon size={16} />
-                  <p className="capitalize">{fu.name}</p>
-                </Link>
-              ))}
-            </div>
-          </div>
+          <SheetFooter className="pt-4 border-t">
+            <Button variant="outline" className="w-full" size="lg" onClick={() => signOut()}>
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
+            </Button>
+          </SheetFooter>
         </div>
-
-        <SheetFooter className="">
-          <Separator />
-          <div className=" px-3 pt-2 flex flex-col gap-y-2">
-            {session.data?.user?.role === 'Admin' && (
-              <Button
-                size={'lg'}
-                variant={'secondary'}
-                className="cursor-pointer"
-                onClick={() => window.open('/admin', '_blank')}
-              >
-                Admin Dashboard
-              </Button>
-            )}
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 flex-row ">
-              <Button variant={'outline'} size={'lg'} onClick={() => signOut()}>
-                <LogOut />
-                Logout
-              </Button>
-              <Button size={'lg'}>
-                <Github />
-                Contribute
-              </Button>
-            </div>
-          </div>
-        </SheetFooter>
+        {/* Logout Button */}
       </SheetContent>
     </Sheet>
   );
-}
+};
+
+export default UserProfileSheet;

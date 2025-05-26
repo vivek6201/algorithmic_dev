@@ -20,10 +20,10 @@ export class InMemoryCache implements ICache {
     return this.instance;
   }
 
-  async set(
+  async set<T>(
     type: string,
     args: string[],
-    value: any,
+    value: T,
     expirySeconds: number = parseInt(process.env.CACHE_EXPIRE_S || '100', 10),
   ): Promise<void> {
     const key = this.generateKey(type, args);
@@ -33,9 +33,10 @@ export class InMemoryCache implements ICache {
     });
   }
 
-  async get(type: string, args: string[]): Promise<any> {
+  async get<T>(type: string, args: string[]): Promise<any> {
     const key = this.generateKey(type, args);
     const entry = this.inMemoryDb.get(key);
+
     if (!entry) {
       return null;
     }

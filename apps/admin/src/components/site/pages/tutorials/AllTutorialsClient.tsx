@@ -153,7 +153,7 @@ export default function AllTutorialsClient() {
                       <TableCell>{index + 1}</TableCell>
                       <TableCell>{tutorial.title}</TableCell>
                       <TableCell>{tutorial._count.chapters}</TableCell>
-                      <TableCell>{tutorial.createdAt}</TableCell>
+                      <TableCell>{new Date(tutorial.createdAt).toDateString()}</TableCell>
                       <TableCell>
                         <StatusSelector
                           status={tutorial.published}
@@ -161,7 +161,7 @@ export default function AllTutorialsClient() {
                         />
                       </TableCell>
                       <TableCell className="text-right space-x-2">
-                        <Link href={`/admin/tutorials/build/${tutorial.slug}`}>
+                        <Link href={`/dashboard/tutorials/build/${tutorial.slug}`}>
                           <Button size="sm" variant="outline">
                             <Edit className="w-4 h-4" />
                           </Button>

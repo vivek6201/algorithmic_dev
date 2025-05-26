@@ -1,3 +1,4 @@
+import { Role } from '@repo/db';
 import { z } from 'zod';
 
 export const loginValidation = z.object({
@@ -11,7 +12,7 @@ export const signupValidation = z
     password: z.string().min(6).max(16),
     confirmPassword: z.string().min(6).max(16),
     email: z.string().email(),
-    role: z.enum(['User', 'Employer', 'Admin']),
+    role: z.nativeEnum(Role),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords must match',

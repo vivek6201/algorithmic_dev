@@ -35,7 +35,7 @@ const JobListings = () => {
   });
 
   return (
-    <main className="flex-1 max-w-4xl mx-auto space-y-6">
+    <main className="flex-1 w-full mx-auto space-y-6">
       {isLoading && <p>Loading jobs...</p>}
       {isError && <p>Failed to load jobs.</p>}
       {!isLoading && jobs.length <= 0 && <p>No jobs found</p>}

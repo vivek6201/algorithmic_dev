@@ -13,7 +13,7 @@ export default async function TutorialLayout({
   const { data } = await getClientTutorialChapters(slug);
 
   return (
-    <div className="w-11/12 flex max-w-[1400px] mx-auto">
+    <div className="w-11/12 flex max-w-[1400px] mx-auto mt-24">
       <div className="hidden lg:block h-full">
         <TutorialSidebar data={data} topicSlug={topicSlug} />
       </div>

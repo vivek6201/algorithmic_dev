@@ -16,8 +16,8 @@ export default async function page() {
   const { data: categories } = await getClientBlogsCategories();
 
   return (
-    <div className="w-full max-w-[1400px] mx-auto mt-5 min-h-screen">
-      <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-5 w-11/12 mx-auto px-0">
+    <div className="w-full max-w-[1400px] mx-auto mt-24 min-h-screen">
+      <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-5 w-full px-5 xl:px-0 mx-auto">
         {/* Left Sidebar: Filters */}
         <aside className="space-y-4 hidden lg:block w-full">
           <div className="p-4 rounded-2xl shadow-md border dark:bg-neutral-900">

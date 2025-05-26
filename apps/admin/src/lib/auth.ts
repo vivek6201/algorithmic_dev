@@ -10,7 +10,7 @@ declare module 'next-auth' {
   }
 }
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const nextAuthResult = NextAuth({
   providers: [
     Credentials({
       credentials: {
@@ -22,15 +22,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (!success) return null;
 
-        const user = await prisma.user.findUnique({
+        const user = await prisma.admin.findUnique({
           where: { email: data.email },
         });
 
         if (!user) throw new Error('User not found!');
-
-        if (!user.emailVerified) {
-          throw new Error('Please verify your email before logging in.');
-        }
 
         const matchPass = user.password && (await bcrypt.compare(data.password, user.password));
 
@@ -48,31 +44,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.id = user.id;
         token.role = user.role;
-      }
-      // Handle Google sign-in
-      if (account && (account?.provider === 'google' || account?.provider === 'github')) {
-        // Check if user exists, if not, create new user
-        const existingUser = await prisma.user.findUnique({
-          where: { email: user.email ?? '' },
-        });
-
-        if (!existingUser) {
-          // Create new user if they don't exist
-          const newUser = await prisma.user.create({
-            data: {
-              email: user?.email ?? '',
-              name: user?.name ?? '',
-              image: user?.image ?? '',
-              emailVerified: new Date(),
-            },
-          });
-          token.id = newUser.id;
-          token.role = newUser.role;
-        } else {
-          // Existing user
-          token.id = existingUser.id;
-          token.role = existingUser.role;
-        }
       }
       return token;
     },

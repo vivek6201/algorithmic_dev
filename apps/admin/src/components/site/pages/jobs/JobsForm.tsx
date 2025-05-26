@@ -104,7 +104,7 @@ export default function JobsForm({ job, isEdit = false }: { isEdit?: boolean; jo
       }
 
       toast.success('Job updated successfully!');
-      router.push('/admin/jobs');
+      router.push('/dashboard/jobs');
     } else {
       const { success, error, message } = await createJob(values);
 
@@ -115,7 +115,7 @@ export default function JobsForm({ job, isEdit = false }: { isEdit?: boolean; jo
       }
 
       toast.success('Job created successfully');
-      router.push('/admin/jobs');
+      router.push('/dashboard/jobs');
     }
   }
 
@@ -154,7 +154,7 @@ export default function JobsForm({ job, isEdit = false }: { isEdit?: boolean; jo
             name="type"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Apply Link</FormLabel>
+                <FormLabel>Job type</FormLabel>
                 <FormControl>
                   <CustomSelect
                     options={[

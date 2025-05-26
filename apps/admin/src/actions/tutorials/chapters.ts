@@ -87,3 +87,24 @@ export const createChapter = async (
     };
   }
 };
+
+export const deleteTutorialChapter = async (id: string) => {
+  try {
+    await prisma.chapter.delete({
+      where: {
+        id,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Chapter deleted successfully!',
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Failed to delete chapter',
+    };
+  }
+};

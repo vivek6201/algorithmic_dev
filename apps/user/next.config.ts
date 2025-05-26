@@ -22,6 +22,7 @@ const nextConfig: NextConfig = {
       allowedOrigins: ['localhost:3000', 'algorithmicdev.in'],
     },
   },
+  transpilePackages: ['@repo/db', '@repo/ui', '@repo/shared'],
 };
 
 export default nextConfig;

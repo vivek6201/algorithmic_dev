@@ -34,7 +34,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
   }
 
   return (
-    <div className="w-full max-w-[1400px] mx-auto px-4 mt-5 mb-16 text-gray-800 dark:text-gray-100 ">
+    <div className="w-full max-w-[1400px] mx-auto px-4 mt-24 mb-16 text-gray-800 dark:text-gray-100 ">
       {/* Breadcrumb */}
       <Breadcrumbs />
 

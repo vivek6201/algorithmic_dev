@@ -21,16 +21,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/components/ui/dialog';
-import { blogCategorySchema } from '@repo/shared';
+import { blogCategorySchema } from '@repo/shared/validations';
 import { z } from '@repo/ui';
 import { useQuery } from '@tanstack/react-query';
-import createCategory from '@/actions/blogs/category';
+import { deleteBlogCategory, editBlogCategory } from '@/actions/blogs/category';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { BlogCategory } from '@repo/db';
 import CategoryModal from './ManageCategoryModal';
 import { updateBlogCategoryStatus } from '@/actions/blogs/publish';
 import { useRouter } from 'nextjs-toploader/app';
 import StatusSelector from '../shared/StatusSelector';
+import createBlogCategory from '@/actions/blogs/category';
 
 export default function AllCategoriesClient() {
   const [search, setSearch] = useState('');
@@ -74,7 +75,15 @@ export default function AllCategoriesClient() {
 
   // write handle delete
   const handleDelete = async (id: string) => {
-    console.log(id);
+    const { message, success } = await deleteBlogCategory(id);
+
+    if (!success) {
+      toast.error(message);
+      return;
+    }
+
+    toast.success(message);
+    refetch();
   };
 
   const handleStatusUpdate = async (id: string, status: boolean) => {
@@ -102,12 +111,24 @@ export default function AllCategoriesClient() {
     setEditCategory(null);
   };
 
-  const handleSaveCategory = async (data: z.infer<typeof blogCategorySchema>): Promise<void> => {
+  const handleSaveCategory = async (
+    data: z.infer<typeof blogCategorySchema>,
+    categoryId?: string,
+  ): Promise<void> => {
     try {
-      if (editCategory) {
+      if (editCategory && categoryId) {
+        const { success, message } = await editBlogCategory(categoryId, data);
+
+        if (!success) {
+          toast.error(message);
+          return;
+        }
+
+        toast.success(message);
+        refetch();
       } else {
         // Add new category
-        const { success, message, newCategory } = await createCategory(data);
+        const { success, message, newCategory } = await createBlogCategory(data);
 
         if (success && newCategory) {
           toast.success('Category created successfully');
@@ -182,7 +203,7 @@ export default function AllCategoriesClient() {
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{category.name}</TableCell>
                     <TableCell>{category.slug}</TableCell>
-                    <TableCell>{new Date(category.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell>{new Date(category.createdAt).toDateString()}</TableCell>
                     <TableCell>
                       <StatusSelector
                         status={category.published}
@@ -199,11 +220,7 @@ export default function AllCategoriesClient() {
                       </Button>
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => handleDelete(category.id)}
-                          >
+                          <Button size="sm" variant="destructive">
                             <Trash2 className="w-4 h-4" />
                           </Button>
                         </DialogTrigger>

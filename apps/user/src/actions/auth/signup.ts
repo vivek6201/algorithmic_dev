@@ -30,6 +30,13 @@ const signupAction = async (data: z.infer<typeof signupValidation>) => {
         name: data.name,
         password: hashPass(data.password),
         role: data.role,
+        profile: {
+          create: {
+            bio: '',
+            dateOfBirth: new Date(),
+            image: '',
+          },
+        },
       },
     });
 

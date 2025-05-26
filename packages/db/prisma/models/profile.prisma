@@ -12,7 +12,7 @@ model Profile {
   languages   String[]
   dateOfBirth DateTime
   hobbies     String[]
-  personType  PersonType
+  personType  PersonType?
 
   blogReaction BlogReaction[] // Reactions for blogs
 

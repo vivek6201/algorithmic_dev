@@ -27,21 +27,25 @@ function BlogsList() {
 
   return (
     <div className="flex flex-col gap-y-6">
-      {isLoading && <p>Loading tutorials...</p>}
-      {isError && <p>Failed to load tutorials.</p>}
-      {blogs?.map((blog: any) => {
-        return (
-          <BlogCard
-            key={blog.id}
-            title={blog.title}
-            description={blog.description}
-            author={blog.authorName}
-            category={blog.category.name}
-            date={blog.updatedAt}
-            slug={blog.slug}
-          />
-        );
-      })}
+      {isLoading && <p>Loading Blogs...</p>}
+      {isError && <p>Failed to load Blogs.</p>}
+      {!isLoading && blogs.length > 0 ? (
+        blogs?.map((blog: any) => {
+          return (
+            <BlogCard
+              key={blog.id}
+              title={blog.title}
+              description={blog.description}
+              author={blog.authorName}
+              category={blog.category.name}
+              date={blog.updatedAt}
+              slug={blog.slug}
+            />
+          );
+        })
+      ) : (
+        <p>No Blogs found</p>
+      )}
     </div>
   );
 }

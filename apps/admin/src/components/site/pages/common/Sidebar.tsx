@@ -49,51 +49,51 @@ interface SidebarItem {
 const sidebarItems = [
   {
     name: 'Jobs',
-    href: '/admin/jobs',
+    href: '/dashboard/jobs',
     icon: Briefcase,
     children: [
       {
         name: 'Categories',
-        href: '/admin/jobs/categories',
+        href: '/dashboard/jobs/categories',
         icon: FolderOpen,
       },
       {
         name: 'All jobs',
-        href: '/admin/jobs',
+        href: '/dashboard/jobs',
         icon: FolderOpen,
       },
     ], // No children for Jobs section
   },
   {
     name: 'Tutorials',
-    href: '/admin/tutorials',
+    href: '/dashboard/tutorials',
     icon: BookOpen,
     children: [
       {
         name: 'Categories',
-        href: '/admin/tutorials/categories',
+        href: '/dashboard/tutorials/categories',
         icon: FolderOpen,
       },
       {
         name: 'All Tutorials',
-        href: '/admin/tutorials',
+        href: '/dashboard/tutorials',
         icon: ListFilter,
       },
     ],
   },
   {
     name: 'Blogs',
-    href: '/admin/blogs',
+    href: '/dashboard/blogs',
     icon: Newspaper,
     children: [
       {
         name: 'Categories',
-        href: '/admin/blogs/categories',
+        href: '/dashboard/blogs/categories',
         icon: FolderOpen,
       },
       {
         name: 'All Blogs',
-        href: '/admin/blogs', // Fixed path - was missing '/all'
+        href: '/dashboard/blogs', // Fixed path - was missing '/all'
         icon: ListFilter,
       },
     ],

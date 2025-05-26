@@ -24,7 +24,7 @@ import { Input } from '@repo/ui/components/ui/input';
 import { Button } from '@repo/ui/components/ui/button';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 
-export default function ManageJobsModal({
+export default function ManageJobCategoryModal({
   open,
   handleClose,
   onSave,
@@ -32,7 +32,7 @@ export default function ManageJobsModal({
 }: {
   open: boolean;
   handleClose: () => void;
-  onSave: (values: z.infer<typeof jobCategorySchema>) => Promise<void>;
+  onSave: (values: z.infer<typeof jobCategorySchema>, categoryId?: string) => Promise<void>;
   editData?: JobCategory | null;
 }) {
   const form = hookForm.useForm<z.infer<typeof jobCategorySchema>>({
@@ -77,7 +77,7 @@ export default function ManageJobsModal({
   }, [form]);
 
   function onSubmit(values: z.infer<typeof jobCategorySchema>) {
-    onSave(values);
+    onSave(values, editData?.id);
   }
 
   return (

@@ -11,14 +11,14 @@
     "format:fix": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css,yaml,yml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,mdx,css,yaml,yml}\"",
     "ui": "pnpm --filter @repo/ui ui",
-	"prepare": "husky"
+    "prepare": "husky"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "prettier": "^3.5.3",
     "turbo": "^2.5.3",
-	"husky": "^9.1.7"
+    "husky": "^9.1.7"
   },
   "packageManager": "pnpm@9.12.0",
   "engines": {

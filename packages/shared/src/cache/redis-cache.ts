@@ -17,7 +17,7 @@ export class RedisCache implements ICache {
     return this.instance;
   }
 
-  async set(type: string, args: string[], value: any, expirySeconds: number): Promise<void> {
+  async set<T>(type: string, args: string[], value: T, expirySeconds: number): Promise<void> {
     const key = this.generateKey(type, args);
     if (expirySeconds) {
       await this.client.set(key, JSON.stringify(value), 'EX', expirySeconds);
@@ -26,7 +26,7 @@ export class RedisCache implements ICache {
     }
   }
 
-  async get(type: string, args: string[]): Promise<any> {
+  async get<T>(type: string, args: string[]): Promise<any> {
     const key = this.generateKey(type, args);
     const value = await this.client.get(key);
     return value ? JSON.parse(value) : null;

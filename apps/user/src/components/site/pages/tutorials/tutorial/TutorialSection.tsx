@@ -43,7 +43,8 @@ export default function TutorialSection({
       <div className="flex w-full items-center gap-5 lg:hidden border-b py-2">
         <Menu size={18} className="opacity-70" />
       </div>
-      <div className="w-full px-10 h-full overflow-y-auto scrollbar-none">
+      <div className="w-full py-10 md:px-10 h-full overflow-y-auto scrollbar-none">
+        <h2 className="text-2xl font-bold mb-5 ml-4">{data.title}</h2>
         <HTMLRenderer content={data.content} />
         <div className="flex justify-between items-center border-t mt-5 py-5">
           <Button

@@ -25,9 +25,9 @@ import { z } from '@repo/ui';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { JobCategory } from '@repo/db';
-import ManageJobsModal from './ManageJobsModal';
-import { handleJobCategory } from '@/actions/jobs/category';
+import { deleteJobCategory, handleJobCategory } from '@/actions/jobs/category';
 import { jobCategorySchema } from '@repo/shared/validations';
+import ManageJobCategoryModal from './ManageJobsCategoryModal';
 
 export default function AllCategoriesClient() {
   const [search, setSearch] = useState('');
@@ -70,7 +70,15 @@ export default function AllCategoriesClient() {
 
   // write handle delete
   const handleDelete = async (id: string) => {
-    console.log(id);
+    const { success, message } = await deleteJobCategory(id);
+
+    if (!success) {
+      toast.error(message);
+      return;
+    }
+
+    toast.success(message);
+    refetch();
   };
 
   const handleAddCategory = () => {
@@ -88,9 +96,12 @@ export default function AllCategoriesClient() {
     setEditCategory(null);
   };
 
-  const handleSaveCategory = async (values: z.infer<typeof jobCategorySchema>): Promise<void> => {
+  const handleSaveCategory = async (
+    values: z.infer<typeof jobCategorySchema>,
+    categoryId?: string,
+  ): Promise<void> => {
     try {
-      const { success, message, data } = await handleJobCategory(values);
+      const { success, message, data } = await handleJobCategory(values, categoryId);
 
       if (success && data) {
         toast.success('Category created successfully');
@@ -174,11 +185,7 @@ export default function AllCategoriesClient() {
                       </Button>
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => handleDelete(category.id)}
-                          >
+                          <Button size="sm" variant="destructive">
                             <Trash2 className="w-4 h-4" />
                           </Button>
                         </DialogTrigger>
@@ -203,7 +210,7 @@ export default function AllCategoriesClient() {
           </Table>
         </div>
       </div>
-      <ManageJobsModal
+      <ManageJobCategoryModal
         open={categoryModalOpen}
         handleClose={handleCloseModal}
         onSave={handleSaveCategory}
