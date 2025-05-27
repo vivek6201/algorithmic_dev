@@ -19,10 +19,11 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     serverActions: {
-      allowedOrigins: ['localhost:3000', 'algorithmicdev.in'],
+      allowedOrigins: ['localhost:3001', 'admin.algorithmicdev.in'],
     },
   },
   transpilePackages: ['@repo/db', '@repo/ui', '@repo/shared'],
+  output: 'standalone',
 };
 
 export default nextConfig;

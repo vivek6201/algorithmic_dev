@@ -23,6 +23,7 @@ const nextConfig: NextConfig = {
     },
   },
   transpilePackages: ['@repo/db', '@repo/ui', '@repo/shared'],
+  output: 'standalone',
 };
 
 export default nextConfig;
