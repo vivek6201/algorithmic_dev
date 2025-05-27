@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  user-app:
-    image: vivek6201/algorithmic-user
+  user:
+    image: vivek6201/algorithmicdev
     build:
-      context: . # Assuming root of the monorepo
-      dockerfile: Dockerfile # Path to the Dockerfile
+      context: ../../ # Assuming root of the monorepo
+      dockerfile: apps/user/Dockerfile
     ports:
       - '3000:3000' # Expose port 3000
     env_file:
