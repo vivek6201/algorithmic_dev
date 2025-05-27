@@ -39,4 +39,7 @@ COPY --from=installer /app/apps/user/.next/standalone ./
 COPY --from=installer /app/apps/user/.next/static ./apps/user/.next/static
 COPY --from=installer /app/apps/user/public ./apps/user/public
 
+EXPOSE 3000
+ENV NODE_ENV=production
+
 CMD ["node", "apps/user/server.js"]
