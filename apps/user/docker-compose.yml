@@ -1,22 +1,22 @@
 version: '3.8'
 
 services:
-  app:
-    image: vivek6201/algorithmicdev
+  user-app:
+    image: vivek6201/algorithmic-user
     build:
-      context: .
-      dockerfile: Dockerfile
-      target: runner
+      context: . # Assuming root of the monorepo
+      dockerfile: Dockerfile # Path to the Dockerfile
+      target: runner # Use the final runner stage
     ports:
-      - '3000:3000'
+      - '3000:3000' # Expose port 3000
     env_file:
-      - .env
+      - .env # Load environment variables
     environment:
-      NODE_ENV: production
+      NODE_ENV: production # Explicitly set NODE_ENV
     restart: always
-    command: ['node', 'server.js']
+    command: ['node', 'apps/user/server.js']
     deploy:
       resources:
         limits:
-          memory: 512M # Limit memory usage to 512MB
-          cpus: '0.5' # Limit to 0.5 vCPU
+          memory: 512M # Memory cap
+          cpus: '0.5' # CPU limit
