@@ -6,7 +6,6 @@ services:
     build:
       context: . # Assuming root of the monorepo
       dockerfile: Dockerfile # Path to the Dockerfile
-      target: runner # Use the final runner stage
     ports:
       - '3000:3000' # Expose port 3000
     env_file:
