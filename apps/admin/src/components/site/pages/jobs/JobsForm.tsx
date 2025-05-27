@@ -18,7 +18,7 @@ import { Input } from '@repo/ui/components/ui/input';
 import { Button } from '@repo/ui/components/ui/button';
 import RichTextEditor from '@/components/site/shared/editor/TextEditor';
 import { Textarea } from '@repo/ui/components/ui/textarea';
-import CustomSelect from '@repo/ui/components/ui/custom-select';
+import { CustomSelect } from '@repo/ui/components/ui/custom-select';
 import { useQuery } from '@tanstack/react-query';
 
 type JobProps = {

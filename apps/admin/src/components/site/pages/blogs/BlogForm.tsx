@@ -16,7 +16,7 @@ import {
 import { Input } from '@repo/ui/components/ui/input';
 import RichTextEditor from '@/components/site/shared/editor/TextEditor';
 import { useQuery } from '@tanstack/react-query';
-import CustomSelect from '@repo/ui/components/ui/custom-select';
+import { CustomSelect } from '@repo/ui/components/ui/custom-select';
 import createBlog, { updateBlog } from '@/actions/blogs/blog';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'nextjs-toploader/app';

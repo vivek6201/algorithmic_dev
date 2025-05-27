@@ -23,7 +23,7 @@ import { Input } from '@repo/ui/components/ui/input';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import CustomSelect from '@repo/ui/components/ui/custom-select';
+import { CustomSelect } from '@repo/ui/components/ui/custom-select';
 
 export function CreateTutorialModal({
   open,

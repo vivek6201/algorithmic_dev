@@ -1,58 +1,42 @@
-# Stage 1: Dependency Installation and Project Build
-# We use a full Node.js image for building as it has all necessary tools.
-FROM node:23-alpine AS builder
+# ---- Base image with core dependencies ----
+FROM node:23-alpine AS base
+RUN apk add --no-cache libc6-compat
 
-# Set working directory inside the container
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
+# ---- Builder stage: install pnpm & turbo, prune app ----
+FROM base AS builder
+
+RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN pnpm add -g turbo
+
 WORKDIR /app
+COPY . .
+RUN turbo prune user --docker
 
-# Copy Turborepo package.json and pnpm-lock.yaml (or yarn.lock/package-lock.json)
-# This allows caching of dependencies if they don't change.
-COPY package.json pnpm-lock.yaml ./
-# Copy package.json for all apps and packages to ensure pnpm can resolve dependencies
-COPY apps/admin/package.json apps/admin/
-COPY apps/user/package.json apps/user/
-COPY packages/ui/package.json packages/ui/
-COPY packages/shared/package.json packages/shared/
-COPY packages/db/package.json packages/db/
-COPY packages/typescript-config/package.json packages/typescript-config/
-COPY packages/eslint-config/package.json packages/eslint-config/
+# ---- Installer stage: install deps & build user app ----
+FROM base AS installer
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Install pnpm (if not already installed in base image)
-RUN npm install -g pnpm
-
-# Install all dependencies for the monorepo
+WORKDIR /app
+COPY --from=builder /app/out/json/ ./
 RUN pnpm install --frozen-lockfile
 
-# Copy the entire Turborepo project source code
-COPY . .
+COPY --from=builder /app/out/full/ ./
 
-# Build the 'user' application.
-# Next.js will generate the 'standalone' output in apps/user/.next/standalone
-# Ensure your next.config.js for the user app has `output: 'standalone'`.
+# Run Prisma commands from db package
+RUN pnpm --filter db run prisma:deploy
+RUN pnpm --filter db run prisma:generate
+
 RUN pnpm turbo build --filter=user...
 
-# Stage 2: Production Image for Droplet/Docker
-# Use a smaller base image for the final production image.
-# The 'standalone' output contains its own node_modules.
-FROM node:23-alpine AS runner
-
-# Set working directory to the root of the standalone application
+# ---- Final runtime image for Heroku ----
+FROM base AS runner
 WORKDIR /app
 
-# Copy the standalone output for the user app.
-# The `standalone` directory contains the server.js, a minimal node_modules,
-# and other necessary build artifacts.
-COPY --from=builder /app/apps/user/.next/standalone ./
+COPY --from=installer /app/apps/user/.next/standalone ./
+COPY --from=installer /app/apps/user/.next/static ./apps/user/.next/static
+COPY --from=installer /app/apps/user/public ./apps/user/public
 
-# Copy the public assets for the user app.
-# These are served statically by Next.js.
-COPY --from=builder /app/apps/user/public ./public
-
-
-# Expose the port the app will run on.
-# You'll map this port when running the Docker container (e.g., -p 3001:3001).
-EXPOSE 3001
-
-# Command to run the Next.js user app in production mode.
-# The 'server.js' is the entry point for the standalone output.
-CMD ["node", "server.js"]
+CMD ["node", "apps/user/server.js"]
