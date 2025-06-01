@@ -1,10 +1,10 @@
 'use client';
-import HTMLRenderer from '@/components/site/shared/HTMLRenderer';
 import { Button } from '@repo/ui/components/ui/button';
 import { ChevronLeft, ChevronRight, Menu } from '@repo/ui';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'nextjs-toploader/app';
 import React from 'react';
+import HTMLRenderer from '@repo/ui/components/elements/HTMLRenderer';
 
 export default function TutorialSection({
   data,

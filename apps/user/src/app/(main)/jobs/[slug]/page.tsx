@@ -1,11 +1,11 @@
 import JobHeaderBlock from '@/components/site/pages/jobs/JobHeaderBlock';
 import Breadcrumbs from '@/components/site/shared/Breadcrumb';
-import HTMLRenderer from '@/components/site/shared/HTMLRenderer';
 import { Button } from '@repo/ui/components/ui/button';
 import { getClientJobBySlug } from '@/helpers/main/jobsGetter';
 import { ChevronRight } from '@repo/ui';
 import Link from 'next/link';
 import React from 'react';
+import HTMLRenderer from '@repo/ui/components/elements/HTMLRenderer';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

@@ -1,6 +1,6 @@
 import Breadcrumbs from '@/components/site/shared/Breadcrumb';
-import HTMLRenderer from '@/components/site/shared/HTMLRenderer';
 import { getClientBlogBySlug } from '@/helpers/main/blogGetter';
+import HTMLRenderer from '@repo/ui/components/elements/HTMLRenderer';
 import Link from 'next/link';
 import React from 'react';
 

@@ -40,4 +40,9 @@
 [33m43[39m:[33m30[39m  [33m[1mWarning[22m[39m: 'account' is defined but never used.  [90m[1mno-unused-vars[22m[39m
 [33m62[39m:[33m10[39m  [33m[1mWarning[22m[39m: NODE_ENV is not listed as a dependency in turbo.json  [90m[1mturbo/no-undeclared-env-vars[22m[39m
 
+[36m./src/lib/utils.ts[39m
+[33m4[39m:[33m14[39m  [33m[1mWarning[22m[39m: CLOUDINARY_CLOUD_NAME is not listed as a dependency in turbo.json  [90m[1mturbo/no-undeclared-env-vars[22m[39m
+[33m5[39m:[33m11[39m  [33m[1mWarning[22m[39m: CLOUDINARY_API_KEY is not listed as a dependency in turbo.json  [90m[1mturbo/no-undeclared-env-vars[22m[39m
+[33m6[39m:[33m14[39m  [33m[1mWarning[22m[39m: CLOUDINARY_API_SECRET is not listed as a dependency in turbo.json  [90m[1mturbo/no-undeclared-env-vars[22m[39m
+
 [36minfo[39m  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
