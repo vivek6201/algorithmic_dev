@@ -1,49 +1,84 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import TutorialCard from './TutorialCard';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
+
+const LIMIT = 10;
 
 export default function TutorialsList() {
   const searchParams = useSearchParams();
   const categories = searchParams.get('category');
 
-  const fetchTutorials = async (categories: string | null) => {
-    const response = await axios.get('/api/tutorials', {
-      params: { category: categories ?? undefined },
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  const fetchTutorials = async ({ pageParam = 1 }) => {
+    const res = await axios.get('/api/tutorials', {
+      params: {
+        category: categories ?? undefined,
+        page: pageParam,
+        limit: LIMIT,
+      },
     });
-    return response.data.data;
+
+    const { data, pagination } = res.data;
+
+    return {
+      tutorials: data,
+      nextPage: pagination.currentPage + 1,
+      hasMore: pagination.currentPage < pagination.totalPages,
+    };
   };
 
-  const {
-    data: tutorials = [],
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ['tutorials', categories],
-    queryFn: () => fetchTutorials(categories),
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } =
+    useInfiniteQuery({
+      queryKey: ['tutorials', categories],
+      queryFn: fetchTutorials,
+      getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.nextPage : undefined),
+      initialPageParam: 1,
+    });
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries?.[0]?.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 1.0 },
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) observer.unobserve(observerRef.current);
+    };
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  const tutorials = data?.pages.flatMap((page) => page.tutorials) ?? [];
 
   return (
     <div className="flex flex-col gap-y-6">
       {isLoading && <p>Loading tutorials...</p>}
       {isError && <p>Failed to load tutorials.</p>}
-      {tutorials?.map((tutorial: any) => {
-        return (
-          <TutorialCard
-            key={tutorial.id}
-            title={tutorial.title}
-            description={tutorial.description}
-            chapters={tutorial._count.chapters}
-            slug={tutorial.slug}
-            topicSlug={tutorial?.chapters?.[0].topics?.[0].slug}
-            publishedAt={new Date(tutorial.createdAt).toDateString()}
-            tags={tutorial.categories.map((c: any) => c.category.name)}
-          />
-        );
-      })}
+      {tutorials.map((tutorial: any) => (
+        <TutorialCard
+          key={tutorial.id}
+          title={tutorial.title}
+          description={tutorial.description}
+          chapters={tutorial._count.chapters}
+          slug={tutorial.slug}
+          topicSlug={tutorial?.chapters?.[0]?.topics?.[0]?.slug}
+          publishedAt={new Date(tutorial.createdAt).toDateString()}
+          tags={tutorial.categories.map((c: any) => c.category.name)}
+        />
+      ))}
+      <div ref={observerRef} className="h-12" />
+      {isFetchingNextPage && <p className="text-center">Loading more tutorials...</p>}
     </div>
   );
 }

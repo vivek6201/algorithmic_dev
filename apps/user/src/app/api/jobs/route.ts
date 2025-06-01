@@ -14,12 +14,17 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
 
-    // Get the query parameters
     const category = searchParams.get('category')?.split(',') ?? [];
     const jobType = searchParams.get('type')?.split(',') ?? [];
     const experience = searchParams.get('experience')?.split(',') ?? [];
 
+    const page = parseInt(searchParams.get('page') ?? '1', 10);
+    const limit = parseInt(searchParams.get('limit') ?? '10', 10);
+    const skip = (page - 1) * limit;
+
     const cacheArgs = [
+      `page=${page}`,
+      `limit=${limit}`,
       ...category.map((c) => `category=${c}`),
       ...jobType.map((t) => `type=${t}`),
       ...experience.map((e) => `experience=${e}`),
@@ -40,15 +45,11 @@ export async function GET(req: NextRequest) {
               },
             },
           }),
-
-          // Job Type filter
           ...(jobType.length > 0 && {
             type: {
               in: jobType as JobType[],
             },
           }),
-
-          // Experience Level filter
           ...(experience.length > 0 && {
             experienceLevel: {
               in: experience as ExperienceLevel[],
@@ -56,16 +57,18 @@ export async function GET(req: NextRequest) {
           }),
         },
         include: {
-          jobCategories: true, // Include job categories if you need
+          jobCategories: true,
         },
         orderBy: {
           createdAt: 'desc',
         },
+        skip,
+        take: limit,
       });
 
       if (jobs) cache.set('jobs', cacheArgs, jobs);
     }
-    // Return the jobs found
+
     return NextResponse.json({ success: true, data: jobs });
   } catch (error) {
     console.error(error);
