@@ -4,9 +4,8 @@
 > next lint
 
 
-[36m./src/actions/common/send-email.ts[39m
-[33m4[39m:[33m27[39m  [33m[1mWarning[22m[39m: RESEND_KEY is not listed as a dependency in turbo.json  [90m[1mturbo/no-undeclared-env-vars[22m[39m
-[33m7[39m:[33m14[39m  [33m[1mWarning[22m[39m: 'props' is defined but never used.  [90m[1mno-unused-vars[22m[39m
+[36m./src/app/api/admin/route.ts[39m
+[33m28[39m:[33m49[39m  [33m[1mWarning[22m[39m: 'password' is defined but never used.  [90m[1mno-unused-vars[22m[39m
 
 [36m./src/components/shared/email-templates/verify-email.tsx[39m
 [33m10[39m:[33m19[39m  [33m[1mWarning[22m[39m: AUTH_URL is not listed as a dependency in turbo.json  [90m[1mturbo/no-undeclared-env-vars[22m[39m
@@ -14,6 +13,11 @@
 [36m./src/components/site/pages/auth/AuthForm.tsx[39m
 [33m19[39m:[33m27[39m  [33m[1mWarning[22m[39m: 'signupValidation' is defined but never used.  [90m[1mno-unused-vars[22m[39m
 [33m31[39m:[33m28[39m  [33m[1mWarning[22m[39m: 'isLogin' is defined but never used.  [90m[1mno-unused-vars[22m[39m
+
+[36m./src/components/site/pages/auth/ResetPass.tsx[39m
+[33m3[39m:[33m10[39m  [33m[1mWarning[22m[39m: 'cn' is defined but never used.  [90m[1mno-unused-vars[22m[39m
+[33m26[39m:[33m3[39m  [33m[1mWarning[22m[39m: 'FormDescription' is defined but never used.  [90m[1mno-unused-vars[22m[39m
+[33m97[39m:[33m25[39m  [33m[1mWarning[22m[39m: 'className' is defined but never used.  [90m[1mno-unused-vars[22m[39m
 
 [36m./src/components/site/pages/blogs/ManageCategoryModal.tsx[39m
 [33m36[39m:[33m12[39m  [33m[1mWarning[22m[39m: 'data' is defined but never used.  [90m[1mno-unused-vars[22m[39m
@@ -37,8 +41,8 @@
 
 [36m./src/lib/auth.ts[39m
 [33m8[39m:[33m13[39m  [33m[1mWarning[22m[39m: 'User' is defined but never used.  [90m[1mno-unused-vars[22m[39m
-[33m43[39m:[33m30[39m  [33m[1mWarning[22m[39m: 'account' is defined but never used.  [90m[1mno-unused-vars[22m[39m
-[33m62[39m:[33m10[39m  [33m[1mWarning[22m[39m: NODE_ENV is not listed as a dependency in turbo.json  [90m[1mturbo/no-undeclared-env-vars[22m[39m
+[33m13[39m:[33m16[39m  [33m[1mWarning[22m[39m: NODE_ENV is not listed as a dependency in turbo.json  [90m[1mturbo/no-undeclared-env-vars[22m[39m
+[33m45[39m:[33m30[39m  [33m[1mWarning[22m[39m: 'account' is defined but never used.  [90m[1mno-unused-vars[22m[39m
 
 [36m./src/lib/utils.ts[39m
 [33m4[39m:[33m14[39m  [33m[1mWarning[22m[39m: CLOUDINARY_CLOUD_NAME is not listed as a dependency in turbo.json  [90m[1mturbo/no-undeclared-env-vars[22m[39m

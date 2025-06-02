@@ -4,9 +4,8 @@ services:
   app:
     image: vivek6201/algorithmicdev
     build:
-      context: .
-      dockerfile: Dockerfile
-      target: runner
+      context: ../../ # Assuming root of the monorepo
+      dockerfile: apps/admin/Dockerfile
     ports:
       - '3000:3000'
     env_file:
