@@ -13,6 +13,8 @@ declare module 'next-auth' {
   }
 }
 
+const isProd = process.env.NODE_ENV === 'production';
+
 export const nextAuthResult = NextAuth({
   providers: [
     GitHub,
@@ -132,5 +134,17 @@ export const nextAuthResult = NextAuth({
     signIn: '/login', // Custom sign-in page if needed
     error: '/login', // Error handling page
   },
-  debug: process.env.NODE_ENV === 'development', // Enable debug mode in dev
+  cookies: {
+    sessionToken: {
+      name: 'next-auth.user-token',
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: isProd,
+        ...(isProd ? { domain: 'algorithmicdev.in' } : {}),
+      },
+    },
+  },
+  debug: !isProd,
 });

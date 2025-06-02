@@ -18,3 +18,14 @@ export const signupValidation = z
     message: 'Passwords must match',
     path: ['confirmPassword'],
   });
+
+export const resetPassValidation = z
+  .object({
+    oldPassword: z.string().min(1),
+    newPassword: z.string().min(6),
+    confirmPassword: z.string().min(6),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: 'Passwords must match',
+    path: ['confirmPassword'],
+  });

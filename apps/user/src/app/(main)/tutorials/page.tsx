@@ -27,16 +27,6 @@ export default async function TutorialsPage() {
 
         {/* Center Content */}
         <main className="space-y-4">
-          {/* Header and Search bar */}
-          <div className="flex justify-between items-center px-4">
-            <h1 className="text-2xl font-bold flex-1">All Tutorials</h1>
-            <input
-              type="text"
-              placeholder="Search tutorials..."
-              className="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-[15rem]"
-            />
-          </div>
-
           {/* Tutorials List */}
           <div className="p-4">
             <TutorialsList />

@@ -4,6 +4,8 @@ import JobCard from './JobCard';
 import axios from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useRef, useCallback } from 'react';
+import { useIsMobile } from '@repo/ui/hooks/use-mobile';
+import { clsx } from '@repo/ui';
 
 const LIMIT = 10;
 
@@ -12,6 +14,7 @@ const JobListings = () => {
   const category = searchParams.get('category');
   const type = searchParams.get('type');
   const experience = searchParams.get('experience');
+  const isMobile = useIsMobile();
 
   const fetchJobs = async ({ pageParam = 1 }) => {
     const response = await axios.get('/api/jobs', {
@@ -58,20 +61,34 @@ const JobListings = () => {
   const jobs = data?.pages.flatMap((page) => page.jobs) ?? [];
 
   return (
-    <main className="flex-1 w-full mx-auto space-y-6">
-      {isLoading && <p>Loading jobs...</p>}
-      {isError && <p>Failed to load jobs.</p>}
-      {!isLoading && jobs.length <= 0 && <p>No jobs found</p>}
-      {jobs.map((job: any, index: number) => {
-        const isLast = index === jobs.length - 1;
-        return (
-          <div ref={isLast ? lastJobRef : null} key={job.id}>
-            <JobCard categories={job.jobCategories} job={job} />
-          </div>
-        );
-      })}
-      {isFetchingNextPage && <p>Loading more jobs...</p>}
-    </main>
+    <div className="relative">
+      {/* Header and Search bar */}
+      <div className="flex justify-between mb-5">
+        <h1 className="text-2xl font-bold flex-1">All Jobs</h1>
+        <input
+          type="text"
+          placeholder="Search jobs..."
+          className={clsx(
+            'w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-[15rem]',
+            isMobile && 'hidden',
+          )}
+        />
+      </div>
+      <main className="flex-1 w-full mx-auto space-y-6">
+        {isLoading && <p>Loading jobs...</p>}
+        {isError && <p>Failed to load jobs.</p>}
+        {!isLoading && jobs.length <= 0 && <p>No jobs found</p>}
+        {jobs.map((job: any, index: number) => {
+          const isLast = index === jobs.length - 1;
+          return (
+            <div ref={isLast ? lastJobRef : null} key={job.id}>
+              <JobCard categories={job.jobCategories} job={job} />
+            </div>
+          );
+        })}
+        {isFetchingNextPage && <p>Loading more jobs...</p>}
+      </main>
+    </div>
   );
 };
 

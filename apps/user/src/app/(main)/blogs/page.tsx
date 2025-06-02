@@ -28,18 +28,8 @@ export default async function page() {
 
         {/* Center Content: Blogs List */}
         <main className="space-y-4">
-          {/* Header and Search bar */}
-          <div className="flex justify-between p-4">
-            <h1 className="text-2xl font-bold mb-2 flex-1">All Blogs</h1>
-            <input
-              type="text"
-              placeholder="Search blogs..."
-              className="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-[15rem]"
-            />
-          </div>
-
           {/* Blogs List */}
-          <div className=" p-4">
+          <div className="p-4">
             <BlogsList />
           </div>
         </main>

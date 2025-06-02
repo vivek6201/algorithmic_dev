@@ -79,8 +79,6 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
   const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // In a real application, upload to a storage service
-      // For demo purposes, we're creating an object URL
       const videoUrl = URL.createObjectURL(file);
       // Insert video HTML
       editor

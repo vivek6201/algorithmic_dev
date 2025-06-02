@@ -1,10 +1,14 @@
 'use server';
 
+import { cloudinaryEnv } from '@/lib/utils';
 import {
   UploadApiResponse,
   UploadApiErrorResponse,
   cloudinaryConfig,
+  cloudinary,
 } from '@repo/shared/cloudinary';
+
+cloudinaryConfig(cloudinaryEnv.cloudName, cloudinaryEnv.apiKey, cloudinaryEnv.apiSecret);
 
 const uploadFileToCloud = async (formData: FormData): Promise<UploadApiResponse> => {
   const file = formData.get('file');
@@ -17,7 +21,7 @@ const uploadFileToCloud = async (formData: FormData): Promise<UploadApiResponse>
 
   try {
     const result = await new Promise<UploadApiResponse>((resolve, reject) => {
-      const stream = cloudinaryConfig.uploader.upload_stream(
+      const stream = cloudinary.uploader.upload_stream(
         { resource_type: 'auto' },
         (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
           if (error) return reject(error);

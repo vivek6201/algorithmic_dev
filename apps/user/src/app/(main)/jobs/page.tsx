@@ -27,16 +27,6 @@ export default async function JobsPage() {
 
         {/* Center Content: Job Listings */}
         <main className="space-y-2 md:mx-6">
-          {/* Header and Search bar */}
-          <div className="flex justify-between p-4">
-            <h1 className="text-2xl font-bold flex-1">All Jobs</h1>
-            <input
-              type="text"
-              placeholder="Search jobs..."
-              className="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-[15rem]"
-            />
-          </div>
-
           {/* Jobs List */}
           <div className="md:p-4">
             <JobListings />

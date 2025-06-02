@@ -5,12 +5,15 @@ import BlogCard from './BlogCard';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { useIsMobile } from '@repo/ui/hooks/use-mobile';
+import { clsx } from '@repo/ui';
 
 const LIMIT = 10;
 
 function BlogsList() {
   const searchParams = useSearchParams();
   const categories = searchParams.get('category');
+  const isMobile = useIsMobile();
 
   const fetchBlogs = async ({ pageParam = 1 }) => {
     const response = await axios.get('/api/blogs', {
@@ -56,27 +59,41 @@ function BlogsList() {
   const blogs = data?.pages.flatMap((page) => page.blogs) ?? [];
 
   return (
-    <div className="flex flex-col gap-y-6">
-      {isLoading && <p>Loading Blogs...</p>}
-      {isError && <p>Failed to load Blogs.</p>}
-      {!isLoading && blogs.length > 0
-        ? blogs.map((blog: any, index: number) => {
-            const isLast = index === blogs.length - 1;
-            return (
-              <div ref={isLast ? lastBlogRef : null} key={blog.id}>
-                <BlogCard
-                  title={blog.title}
-                  description={blog.description}
-                  author={blog.authorName}
-                  category={blog.category.name}
-                  date={blog.updatedAt}
-                  slug={blog.slug}
-                />
-              </div>
-            );
-          })
-        : !isLoading && <p>No Blogs found</p>}
-      {isFetchingNextPage && <p>Loading more blogs...</p>}
+    <div className="relative">
+      {/* Header and Search bar */}
+      <div className="flex justify-between mb-5">
+        <h1 className="text-2xl font-bold mb-2 flex-1">All Blogs</h1>
+        <input
+          type="text"
+          placeholder="Search blogs..."
+          className={clsx(
+            'w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-[15rem]',
+            isMobile && 'hidden',
+          )}
+        />
+      </div>
+      <div className="flex flex-col gap-y-6">
+        {isLoading && <p>Loading Blogs...</p>}
+        {isError && <p>Failed to load Blogs.</p>}
+        {!isLoading && blogs.length > 0
+          ? blogs.map((blog: any, index: number) => {
+              const isLast = index === blogs.length - 1;
+              return (
+                <div ref={isLast ? lastBlogRef : null} key={blog.id}>
+                  <BlogCard
+                    title={blog.title}
+                    description={blog.description}
+                    author={blog.authorName}
+                    category={blog.category.name}
+                    date={blog.updatedAt}
+                    slug={blog.slug}
+                  />
+                </div>
+              );
+            })
+          : !isLoading && <p>No Blogs found</p>}
+        {isFetchingNextPage && <p>Loading more blogs...</p>}
+      </div>
     </div>
   );
 }

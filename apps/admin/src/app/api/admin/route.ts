@@ -1,0 +1,44 @@
+import { nextAuthResult } from '@/lib/auth';
+import { Admin, prisma } from '@repo/db';
+import cache from '@repo/shared/cache';
+import { NextResponse } from 'next/server';
+
+export const GET = async () => {
+  try {
+    const session = await nextAuthResult.auth();
+
+    if (session?.user?.role !== 'SuperAdmin') {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Unauthorized Access',
+        },
+        { status: 403 },
+      );
+    }
+
+    let admins = await cache.get<Admin[]>('admin-list', []);
+
+    if (!admins) {
+      admins = await prisma.admin.findMany({});
+
+      if (admins) cache.set<Admin[]>('admin-list', [], admins, 10);
+    }
+
+    const adminsWithoutPassword = admins.map(({ password, ...rest }) => rest);
+
+    return NextResponse.json(
+      {
+        success: true,
+        data: adminsWithoutPassword,
+      },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({
+      success: false,
+      message: 'Internal Server Error',
+    });
+  }
+};

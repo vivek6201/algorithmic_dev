@@ -2,9 +2,22 @@ import { Tutorial } from '@repo/db';
 import cache from '@repo/shared/cache';
 import { prisma } from '@repo/db';
 import { NextResponse } from 'next/server';
+import { nextAuthResult } from '@/lib/auth';
 
 export const GET = async () => {
   try {
+    const session = await nextAuthResult.auth();
+
+    if (!session?.user) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Unauthorized Access',
+        },
+        { status: 403 },
+      );
+    }
+
     let tutorials = await cache.get<Tutorial[]>('admin-tutorials', []);
 
     if (!tutorials) {

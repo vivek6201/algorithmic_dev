@@ -6,8 +6,8 @@ import { signupValidation } from '@repo/shared/validations';
 import { z } from '@repo/ui';
 import { v4 as uuidv4 } from 'uuid';
 import { addHours } from '@repo/ui';
-import { sendEmail } from '../common/send-email';
-import { VerifyEmail } from '@/components/shared/email-templates/verify-email';
+import { sendEmail } from '@repo/shared/utils';
+import { VerifyEmail } from '@repo/shared/email-templates';
 
 const signupAction = async (data: z.infer<typeof signupValidation>) => {
   try {
