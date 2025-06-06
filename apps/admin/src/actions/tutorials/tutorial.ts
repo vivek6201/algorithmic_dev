@@ -60,7 +60,7 @@ export const createTutorial = async (values: z.infer<typeof tutorialSchema>) => 
 };
 
 export const updateTutorial = async (
-  slug: string,
+  id: string,
   values: z.infer<ReturnType<(typeof tutorialSchema)['partial']>>,
 ) => {
   const { success, error, data } = await tutorialSchema.partial().safeParseAsync(values);
@@ -78,11 +78,54 @@ export const updateTutorial = async (
   }
 
   try {
-    await prisma.tutorial.update({
-      where: {
-        slug,
-      },
-      data,
+    await prisma.$transaction(async (tx) => {
+      const tutorial = await tx.tutorial.findUniqueOrThrow({
+        where: {
+          id,
+        },
+        include: {
+          categories: true,
+        },
+      });
+
+      const currentCategoryIds = tutorial.categories.map((cat) => cat.categoryId);
+      const newCategoryIds = data.categoryId ?? [];
+
+      // Disconnect categories that are not in newCategoryIds
+      const categoriesToDisconnect = currentCategoryIds.filter(
+        (id: string) => !newCategoryIds.includes(id),
+      );
+
+      if (categoriesToDisconnect.length > 0) {
+        await tx.tutorial.update({
+          where: { id },
+          data: {
+            categories: {
+              deleteMany: {
+                categoryId: { in: categoriesToDisconnect },
+              },
+            },
+          },
+        });
+      }
+
+      // Connect new categories that are not already connected
+      const categoriesToConnect = newCategoryIds.filter(
+        (id: string) => !currentCategoryIds.includes(id),
+      );
+
+      await tx.tutorial.update({
+        where: { id },
+        data: {
+          title: data.title,
+          slug: data.slug,
+          categories: {
+            create: categoriesToConnect.map((categoryId: string) => ({
+              category: { connect: { id: categoryId } },
+            })),
+          },
+        },
+      });
     });
 
     return {
@@ -106,15 +149,16 @@ export const deleteTutorial = async (id: string) => {
         message: 'id is required',
       };
 
-    const tutExists = await prisma.tutorial.findUnique({ where: { id } });
+    await prisma.$transaction(async (tx) => {
+      const tutExists = await tx.tutorial.findUnique({ where: { id } });
+      if (!tutExists)
+        return {
+          success: false,
+          message: 'Tutorial does not exist',
+        };
 
-    if (!tutExists)
-      return {
-        success: false,
-        message: 'Tutorial does not exist',
-      };
-
-    await prisma.tutorial.delete({ where: { id } });
+      await tx.tutorial.delete({ where: { id } });
+    });
 
     return {
       success: true,

@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 
 export default function page() {
   return (
-    <div className="min-h-[800px] flex flex-col gap-y-10 justify-center items-center">
-      <h2 className="text-4xl font-extrabold text-center">
+    <div className="min-h-[800px] flex flex-col gap-y-10 justify-center items-center pt-5">
+      <h2 className="w-10/12 mx-auto text-3xl md:text-4xl font-extrabold text-center">
         Welcome Back, to{' '}
         <span className="bg-gradient-to-r from-blue-300 to-purple-500 text-transparent bg-clip-text">
           Algorithmic Dev

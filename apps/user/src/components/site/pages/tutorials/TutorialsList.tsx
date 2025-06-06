@@ -68,14 +68,14 @@ export default function TutorialsList() {
       {/* Header and Search bar */}
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-2xl font-bold flex-1">All Tutorials</h1>
-        <input
+        {/* <input
           type="text"
           placeholder="Search tutorials..."
           className={clsx(
             'w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-[15rem]',
             isMobile && 'hidden',
           )}
-        />
+        /> */}
       </div>
       <div className="flex flex-col gap-y-6">
         {isLoading && <p>Loading tutorials...</p>}

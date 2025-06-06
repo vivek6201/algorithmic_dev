@@ -23,25 +23,22 @@ import { Input } from '@repo/ui/components/ui/input';
 import { hookForm, z, zodResolver } from '@repo/ui';
 import { tutorialChapterSchema } from '@repo/shared/validations';
 import { Textarea } from '@repo/ui/components/ui/textarea';
-import { createChapter } from '@/actions/tutorials/chapters';
+import { createChapter, editTutorialChapter } from '@/actions/tutorials/chapters';
 import { toast } from '@repo/ui/components/ui/sonner';
+import { ChapterListProps } from './ChapterList';
 
 export default function HandleChapterModal({
-  isEdit = false,
   tutorialSlug,
   open,
   handleClose,
   data,
 }: {
-  isEdit?: boolean;
   tutorialSlug: string;
   open: boolean;
-  handleClose: () => void;
-  data?: any;
+  handleClose: (edit: boolean) => void;
+  data?: ChapterListProps['chapters'][number] | null;
 }) {
   const router = useRouter();
-
-  console.log({ data });
 
   const form = hookForm.useForm<z.infer<typeof tutorialChapterSchema>>({
     resolver: zodResolver(tutorialChapterSchema),
@@ -52,6 +49,24 @@ export default function HandleChapterModal({
       order: 0,
     },
   });
+
+  useEffect(() => {
+    if (data) {
+      form.reset({
+        title: data.title,
+        slug: data.slug,
+        description: data.description || undefined,
+        order: data.order,
+      });
+    } else {
+      form.reset({
+        title: '',
+        slug: '',
+        description: '',
+        order: 0,
+      });
+    }
+  }, [data, form]);
 
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
@@ -68,17 +83,27 @@ export default function HandleChapterModal({
     });
 
     return () => subscription.unsubscribe();
-  }, [form, isEdit]);
+  }, [form, data]);
 
   async function onSubmit(values: z.infer<typeof tutorialChapterSchema>) {
-    const { success, message } = await createChapter(tutorialSlug, values);
-    if (success) {
-      toast.success(message);
+    if (data && data.id) {
+      const { success, message } = await editTutorialChapter(values, data.id);
+      if (success) {
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+      router.refresh();
     } else {
-      toast.error(message);
+      const { success, message } = await createChapter(tutorialSlug, values);
+      if (success) {
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+      router.refresh();
     }
     (document.querySelector('#close-btn') as HTMLButtonElement).click();
-    router.refresh();
   }
 
   return (
@@ -86,9 +111,9 @@ export default function HandleChapterModal({
       <DialogClose id="close-btn" />
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{isEdit ? 'Edit' : 'Create'} Chapter</DialogTitle>
+          <DialogTitle>{data ? 'Edit' : 'Create'} Chapter</DialogTitle>
           <DialogDescription>
-            This Modal allows you to {isEdit ? 'edit' : 'create'} chapter
+            This Modal allows you to {data ? 'edit' : 'create'} chapter
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

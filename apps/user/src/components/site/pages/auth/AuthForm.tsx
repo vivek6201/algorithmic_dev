@@ -47,7 +47,7 @@ export function AuthForm({ isLogin }: Proptype) {
       </CardHeader>
       <CardContent>
         {isLogin ? <LoginForm /> : <SignupForm />}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
           <Button type="button" variant={'outline'} onClick={() => handleLogin('google')}>
             Login with Google
           </Button>
@@ -92,7 +92,7 @@ function LoginForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-y-5 flex-col">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-y-2 flex-col">
         <FormField
           control={form.control}
           name="email"

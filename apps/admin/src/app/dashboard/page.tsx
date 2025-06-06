@@ -9,7 +9,7 @@ export default function page() {
         <NavigationCard name={'Jobs'} link={'/dashboard/jobs'} />
         <NavigationCard name={'Tutorials'} link={'/dashboard/tutorials'} />
         <NavigationCard name={'Blogs'} link={'/dashboard/blogs'} />
-        <NavigationCard name={'Action'} link={'/dashboard/actions'} />
+        <NavigationCard name={'Action'} link={'/dashboard/actions/profile'} />
       </div>
     </div>
   );

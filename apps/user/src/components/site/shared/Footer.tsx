@@ -1,29 +1,30 @@
 import Link from 'next/link';
 import React from 'react';
+import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
 
 const Footer: React.FC = () => {
   const footerLinks = {
     platform: [
       { name: 'Jobs', href: '/jobs' },
-      { name: 'Community', href: '/community' },
       { name: 'Blogs', href: '/blogs' },
       { name: 'Tutorials', href: '/tutorials' },
     ],
     company: [
-      { name: 'About', href: '/about' },
+      { name: 'About', href: '/about-us' },
       { name: 'Contact', href: '/contact-us' },
     ],
     resources: [
-      { name: 'Documentation', href: '#' },
-      { name: 'Support', href: '#' },
       { name: 'Terms', href: '#' },
       { name: 'Privacy', href: '#' },
     ],
     social: [
-      { name: 'Twitter', href: '#' },
-      { name: 'LinkedIn', href: '#' },
-      { name: 'GitHub', href: '#' },
-      { name: 'YouTube', href: '#' },
+      { name: 'Twitter', href: 'https://x.com/_Vivek_930', icon: FaTwitter },
+      {
+        name: 'LinkedIn',
+        href: 'https://www.linkedin.com/in/vivek-kumar-gupta-/',
+        icon: FaLinkedin,
+      },
+      { name: 'GitHub', href: 'https://github.com/vivek6201', icon: FaGithub },
     ],
   };
 
@@ -43,10 +44,15 @@ const Footer: React.FC = () => {
             </p>
             <div className="flex space-x-6">
               {footerLinks.social.map((item) => (
-                <a key={item.name} href={item.href} className="text-gray-400 hover:text-gray-500">
+                <a
+                  target="_blank"
+                  key={item.name}
+                  href={item.href}
+                  className="text-gray-400 hover:text-gray-500"
+                >
                   <span className="sr-only">{item.name}</span>
-                  <div className="h-6 w-6 bg-gray-400/20 rounded-full flex items-center justify-center hover:bg-tech-purple/20 hover:text-purple-300 transition-colors">
-                    {item.name[0]}
+                  <div className="h-6 w-6 flex items-center justify-center hover:bg-tech-purple/20 hover:text-purple-300 transition-colors">
+                    <item.icon />
                   </div>
                 </a>
               ))}
@@ -61,12 +67,13 @@ const Footer: React.FC = () => {
                 <ul className="mt-4 space-y-4">
                   {footerLinks.platform.map((item) => (
                     <li key={item.name}>
-                      <a
+                      <Link
+                        target="_blank"
                         href={item.href}
                         className="text-base text-gray-500 hover:text-gray-900 dark:hover:text-200"
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>

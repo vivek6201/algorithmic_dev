@@ -30,8 +30,6 @@ export const getClientBlogBySlug = async (slug: string) => {
     let data = await cache.get<BlogWithCategoryAndReactions>('client-blog-by-slug', [decodedSlug]);
     let relatedPosts = await cache.get<Blog[]>('client-related-posts', [decodedSlug]);
 
-    console.log({ data });
-
     if (!data) {
       data = await prisma.blog.findUnique({
         where: {

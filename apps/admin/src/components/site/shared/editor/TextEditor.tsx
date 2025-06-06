@@ -16,7 +16,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ content, onChange, clas
   return (
     <div className={cn('border rounded-md overflow-hidden', className)}>
       <MenuBar editor={editor} />
-      <div className="ProseMirror-content">
+      <div className="ProseMirror-content max-h-[470px] overflow-y-auto">
         <EditorContent editor={editor} />
       </div>
     </div>

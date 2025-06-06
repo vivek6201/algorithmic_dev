@@ -24,22 +24,18 @@ import { Textarea } from '@repo/ui/components/ui/textarea';
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { CustomSelect } from '@repo/ui/components/ui/custom-select';
+import { TutorialDataType } from '@/types/tutorials';
 
 export function CreateTutorialModal({
   open,
   handleClose,
   data,
   onSave,
-  isEdit = false,
 }: {
   open: boolean;
-  handleClose: () => void;
-  data?: {
-    title: string;
-    description: string;
-    slug: string;
-  };
-  onSave: (values: z.infer<typeof tutorialSchema>) => void;
+  handleClose: (edit: boolean) => void;
+  data?: TutorialDataType | null;
+  onSave: (values: z.infer<typeof tutorialSchema>, tutorialId?: string) => void;
   isEdit?: boolean;
 }) {
   const form = hookForm.useForm<z.infer<typeof tutorialSchema>>({
@@ -51,7 +47,22 @@ export function CreateTutorialModal({
     },
   });
 
-  console.log({ data });
+  useEffect(() => {
+    if (data) {
+      form.reset({
+        title: data.title,
+        slug: data.slug,
+        description: data.description,
+        categoryId: data.categories.map((it) => it.categoryId),
+      });
+    } else {
+      form.reset({
+        title: '',
+        slug: '',
+        description: '',
+      });
+    }
+  }, [data, form]);
 
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
@@ -62,7 +73,7 @@ export function CreateTutorialModal({
     });
 
     return () => subscription.unsubscribe();
-  }, [form, isEdit]);
+  }, [form, data]);
 
   const {
     data: categories = [],
@@ -78,16 +89,16 @@ export function CreateTutorialModal({
   });
 
   function onSubmit(values: z.infer<typeof tutorialSchema>) {
-    onSave(values);
+    onSave(values, data?.id);
   }
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{!isEdit ? 'Create Tutorial' : 'Edit Tutorial'}</DialogTitle>
+          <DialogTitle>{!data ? 'Create Tutorial' : 'Edit Tutorial'}</DialogTitle>
           <DialogDescription>
-            This modal helps you {isEdit ? 'edit' : 'create'} tutorial
+            This modal helps you {data ? 'edit' : 'create'} tutorial
           </DialogDescription>
         </DialogHeader>
         <div className="">

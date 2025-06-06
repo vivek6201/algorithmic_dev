@@ -44,15 +44,17 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {headerLinks.map((link) => (
-              <Link
-                href={link.link}
-                className="flex gap-2 items-center opacity-60 hover:opacity-90 transition-opacity duration-200"
-                key={link.name}
-              >
-                {link.name}
-              </Link>
-            ))}
+            {headerLinks
+              .filter((it) => it.name !== 'User')
+              .map((link) => (
+                <Link
+                  href={link.link}
+                  className="flex gap-2 items-center opacity-60 hover:opacity-90 transition-opacity duration-200"
+                  key={link.name}
+                >
+                  {link.name}
+                </Link>
+              ))}
           </div>
 
           <div className="hidden md:flex items-center space-x-4 animate-slide-in-right">

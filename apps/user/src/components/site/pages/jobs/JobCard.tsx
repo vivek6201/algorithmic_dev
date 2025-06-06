@@ -11,10 +11,10 @@ const JobCard = ({ job, categories }: JobCardProps) => {
   return (
     <Link
       href={`${pathname}/${job?.slug}`}
-      className="border rounded-xl p-5 bg-white dark:bg-zinc-900 shadow-sm group hover:shadow-md cursor-pointer transition min-h-[100px] flex flex-col gap-y-5"
+      className="border rounded-xl p-3 md:p-5 bg-white dark:bg-zinc-900 shadow-sm group hover:shadow-md cursor-pointer transition min-h-[100px] flex flex-col gap-y-5"
     >
       <div>
-        <div className="max-w-[60%] flex gap-2 flex-wrap mb-2">
+        <div className="max-w-[60%] flex gap-2 mb-2">
           {categories.map((category) => (
             <span
               className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full inline-block"
@@ -36,7 +36,7 @@ const JobCard = ({ job, categories }: JobCardProps) => {
       <div className="w-full justify-between flex gap-2 items-center ">
         <span className="text-xs text-gray-500">{new Date(job.createdAt).toDateString()}</span>
 
-        <Button className="cursor-pointer">
+        <Button className="cursor-pointer" size={'sm'}>
           View More <ChevronRight />
         </Button>
       </div>
@@ -48,7 +48,7 @@ export default JobCard;
 
 function Badge({ title }: { title: string }) {
   return (
-    <div className="rounded-full dark:bg-gray-200 bg-black/80 px-4 py-1">
+    <div className="rounded-full dark:bg-gray-200 bg-black/80 px-2 py-1">
       <p className="text-xs dark:text-black text-white">{title}</p>
     </div>
   );

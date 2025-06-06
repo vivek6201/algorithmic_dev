@@ -25,17 +25,19 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { Tutorial } from '@repo/db';
 import { CreateTutorialModal } from './CreateTutorialModal';
-import { createTutorial } from '@/actions/tutorials/tutorial';
+import { createTutorial, deleteTutorial, updateTutorial } from '@/actions/tutorials/tutorial';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { tutorialSchema } from '@repo/shared/validations';
 import { z } from '@repo/ui';
 import StatusSelector from '../shared/StatusSelector';
 import { updateTutorialStatus } from '@/actions/tutorials/publish';
 import { useRouter } from 'nextjs-toploader/app';
+import { TutorialDataType } from '@/types/tutorials';
 
 export default function AllTutorialsClient() {
   const [search, setSearch] = useState('');
   const [openCreateModal, setOpenCreateModal] = useState(false);
+  const [editTutorial, setEditTutorial] = useState<TutorialDataType | null>(null);
   const [debouncedSearch] = useDebounce(search, 300);
   const deleteModelRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
@@ -54,13 +56,7 @@ export default function AllTutorialsClient() {
   });
 
   const handleDelete = async (id: string) => {
-    console.log(id);
-  };
-
-  const handleCreateModel = () => setOpenCreateModal(!openCreateModal);
-
-  const handleSaveTutorial = async (values: z.infer<typeof tutorialSchema>) => {
-    const { success, message } = await createTutorial(values);
+    const { message, success } = await deleteTutorial(id);
 
     if (!success) {
       toast.error(message);
@@ -69,7 +65,45 @@ export default function AllTutorialsClient() {
 
     toast.success(message);
     refetch();
+    deleteModelRef.current?.click();
+  };
+
+  const handleCreateModel = (edit: boolean) => {
+    setOpenCreateModal(!openCreateModal);
+    if (!edit) setEditTutorial(null);
+  };
+
+  const handleSaveTutorial = async (
+    values: z.infer<typeof tutorialSchema>,
+    tutorialId?: string,
+  ) => {
+    if (editTutorial && tutorialId) {
+      const { success, message } = await updateTutorial(tutorialId, values);
+
+      if (!success) {
+        toast.error(message);
+        return;
+      }
+
+      toast.success(message);
+      refetch();
+    } else {
+      const { success, message } = await createTutorial(values);
+
+      if (!success) {
+        toast.error(message);
+        return;
+      }
+
+      toast.success(message);
+      refetch();
+    }
     (document.querySelector('#close-btn') as HTMLButtonElement)?.click();
+  };
+
+  const handleEditTutorial = (tutorial: TutorialDataType) => {
+    setEditTutorial(tutorial);
+    handleCreateModel(true);
   };
 
   const filteredTutorials = useMemo(() => {
@@ -100,7 +134,7 @@ export default function AllTutorialsClient() {
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold tracking-tight">All Tutorials</h1>
           <div className="flex items-center gap-x-2">
-            <Button onClick={handleCreateModel}>
+            <Button onClick={() => handleCreateModel(false)}>
               <Plus className="w-4 h-4 mr-1" /> New Tutorial
             </Button>
           </div>
@@ -160,10 +194,17 @@ export default function AllTutorialsClient() {
                           handleStatusChange={(status) => handleStatusUpdate(tutorial.id, status)}
                         />
                       </TableCell>
-                      <TableCell className="text-right space-x-2">
+                      <TableCell className="flex items-center gap-2 justify-end">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleEditTutorial(tutorial)}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
                         <Link href={`/dashboard/tutorials/build/${tutorial.slug}`}>
-                          <Button size="sm" variant="outline">
-                            <Edit className="w-4 h-4" />
+                          <Button size={'sm'} className="text-white">
+                            Build
                           </Button>
                         </Link>
                         <Dialog>
@@ -205,6 +246,7 @@ export default function AllTutorialsClient() {
         open={openCreateModal}
         handleClose={handleCreateModel}
         onSave={handleSaveTutorial}
+        data={editTutorial}
       />
     </>
   );

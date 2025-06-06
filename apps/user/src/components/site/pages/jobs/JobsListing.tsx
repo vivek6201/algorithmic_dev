@@ -65,14 +65,14 @@ const JobListings = () => {
       {/* Header and Search bar */}
       <div className="flex justify-between mb-5">
         <h1 className="text-2xl font-bold flex-1">All Jobs</h1>
-        <input
+        {/* <input
           type="text"
           placeholder="Search jobs..."
           className={clsx(
             'w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-[15rem]',
             isMobile && 'hidden',
           )}
-        />
+        /> */}
       </div>
       <main className="flex-1 w-full mx-auto space-y-6">
         {isLoading && <p>Loading jobs...</p>}

@@ -16,6 +16,9 @@ export default async function TutorialsPage() {
 
   return (
     <div className="w-full max-w-[1400px] mx-auto mt-24 min-h-screen px-4">
+      <div className="lg:hidden">
+        <TutorialsFilters data={categories ?? []} />
+      </div>
       <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-6">
         {/* Left Sidebar - Filters (non-sticky) */}
         <aside className="space-y-4 hidden lg:block">

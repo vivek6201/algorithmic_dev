@@ -3,6 +3,7 @@ import cache from '@repo/shared/cache';
 import { prisma } from '@repo/db';
 import { NextResponse } from 'next/server';
 import { nextAuthResult } from '@/lib/auth';
+import { TutorialDataType } from '@/types/tutorials';
 
 export const GET = async () => {
   try {
@@ -18,12 +19,13 @@ export const GET = async () => {
       );
     }
 
-    let tutorials = await cache.get<Tutorial[]>('admin-tutorials', []);
+    let tutorials = await cache.get<TutorialDataType[]>('admin-tutorials', []);
 
     if (!tutorials) {
       tutorials = await prisma.tutorial.findMany({
         include: {
           chapters: true,
+          categories: true,
           _count: true,
         },
       });

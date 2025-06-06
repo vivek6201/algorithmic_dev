@@ -1,20 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { nextAuthResult } from './lib/auth';
+import { nextAuthResult } from '@/lib/auth';
 
-export async function middleware(request: NextRequest) {
-  const session = await nextAuthResult.auth();
+const { auth } = nextAuthResult;
 
-  const pathname = request.nextUrl.pathname;
-
-  if (pathname.startsWith('/profile')) {
-    if (!session) {
-      return NextResponse.redirect(new URL('/login', request.url));
+export default auth((req) => {
+  if (req.nextUrl.pathname.startsWith('/profile')) {
+    if (!req.auth) {
+      const newUrl = new URL('/login', req.nextUrl.origin);
+      return Response.redirect(newUrl);
     }
   }
-
-  return NextResponse.next();
-}
-
-export const config = {
-  matcher: ['/profile/:path*'],
-};
+});

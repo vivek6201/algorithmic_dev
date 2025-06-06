@@ -42,7 +42,6 @@ const experienceLevel = Object.values($Enums.ExperienceLevel).map((value) => ({
 }));
 
 export default function JobsForm({ job, isEdit = false }: { isEdit?: boolean; job?: JobProps }) {
-  console.log(job);
   const form = hookForm.useForm<z.infer<typeof jobSchema>>({
     resolver: zodResolver(jobSchema),
     defaultValues: {

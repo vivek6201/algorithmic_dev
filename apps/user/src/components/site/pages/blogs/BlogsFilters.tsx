@@ -1,7 +1,14 @@
 'use client';
+
+import { useIsMobile } from '@repo/ui/hooks/use-mobile';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'nextjs-toploader/app';
-import React from 'react';
+import React, { useEffect } from 'react';
+import DrawerFilter from '../../shared/DrawerFilter';
+import { useFilterStore } from '@/store/filterStore';
+import FilterButtonGroup from '../../shared/FilterButtonGroup';
+import { blogTabs } from '@/lib/constants';
+import { updateParams } from '@/lib/clientUtils';
 
 interface CategoryType {
   name: string;
@@ -15,23 +22,14 @@ interface CategoryType {
 const BlogsFilters = ({ data }: { data: CategoryType[] }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const isMobile = useIsMobile(1024);
+  const { setTabs, activeTab } = useFilterStore();
+
+  useEffect(() => {
+    setTabs(blogTabs);
+  }, []);
 
   const selected = searchParams.get('category')?.split(',') ?? [];
-
-  const toggleFilter = (category: CategoryType) => {
-    const newSelected = selected.includes(category.slug)
-      ? selected.filter((l) => l !== category.slug)
-      : [...selected, category.slug];
-
-    const params = new URLSearchParams(searchParams.toString());
-    if (newSelected.length > 0) {
-      params.set('category', newSelected.join(','));
-    } else {
-      params.delete('category');
-    }
-
-    router.replace(`?${params.toString()}`);
-  };
 
   const clearFilters = () => {
     const params = new URLSearchParams(searchParams.toString());
@@ -39,29 +37,32 @@ const BlogsFilters = ({ data }: { data: CategoryType[] }) => {
     router.replace(`?${params.toString()}`);
   };
 
+  if (isMobile) {
+    return (
+      <div className="px-5">
+        <DrawerFilter>
+          {activeTab?.label === 'category' && (
+            <FilterButtonGroup
+              items={data.map((cat) => ({ name: cat.name, value: cat.slug }))}
+              selectedValues={selected}
+              onToggle={(val) => updateParams('category', val, searchParams, router)}
+            />
+          )}
+          {activeTab?.label === 'sort'}
+        </DrawerFilter>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 text-sm">
       <div>
         <h3 className="font-semibold mb-2 dark:text-white">Categories</h3>
-        <div className="flex flex-wrap gap-2">
-          {data.map((category) => {
-            const isSelected = selected.includes(category.slug);
-            return (
-              <button
-                key={category.id}
-                onClick={() => toggleFilter(category)}
-                className={`px-3 py-1 rounded-full border cursor-pointer transition-colors ${
-                  isSelected
-                    ? 'bg-blue-500 text-white dark:bg-blue-600 border-blue-500'
-                    : 'hover:bg-blue-100 dark:hover:bg-blue-700 dark:text-gray-300 border dark:border-gray-600'
-                }`}
-              >
-                {category.name}
-              </button>
-            );
-          })}
-        </div>
-
+        <FilterButtonGroup
+          items={data.map((cat) => ({ name: cat.name, value: cat.slug }))}
+          selectedValues={selected}
+          onToggle={(val) => updateParams('category', val, searchParams, router)}
+        />
         {selected.length > 0 && (
           <button
             onClick={clearFilters}

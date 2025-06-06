@@ -88,8 +88,64 @@ export const createChapter = async (
   }
 };
 
+export const editTutorialChapter = async (
+  values: z.infer<typeof tutorialChapterSchema>,
+  chapterId: string,
+) => {
+  try {
+    if (!chapterId) {
+      return {
+        success: false,
+        message: 'Chapter id is required for updating.',
+      };
+    }
+
+    const existingChapter = await prisma.chapter.findUnique({
+      where: { id: chapterId },
+    });
+
+    if (!existingChapter) {
+      return {
+        success: false,
+        message: 'chapter not found.',
+      };
+    }
+
+    await prisma.chapter.update({
+      where: { id: chapterId },
+      data: {
+        ...values,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Chapter Updated Successfully!',
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Failed to update chapter!',
+    };
+  }
+};
+
 export const deleteTutorialChapter = async (id: string) => {
   try {
+    const chapter = await prisma.chapter.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        _count: true,
+      },
+    });
+
+    if (chapter?._count.topics && chapter._count.topics > 0) {
+      return { success: false, message: 'Chapter contains topics delete them first' };
+    }
+
     await prisma.chapter.delete({
       where: {
         id,
