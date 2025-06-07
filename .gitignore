@@ -31,4 +31,6 @@ yarn-error.log*
 
 # turbo
 .turbo
+apps/admin/.turbo
+apps/user/.turbo
 /packages/db/generated

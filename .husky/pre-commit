@@ -1,1 +1,1 @@
-npx pnpm format:fix
+npx pnpm format:check
