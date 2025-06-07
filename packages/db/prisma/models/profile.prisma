@@ -53,15 +53,16 @@ model Address {
 
 // Education details
 model Education {
-  id           String   @id @default(cuid())
-  profileId    String
-  profile      Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  schoolName   String
-  degree       String
-  fieldOfStudy String
-  startDate    DateTime
-  endDate      DateTime
-  grade        String?
+  id                String    @id @default(cuid())
+  profileId         String
+  profile           Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  schoolName        String
+  degree            String
+  fieldOfStudy      String
+  startDate         DateTime
+  endDate           DateTime?
+  grade             String?
+  currentlyEnrolled Boolean   @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -69,14 +70,15 @@ model Education {
 
 // Work experience details
 model Experience {
-  id             String   @id @default(cuid())
-  profileId      String
-  profile        Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  companyName    String
-  jobTitle       String
-  startDate      DateTime
-  endDate        DateTime
-  jobDescription String
+  id               String    @id @default(cuid())
+  profileId        String
+  profile          Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  companyName      String
+  jobTitle         String
+  startDate        DateTime
+  endDate          DateTime?
+  currentlyWorking Boolean   @default(false)
+  jobDescription   String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -84,14 +86,17 @@ model Experience {
 
 // Projects
 model Project {
-  id          String   @id @default(cuid())
-  profileId   String
-  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  id          String    @id @default(cuid())
   projectName String
   description String
   startDate   DateTime
-  endDate     DateTime
+  endDate     DateTime?
+  inProgress  Boolean   @default(false)
   projectLink String?
+  githubLink  String?
+
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

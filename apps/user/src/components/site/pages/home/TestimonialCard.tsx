@@ -17,38 +17,40 @@ interface TestimonialCardProps {
 }
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ content, author, className }) => {
-  // Generate initials for avatar fallback
-  const getInitials = (name: string) => {
-    return name
+  const getInitials = (name: string) =>
+    name
       .split(' ')
       .map((part) => part[0])
       .join('')
       .toUpperCase();
-  };
 
   return (
     <Card
       className={cn(
-        'rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 h-full transform hover:scale-[1.02] flex flex-col justify-between',
+        'flex flex-col justify-between h-full bg-white dark:bg-muted/40 border border-muted rounded-2xl shadow-sm hover:shadow-md transition-all duration-300',
         className,
       )}
     >
-      <CardContent className="p-6 pt-8 relative">
-        <Quote size={32} className="text-purple-300 absolute top-2 left-2 transform -rotate-6" />
-        <p className="text-gray-700 dark:text-gray-400 text-lg leading-relaxed">
-          &ldquo;{content}&ldquo;
+      <CardContent className="relative px-6 pt-10 pb-6 flex-1">
+        <Quote
+          size={28}
+          className="absolute top-5 left-5 text-purple-300 opacity-40 dark:opacity-20 rotate-[-6deg]"
+        />
+        <p className="text-base leading-relaxed text-gray-700 dark:text-gray-300 z-10 relative">
+          “{content}”
         </p>
       </CardContent>
-      <CardFooter className="p-4 border-t flex items-center space-x-4">
-        <Avatar className="h-12 w-12 ring-2 ring-tech-purple/20 transition-all hover:ring-tech-purple">
-          {author.avatarUrl ? <AvatarImage src={author.avatarUrl} alt={author.name} /> : null}
-          <AvatarFallback className="bg-tech-purple text-white">
+
+      <CardFooter className="px-6 py-4 border-t border-muted flex items-center gap-4">
+        <Avatar className="h-12 w-12 ring-1 ring-purple-400/20">
+          {author.avatarUrl && <AvatarImage src={author.avatarUrl} alt={author.name} />}
+          <AvatarFallback className="bg-purple-600 text-white">
             {getInitials(author.name)}
           </AvatarFallback>
         </Avatar>
-        <div>
-          <p className="text-sm font-semibold text-gray-900 dark:text-gray-200">{author.name}</p>
-          <p className="text-xs text-neutral-400">{author.title}</p>
+        <div className="flex flex-col justify-center">
+          <p className="text-sm font-semibold text-foreground">{author.name}</p>
+          <p className="text-xs text-muted-foreground">{author.title}</p>
         </div>
       </CardFooter>
     </Card>

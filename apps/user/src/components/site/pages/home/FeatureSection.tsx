@@ -1,3 +1,6 @@
+'use client';
+
+import { motion } from 'framer-motion';
 import { Card, CardContent } from '@repo/ui/components/ui/card';
 import { BookOpen, Briefcase, FileText, Users, Trophy, Clock } from '@repo/ui';
 
@@ -45,36 +48,62 @@ const features = [
   },
 ];
 
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.1,
+      duration: 0.5,
+      ease: 'easeOut',
+    },
+  }),
+};
+
 export default function FeaturesSection() {
   return (
     <section id="features" className="py-20 px-4 bg-muted/20">
       <div className="container mx-auto">
-        <div className="text-center mb-16 animate-fade-in">
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Why Choose <span className="gradient-text">AlgorithmicDev?</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Everything you need to accelerate your learning journey and advance your career
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <Card
+            <motion.div
               key={index}
-              className="group hover:shadow-lg transition-all duration-300 animate-scale-in border-0 bg-card/50 backdrop-blur-sm"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              custom={index}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
             >
-              <CardContent className="p-8">
-                <div
-                  className={`w-12 h-12 rounded-lg bg-background flex items-center justify-center mb-6 group-hover:scale-110 transition-transform ${feature.color}`}
-                >
-                  <feature.icon className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
-              </CardContent>
-            </Card>
+              <Card className="group hover:shadow-lg transition-all duration-300 border-0 bg-card/60 backdrop-blur-sm">
+                <CardContent className="p-8">
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                    className={`w-12 h-12 rounded-lg bg-background flex items-center justify-center mb-6 ${feature.color}`}
+                  >
+                    <feature.icon className="w-6 h-6" />
+                  </motion.div>
+                  <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
         </div>
       </div>

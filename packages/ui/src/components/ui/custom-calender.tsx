@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { format } from 'date-fns';
-
 import { cn } from '@repo/ui/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/ui/popover';
 import { Button } from '@repo/ui/components/ui/button';
@@ -41,16 +40,17 @@ export function CustomCalendar({
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {value instanceof Date && !isNaN(value.getTime()) ? format(value, 'PPP') : placeholder}
+          {value ? format(value, 'PPP') : placeholder}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0 bg-background">
+
+      <PopoverContent className="w-auto p-0 bg-background z-50">
         <Calendar
           onChange={(date) => {
             onChange(date as Date);
             setOpen(false);
           }}
-          value={value || new Date()}
+          value={value ?? undefined}
           minDate={minDate}
           maxDate={maxDate}
           className="rounded-md p-2 text-sm dark:bg-popover dark:text-white"

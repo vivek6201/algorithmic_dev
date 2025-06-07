@@ -48,7 +48,6 @@ const BlogsFilters = ({ data }: { data: CategoryType[] }) => {
               onToggle={(val) => updateParams('category', val, searchParams, router)}
             />
           )}
-          {activeTab?.label === 'sort'}
         </DrawerFilter>
       </div>
     );
