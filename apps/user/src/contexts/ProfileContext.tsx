@@ -9,6 +9,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from 'react
 interface ProviderType {
   profileData?: CombinedProfile;
   triggerRefetch: () => void;
+  isLoading: boolean;
 }
 
 const ProfileContext = createContext<ProviderType | undefined>(undefined);
@@ -21,7 +22,11 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
     return data.data;
   };
 
-  const { data: profileData, refetch } = useQuery({
+  const {
+    data: profileData,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ['user-profile', sessionData?.user?.profileId],
     queryFn: () => getProfileData(),
     enabled: status !== 'loading',
@@ -30,7 +35,7 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
   const triggerRefetch = () => refetch();
 
   return (
-    <ProfileContext.Provider value={{ profileData: profileData, triggerRefetch }}>
+    <ProfileContext.Provider value={{ profileData: profileData, triggerRefetch, isLoading }}>
       {children}
     </ProfileContext.Provider>
   );

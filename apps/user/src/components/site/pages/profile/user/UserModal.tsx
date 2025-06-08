@@ -26,6 +26,8 @@ import { CustomCalendar } from '@repo/ui/components/ui/custom-calender';
 import { PersonType } from '@repo/db';
 import { useSession } from 'next-auth/react';
 import { useUserProfile } from '@/contexts/ProfileContext';
+import { updatePersonalData } from '@/actions/main/profile';
+import { toast } from '@repo/ui/components/ui/sonner';
 
 export default function UserModal({ open, handleOpen }: { handleOpen: () => void; open: boolean }) {
   const { data: sessionData } = useSession();
@@ -58,8 +60,21 @@ export default function UserModal({ open, handleOpen }: { handleOpen: () => void
     });
   }, [sessionData, profileData, form]);
 
-  function onSubmit(values: z.infer<typeof personalValidation>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof personalValidation>) {
+    try {
+      const { success, message } = await updatePersonalData(values, sessionData?.user?.email ?? '');
+
+      if (!success) {
+        toast.error(message);
+        return;
+      }
+
+      toast.success(message);
+      handleOpen();
+    } catch (error) {
+      console.error(error instanceof Error ? error.message : error);
+      toast.error('Internal Server Error');
+    }
   }
 
   return (

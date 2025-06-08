@@ -8,12 +8,7 @@ const educationValidation = z
     startDate: z.date().refine((date) => date <= new Date(), {
       message: 'Start date cannot be in the future',
     }),
-    endDate: z
-      .date()
-      .optional()
-      .refine((date) => !date || date >= new Date(), {
-        message: 'End date must not be in the past',
-      }),
+    endDate: z.date().optional(),
     grade: z.string().min(1),
     currentlyEnrolled: z.boolean(),
   })

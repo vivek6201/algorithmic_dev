@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Dialog,
   DialogClose,
@@ -23,6 +23,20 @@ import { Input } from '@repo/ui/components/ui/input';
 import { Switch } from '@repo/ui/components/ui/switch';
 import { hookForm, z, zodResolver } from '@repo/ui';
 import { educationValidation } from '@repo/shared/validations';
+import { updateEducationData } from '@/actions/main/profile';
+import { useSession } from 'next-auth/react';
+import { toast } from '@repo/ui/components/ui/sonner';
+import { useUserProfile } from '@/contexts/ProfileContext';
+import { useIsMobile } from '@repo/ui/hooks/use-mobile';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+} from '@repo/ui/components/ui/drawer';
+import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
+import { useProfileStore } from '@/store/profileStore';
 
 export default function EducationModal({
   open,
@@ -31,6 +45,44 @@ export default function EducationModal({
   open: boolean;
   handleClose: () => void;
 }) {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return (
+      <Drawer open={open} onOpenChange={handleClose}>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Add / Edit Project</DrawerTitle>
+            <DrawerDescription>Manage your project details here.</DrawerDescription>
+          </DrawerHeader>
+          <ScrollArea className="h-72 my-5">
+            <EducationForm handleClose={handleClose} />
+          </ScrollArea>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={handleClose}>
+      <DialogContent onInteractOutside={(e) => e.preventDefault()}>
+        <DialogHeader>
+          <DialogTitle>Add/Edit Education Details</DialogTitle>
+          <DialogDescription>This modal helps you add or edit education data.</DialogDescription>
+        </DialogHeader>
+        <ScrollArea className="h-96 my-5">
+          <EducationForm handleClose={handleClose} />
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function EducationForm({ handleClose }: { handleClose: () => void }) {
+  const session = useSession();
+  const { triggerRefetch } = useUserProfile();
+  const { education } = useProfileStore();
+
   const form = hookForm.useForm<z.infer<typeof educationValidation>>({
     resolver: zodResolver(educationValidation),
     defaultValues: {
@@ -44,127 +96,163 @@ export default function EducationModal({
     },
   });
 
+  useEffect(() => {
+    if (education) {
+      form.reset({
+        currentlyEnrolled: education.currentlyEnrolled,
+        degree: education.degree,
+        startDate: education.startDate ? new Date(education.startDate) : undefined,
+        endDate: education.endDate ? new Date(education.endDate) : undefined,
+        fieldOfStudy: education.fieldOfStudy,
+        grade: education.grade ?? undefined,
+        schoolName: education.schoolName,
+      });
+    } else {
+      form.reset();
+    }
+  }, [education, form]);
+
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof educationValidation>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof educationValidation>) {
+    try {
+      if (education) {
+        const { success, message } = await updateEducationData(
+          values,
+          session.data?.user?.profileId ?? '',
+          education.id,
+        );
+        if (!success) {
+          toast.error(message);
+          return;
+        }
+        toast.success(message);
+      } else {
+        const { success, message } = await updateEducationData(
+          values,
+          session.data?.user?.profileId ?? '',
+        );
+        if (!success) {
+          toast.error(message);
+          return;
+        }
+        toast.success(message);
+      }
+      triggerRefetch();
+    } catch (error) {
+      console.error(error instanceof Error ? error.message : error);
+      toast.error('internal server error');
+    } finally {
+      handleClose();
+    }
   }
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent onInteractOutside={(e) => e.preventDefault()}>
-        <DialogHeader>
-          <DialogTitle>Add/Edit Education Details</DialogTitle>
-          <DialogDescription>This modal helps you add or edit education data.</DialogDescription>
-        </DialogHeader>
-
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-4">
-            <FormField
-              control={form.control}
-              name="schoolName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Institute Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="shadcn" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="degree"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Degree</FormLabel>
-                  <FormControl>
-                    <Input placeholder="shadcn" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="fieldOfStudy"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Field Of Study</FormLabel>
-                  <FormControl>
-                    <Input placeholder="shadcn" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="startDate"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Start Date</FormLabel>
-                  <FormControl>
-                    <CustomCalendar value={field.value ?? null} onChange={field.onChange} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="endDate"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>End Date</FormLabel>
-                  <FormControl>
-                    <CustomCalendar
-                      value={field.value ?? null}
-                      onChange={field.onChange}
-                      disabled={form.watch('currentlyEnrolled')}
-                      minDate={form.watch('startDate')}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="currentlyEnrolled"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                  <div className="space-y-0.5">
-                    <FormLabel></FormLabel>
-                    <FormDescription>Are you currently enrolled in a degree</FormDescription>
-                  </div>
-                  <FormControl>
-                    <Switch checked={field.value} onCheckedChange={field.onChange} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="grade"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Grade</FormLabel>
-                  <FormControl>
-                    <Input placeholder="shadcn" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button variant={'outline'}>Close</Button>
-              </DialogClose>
-              <Button type="submit">Submit</Button>
-            </DialogFooter>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-4 p-2">
+        <FormField
+          control={form.control}
+          name="schoolName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Institute Name</FormLabel>
+              <FormControl>
+                <Input placeholder="shadcn" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="degree"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Degree</FormLabel>
+              <FormControl>
+                <Input placeholder="shadcn" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="fieldOfStudy"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Field Of Study</FormLabel>
+              <FormControl>
+                <Input placeholder="shadcn" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="startDate"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Start Date</FormLabel>
+              <FormControl>
+                <CustomCalendar value={field.value ?? null} onChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="endDate"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>End Date</FormLabel>
+              <FormControl>
+                <CustomCalendar
+                  value={field.value ?? null}
+                  onChange={field.onChange}
+                  disabled={form.watch('currentlyEnrolled')}
+                  minDate={form.watch('startDate')}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="currentlyEnrolled"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+              <div className="space-y-0.5">
+                <FormLabel></FormLabel>
+                <FormDescription>Are you currently enrolled in a degree</FormDescription>
+              </div>
+              <FormControl>
+                <Switch checked={field.value} onCheckedChange={field.onChange} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="grade"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Grade</FormLabel>
+              <FormControl>
+                <Input placeholder="shadcn" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <DialogFooter className="flex gap-2">
+          <DialogClose asChild>
+            <Button variant={'outline'}>Close</Button>
+          </DialogClose>
+          <Button type="submit">Submit</Button>
+        </DialogFooter>
+      </form>
+    </Form>
   );
 }

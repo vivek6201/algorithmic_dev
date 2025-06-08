@@ -1,5 +1,4 @@
 import { RedisCache } from './redis-cache';
-import { InMemoryCache } from './in-memory-cache';
 import ICache from '../types/cache';
 
 const redisUrl = process.env.REDIS_URL;
@@ -9,11 +8,11 @@ export class Cache implements ICache {
   private delegate: ICache;
 
   private constructor() {
-    if (redisUrl) {
-      this.delegate = RedisCache.getInstance(redisUrl);
-    } else {
-      this.delegate = InMemoryCache.getInstance();
+    if (!redisUrl) {
+      throw new Error('REDIS_URL is not defined in the environment variables.');
     }
+
+    this.delegate = RedisCache.getInstance(redisUrl);
   }
 
   static getInstance(): Cache {
@@ -36,7 +35,7 @@ export class Cache implements ICache {
     return this.delegate.get(type, args);
   }
 
-  async evict(type: string, args: string[]): Promise<null> {
+  async evict<T>(type: string, args: string[]): Promise<null> {
     return this.delegate.evict(type, args);
   }
 }

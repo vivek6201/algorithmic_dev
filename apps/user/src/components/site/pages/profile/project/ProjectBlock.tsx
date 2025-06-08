@@ -1,28 +1,65 @@
 'use client';
+
 import { useUserProfile } from '@/contexts/ProfileContext';
 import { Plus } from '@repo/ui';
 import { Button } from '@repo/ui/components/ui/button';
 import React, { useState } from 'react';
 import ProjectModal from './ProjectModal';
+import { Skeleton } from '@repo/ui/components/ui/skeleton';
+import ProjectCard from './ProjectCard';
+import { useProfileStore } from '@/store/profileStore';
 
 export default function ProjectBlock() {
   const [open, setOpen] = useState(false);
-  const { profileData } = useUserProfile();
+  const { profileData, isLoading } = useUserProfile();
+  const { setProjectForm } = useProfileStore();
 
-  const handleOpen = () => setOpen(!open);
+  const handleAddAction = () => {
+    setProjectForm(null);
+    setOpen(true);
+  };
+
+  const handleEditAction = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setProjectForm(null);
+    setOpen(false);
+  };
 
   return (
     <>
-      <div className="flex flex-col gap-y-2 p-2 border rounded-md min-h-32">
-        <div className="flex justify-between items-center">
-          <p className="ml-4 font-medium text-lg">Projects</p>
-          <Button variant={'link'} className="flex items-center" onClick={handleOpen}>
-            <Plus className="font-medium" />
-            Add Project
+      <div className="flex flex-col gap-4 rounded-xl border border-border bg-background p-6 shadow-sm dark:bg-muted/20">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-foreground">Projects</h2>
+          <Button variant="ghost" size="sm" onClick={handleAddAction} className="gap-1">
+            <Plus className="h-4 w-4" />
+            Add
           </Button>
         </div>
+
+        {/* Content */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {isLoading ? (
+            <>
+              <Skeleton className="h-40 w-full rounded-lg" />
+              <Skeleton className="h-40 w-full rounded-lg" />
+            </>
+          ) : profileData?.projects?.length ? (
+            profileData.projects.map((data) => (
+              <ProjectCard key={data.id} project={data} handleEditAction={handleEditAction} />
+            ))
+          ) : (
+            <div className="col-span-full text-muted-foreground text-sm">
+              No projects added yet. Click "Add" to get started.
+            </div>
+          )}
+        </div>
       </div>
-      <ProjectModal open={open} handleClose={handleOpen} />
+
+      <ProjectModal open={open} handleClose={handleClose} />
     </>
   );
 }
