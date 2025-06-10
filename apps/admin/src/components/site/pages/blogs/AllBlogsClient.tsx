@@ -186,7 +186,7 @@ export default function AllBlogsClient() {
                       </TableCell>
                       <TableCell>{blog.authorName}</TableCell>
                       <TableCell className="text-right space-x-2">
-                        <Link href={`/dashboard/blogs/edit/${blog.slug}`}>
+                        <Link href={`/dashboard/blogs/edit/${encodeURIComponent(blog.slug)}`}>
                           <Button size="sm" variant="outline">
                             <Edit className="w-4 h-4" />
                           </Button>

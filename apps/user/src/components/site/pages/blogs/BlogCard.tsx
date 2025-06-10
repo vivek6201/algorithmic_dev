@@ -18,6 +18,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
   category,
   slug,
 }) => {
+  const encodedSlug = encodeURIComponent(slug);
   return (
     <div className="border rounded-2xl p-6 shadow-sm hover:shadow-md transition bg-white dark:bg-neutral-900 text-gray-800 dark:text-gray-100">
       {/* Category */}
@@ -27,7 +28,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
 
       {/* Title */}
       <Link
-        href={`/blogs/${slug}`}
+        href={`/blogs/${encodedSlug}`}
         className="text-xl font-semibold mb-2 line-clamp-2 hover:underline underline-offset-2"
       >
         {title}

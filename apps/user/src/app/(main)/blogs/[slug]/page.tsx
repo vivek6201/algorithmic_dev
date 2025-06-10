@@ -97,7 +97,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
             {/* Example related post card */}
             {relatedPosts.map((post) => (
               <Link
-                href={`blogs/${post.slug}`}
+                href={encodeURIComponent(post.slug)}
                 className="p-4 bg-white dark:bg-gray-900 rounded-xl shadow hover:shadow-lg transition cursor-pointer"
                 key={post.id}
               >
