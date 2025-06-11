@@ -69,7 +69,6 @@ function LoginForm() {
     }
 
     toast.success('Signin successful!');
-    router.push('/');
   }
 
   return (
@@ -121,12 +120,6 @@ function LoginForm() {
           )}
         />
         <Button type="submit">Submit</Button>
-        <p className="text-center text-sm">
-          Dont have an account?{' '}
-          <span className="text-blue-400 cursor-pointer" onClick={() => router.push('/signup')}>
-            Create an account
-          </span>
-        </p>
       </form>
     </Form>
   );

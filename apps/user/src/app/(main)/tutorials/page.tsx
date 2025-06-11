@@ -16,13 +16,16 @@ export default async function TutorialsPage() {
 
   return (
     <div className="w-full max-w-[1400px] mx-auto mt-24 min-h-screen px-4">
+      {/* Mobile Filters */}
       <div className="lg:hidden">
         <TutorialsFilters data={categories ?? []} />
       </div>
+
+      {/* Grid layout with sidebar and main content */}
       <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-6">
-        {/* Left Sidebar - Filters (non-sticky) */}
-        <aside className="space-y-4 hidden lg:block">
-          <div className="p-4 rounded-2xl shadow-md border dark:bg-neutral-900">
+        {/* Left Sidebar - Sticky Filters */}
+        <aside className="hidden lg:block">
+          <div className="sticky top-24 z-10 p-4 rounded-2xl shadow-md border bg-white dark:bg-neutral-900">
             <h2 className="text-xl font-semibold mb-4">Filter Tutorials</h2>
             <TutorialsFilters data={categories ?? []} />
           </div>
@@ -30,7 +33,6 @@ export default async function TutorialsPage() {
 
         {/* Center Content */}
         <main className="space-y-4">
-          {/* Tutorials List */}
           <div className="p-4">
             <TutorialsList />
           </div>
