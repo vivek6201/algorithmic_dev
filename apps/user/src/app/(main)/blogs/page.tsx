@@ -32,7 +32,7 @@ export default async function page() {
 
         {/* Center Content: Blogs List */}
         <main className="space-y-4">
-          <div className="p-4">
+          <div className="md:p-4">
             <BlogsList />
           </div>
         </main>

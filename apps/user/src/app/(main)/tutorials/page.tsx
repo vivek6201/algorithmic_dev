@@ -15,7 +15,7 @@ export default async function TutorialsPage() {
   const { data: categories } = await getClientTutorialsCategories();
 
   return (
-    <div className="w-full max-w-[1400px] mx-auto mt-24 min-h-screen px-4">
+    <div className="w-full max-w-[1400px] mx-auto mt-24 min-h-screen md:px-4">
       {/* Mobile Filters */}
       <div className="lg:hidden">
         <TutorialsFilters data={categories ?? []} />
@@ -33,7 +33,7 @@ export default async function TutorialsPage() {
 
         {/* Center Content */}
         <main className="space-y-4">
-          <div className="p-4">
+          <div className="md:p-4">
             <TutorialsList />
           </div>
         </main>

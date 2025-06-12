@@ -16,7 +16,7 @@ export default async function JobsPage() {
   const jobCategories = await getClientJobCategories();
 
   return (
-    <div className="w-11/12 max-w-[1400px] mx-auto mt-24 min-h-screen px-4">
+    <div className="w-11/12 max-w-[1400px] mx-auto mt-24 min-h-screen md:px-4">
       {/* Mobile Filters */}
       <div className="lg:hidden">
         <JobFilters data={jobCategories.data ?? []} />
@@ -34,7 +34,7 @@ export default async function JobsPage() {
 
         {/* Job Listings */}
         <main className="space-y-4">
-          <div className="p-4">
+          <div className="md:p-4">
             <JobListings />
           </div>
         </main>
