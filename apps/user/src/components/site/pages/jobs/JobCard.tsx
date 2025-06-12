@@ -14,7 +14,7 @@ const JobCard = ({ job, categories }: JobCardProps) => {
       className="border rounded-xl p-3 md:p-5 bg-white dark:bg-zinc-900 shadow-sm group hover:shadow-md cursor-pointer transition min-h-[100px] flex flex-col gap-y-5"
     >
       <div>
-        <div className="max-w-[60%] flex gap-2 mb-2">
+        <div className="max-w-[60%] flex gap-2 mb-2 flex-wrap">
           {categories.map((category) => (
             <span
               className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full inline-block"
