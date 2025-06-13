@@ -1,3 +1,4 @@
+import { BlogWithCategoryAndReactions } from '@/types/main';
 import { Blog, BlogCategory, prisma } from '@repo/db';
 import cache from '@repo/shared/cache';
 
@@ -19,16 +20,11 @@ export const getClientBlogsCategories = async () => {
   }
 };
 
-type BlogWithCategoryAndReactions = Blog & {
-  category: BlogCategory;
-  reactions: any[];
-};
-
 export const getClientBlogBySlug = async (slug: string) => {
   try {
     const decodedSlug = decodeURIComponent(slug);
     let data = await cache.get<BlogWithCategoryAndReactions>('client-blog-by-slug', [decodedSlug]);
-    let relatedPosts = await cache.get<Blog[]>('client-related-posts', [decodedSlug]);
+    let relatedPosts = await cache.get<Blog[]>('client-related-blog-posts', [decodedSlug]);
 
     if (!data) {
       data = await prisma.blog.findUnique({
@@ -41,19 +37,23 @@ export const getClientBlogBySlug = async (slug: string) => {
           reactions: true,
         },
       });
+
       relatedPosts = await prisma.blog.findMany({
         where: {
+          id: { not: data?.id },
           category: {
             slug: data?.category.slug,
           },
         },
+        orderBy: {
+          createdAt: 'desc', // Sort by latest
+        },
+        take: 5,
       });
 
       cache.set('client-blog-by-slug', [decodedSlug], data);
-      cache.set('client-related-posts', [decodedSlug], relatedPosts);
+      cache.set('client-related-blog-posts', [decodedSlug], relatedPosts);
     }
-
-    relatedPosts = relatedPosts?.filter((item) => item.id != data?.id) || null;
 
     return { success: true, data, relatedPosts };
   } catch (error) {

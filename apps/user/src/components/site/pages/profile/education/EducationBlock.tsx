@@ -3,16 +3,14 @@ import { Plus } from '@repo/ui';
 import { Button } from '@repo/ui/components/ui/button';
 import React, { useState } from 'react';
 import EducationModal from './EducationModal';
-import { Skeleton } from '@repo/ui/components/ui/skeleton';
-import { useUserProfile } from '@/contexts/ProfileContext';
 import EducationCard from './EducationCard';
 import { useProfileStore } from '@/store/profileStore';
-import { Education } from '@repo/db';
+import { useUserStore } from '@/store/userStore';
 
 export default function EducationBlock() {
   const [open, setOpen] = useState(false);
   const { setEducationForm } = useProfileStore();
-  const { profileData, isLoading } = useUserProfile();
+  const { profileData } = useUserStore();
 
   const handleAddAction = () => {
     setEducationForm(null);
@@ -40,12 +38,7 @@ export default function EducationBlock() {
         </div>
 
         <div className="flex flex-wrap gap-4">
-          {isLoading ? (
-            <div className="flex gap-5">
-              <Skeleton className="h-24 w-full rounded-md" />
-              <Skeleton className="h-24 w-full rounded-md" />
-            </div>
-          ) : profileData?.educationDetails && profileData.educationDetails.length > 0 ? (
+          {profileData?.educationDetails && profileData.educationDetails.length > 0 ? (
             profileData?.educationDetails.map((data) => (
               <div key={data.id} className="w-full md:w-[calc(50%-0.5rem)]">
                 <EducationCard data={data} handleModal={handleEditAction} />

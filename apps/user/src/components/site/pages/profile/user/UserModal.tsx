@@ -25,13 +25,13 @@ import { Input } from '@repo/ui/components/ui/input';
 import { CustomCalendar } from '@repo/ui/components/ui/custom-calender';
 import { PersonType } from '@repo/db';
 import { useSession } from 'next-auth/react';
-import { useUserProfile } from '@/contexts/ProfileContext';
 import { updatePersonalData } from '@/actions/main/profile';
 import { toast } from '@repo/ui/components/ui/sonner';
+import { useUserStore } from '@/store/userStore';
 
 export default function UserModal({ open, handleOpen }: { handleOpen: () => void; open: boolean }) {
   const { data: sessionData } = useSession();
-  const { profileData } = useUserProfile();
+  const { profileData } = useUserStore();
 
   const form = hookForm.useForm<z.infer<typeof personalValidation>>({
     resolver: zodResolver(personalValidation),

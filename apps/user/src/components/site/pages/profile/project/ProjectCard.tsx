@@ -20,7 +20,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@repo/ui/components/ui/alert-dialog';
-import { useUserProfile } from '@/contexts/ProfileContext';
+import { useUserStore } from '@/store/userStore';
 
 export default function ProjectCard({
   project,
@@ -32,7 +32,7 @@ export default function ProjectCard({
   const { projectName, description, githubLink, projectLink, startDate, endDate, inProgress } =
     project;
   const { setProjectForm } = useProfileStore();
-  const { triggerRefetch } = useUserProfile();
+  const { refetchProfile } = useUserStore();
 
   const handleDelete = async () => {
     try {
@@ -43,7 +43,7 @@ export default function ProjectCard({
       }
 
       toast.success(message);
-      triggerRefetch();
+      refetchProfile();
     } catch (error) {
       console.error(error instanceof Error ? error.message : error);
       toast.error('Something went wrong!');

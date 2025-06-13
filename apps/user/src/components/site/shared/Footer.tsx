@@ -41,17 +41,17 @@ const Footer = () => {
           <h4 className="font-semibold text-gray-800 dark:text-white text-base">Follow Us</h4>
           <div className="flex gap-5 items-center md:justify-end">
             <a href="https://x.com/_Vivek_930" target="_blank" rel="noopener noreferrer">
-              <FaTwitter className="text-gray-500 hover:text-black dark:hover:text-white w-7 h-7" />
+              <FaTwitter className="text-gray-500 hover:text-black dark:hover:text-white w-5 h-5 md:w-7 md:h-7" />
             </a>
             <a
               href="https://www.linkedin.com/in/vivek-kumar-gupta-/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaLinkedin className="text-gray-500 hover:text-black dark:hover:text-white w-7 h-7" />
+              <FaLinkedin className="text-gray-500 hover:text-black dark:hover:text-white w-5 h-5 md:w-7 md:h-7" />
             </a>
             <a href="https://github.com/vivek6201" target="_blank" rel="noopener noreferrer">
-              <FaGithub className="text-gray-500 hover:text-black dark:hover:text-white w-7 h-7" />
+              <FaGithub className="text-gray-500 hover:text-black dark:hover:text-white w-5 h-5 md:w-7 md:h-7" />
             </a>
           </div>
         </div>

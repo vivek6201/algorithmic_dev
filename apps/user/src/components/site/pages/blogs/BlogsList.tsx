@@ -7,6 +7,8 @@ import axios from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useIsMobile } from '@repo/ui/hooks/use-mobile';
 import { clsx } from '@repo/ui';
+import { Skeleton } from '@repo/ui/components/ui/skeleton';
+import ListItemSkeleton from '../../shared/ListItemSkeleton';
 
 const LIMIT = 10;
 
@@ -73,7 +75,13 @@ function BlogsList() {
         /> */}
       </div>
       <div className="flex flex-col gap-y-6">
-        {isLoading && <p>Loading Blogs...</p>}
+        {isLoading && (
+          <div className="space-y-6">
+            {[...Array(2)].map((_, i) => (
+              <ListItemSkeleton key={i} />
+            ))}
+          </div>
+        )}
         {isError && <p>Failed to load Blogs.</p>}
         {!isLoading && blogs.length > 0
           ? blogs.map((blog: any, index: number) => {

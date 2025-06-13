@@ -21,7 +21,11 @@ export const GET = async () => {
     let data = await cache.get<JobCategory[]>('admin-job-category', []);
 
     if (!data) {
-      data = await prisma.jobCategory.findMany();
+      data = await prisma.jobCategory.findMany({
+        orderBy: {
+          updatedAt: 'desc',
+        },
+      });
       if (data) cache.set('admin-job-category', [], data, 10);
     }
 

@@ -1,4 +1,5 @@
 'use client';
+
 import {
   Card,
   CardContent,
@@ -23,6 +24,7 @@ import signupAction from '@/actions/auth/signup';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { signIn } from 'next-auth/react';
 import { CheckCircle, hookForm, zodResolver, z } from '@repo/ui';
+import { useUtilityStore } from '@/store/sidebarStore';
 
 interface Proptype extends React.ComponentPropsWithoutRef<'div'> {
   isLogin: boolean;
@@ -30,29 +32,29 @@ interface Proptype extends React.ComponentPropsWithoutRef<'div'> {
 
 export function AuthForm({ isLogin }: Proptype) {
   const handleLogin = async (type: 'github' | 'google') => {
-    await signIn(type, {
-      redirectTo: '/',
-    });
+    await signIn(type, { redirectTo: '/' });
   };
 
   return (
-    <Card className="w-11/12 max-w-[450px]">
-      <CardHeader>
-        <CardTitle className="text-2xl">{isLogin ? 'Login' : 'Signup'}</CardTitle>
-        <CardDescription>
+    <Card className="w-full max-w-sm sm:max-w-md">
+      <CardHeader className="space-y-1">
+        <CardTitle className="text-2xl text-center">{isLogin ? 'Login' : 'Signup'}</CardTitle>
+        <CardDescription className="text-center text-sm">
           {isLogin
             ? 'Enter your email below to login to your account'
             : 'Enter your details below to create an account'}
         </CardDescription>
       </CardHeader>
-      <CardContent>
+
+      <CardContent className="space-y-4">
         {isLogin ? <LoginForm /> : <SignupForm />}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
           <Button type="button" variant={'outline'} onClick={() => handleLogin('google')}>
-            Login with Google
+            Google
           </Button>
           <Button type="button" variant={'outline'} onClick={() => handleLogin('github')}>
-            Login with Github
+            GitHub
           </Button>
         </div>
       </CardContent>
@@ -60,8 +62,51 @@ export function AuthForm({ isLogin }: Proptype) {
   );
 }
 
+export function AuthModalForm() {
+  const { setAuthModel, isLoginMode } = useUtilityStore();
+  const handleLogin = async (type: 'github' | 'google') => {
+    await signIn(type, { redirectTo: '/' });
+    setAuthModel(false);
+  };
+
+  return (
+    <div className="w-full sm:min-w-[320px] sm:max-w-sm space-y-4">
+      <div className="space-y-1 text-center">
+        <h2 className="text-2xl font-semibold">{isLoginMode ? 'Login' : 'Signup'}</h2>
+        <p className="text-sm text-muted-foreground">
+          {isLoginMode
+            ? 'Enter your email below to login to your account'
+            : 'Enter your details to create an account'}
+        </p>
+      </div>
+
+      {isLoginMode ? <LoginForm /> : <SignupForm />}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+        <Button
+          type="button"
+          variant={'outline'}
+          onClick={() => handleLogin('google')}
+          className="w-full"
+        >
+          Google
+        </Button>
+        <Button
+          type="button"
+          variant={'outline'}
+          onClick={() => handleLogin('github')}
+          className="w-full"
+        >
+          GitHub
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 function LoginForm() {
   const [showPass, setShowPass] = useState(false);
+  const { openAuthModal, setAuthModel, setIsLoginMode } = useUtilityStore();
   const router = useRouter();
 
   const form = hookForm.useForm<z.infer<typeof loginValidation>>({
@@ -87,12 +132,21 @@ function LoginForm() {
     }
 
     toast.success('Signin successful!');
+
+    if (openAuthModal) {
+      setAuthModel(false);
+      return;
+    }
+
     router.push('/');
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-y-2 flex-col">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-y-3 sm:gap-y-4 px-1 sm:px-2"
+      >
         <FormField
           control={form.control}
           name="email"
@@ -141,7 +195,10 @@ function LoginForm() {
         <Button type="submit">Submit</Button>
         <p className="text-center text-sm">
           Dont have an account?{' '}
-          <span className="text-blue-400 cursor-pointer" onClick={() => router.push('/signup')}>
+          <span
+            className="text-blue-400 cursor-pointer"
+            onClick={() => (openAuthModal ? setIsLoginMode(false) : router.push('/signup'))}
+          >
             Create an account
           </span>
         </p>
@@ -154,6 +211,7 @@ function SignupForm() {
   const [showPass, setShowPass] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [showConfPass, setConfShowPass] = useState(false);
+  const { openAuthModal, setAuthModel, setIsLoginMode } = useUtilityStore();
   const router = useRouter();
 
   const form = hookForm.useForm<z.infer<typeof signupValidation>>({
@@ -180,6 +238,11 @@ function SignupForm() {
 
     toast.success(message);
     setIsSuccess(true);
+
+    if (openAuthModal) {
+      setAuthModel(false);
+      return;
+    }
   }
 
   return (
@@ -191,7 +254,10 @@ function SignupForm() {
         </div>
       )}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-y-5 flex-col mt-5">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col gap-y-3 sm:gap-y-4 px-1 sm:px-2"
+        >
           <FormField
             control={form.control}
             name="name"
@@ -273,7 +339,10 @@ function SignupForm() {
           <Button type="submit">Submit</Button>
           <p className="text-center text-sm">
             Already have an account?{' '}
-            <span className="text-blue-400 cursor-pointer" onClick={() => router.push('/login')}>
+            <span
+              className="text-blue-400 cursor-pointer"
+              onClick={() => (openAuthModal ? setIsLoginMode(true) : router.push('/login'))}
+            >
               Login
             </span>
           </p>

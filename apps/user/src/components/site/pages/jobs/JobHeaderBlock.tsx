@@ -1,13 +1,52 @@
 'use client';
 import { Button } from '@repo/ui/components/ui/button';
 import { cn } from '@repo/ui/lib/utils';
-import React, { ButtonHTMLAttributes, ReactNode } from 'react';
+import React, { ButtonHTMLAttributes, ReactNode, useEffect, useState } from 'react';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { FaWhatsapp, FaLinkedinIn, FaTwitter } from 'react-icons/fa';
 import { Bookmark, Share2 } from '@repo/ui';
+import { useUserStore } from '@/store/userStore';
+import { toggleJobBookmarkAction } from '@/actions/main/bookmark';
+import { useMutation } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
+import { useUtilityStore } from '@/store/sidebarStore';
 
-export default function JobHeaderBlock({ title, slug }: { title: string; slug: string }) {
-  const fullUrl = `${window.location.origin}${window.location.pathname}`;
+export default function JobHeaderBlock({ title, id }: { title: string; id: string }) {
+  const [fullUrl, setFullUrl] = useState('');
+  const { isBookmarked, refetchBookmarks } = useUserStore();
+  const { setAuthModel } = useUtilityStore();
+  const session = useSession();
+
+  useEffect(() => {
+    // This ensures the code only runs on the client
+    const url = `${window.location.origin}${window.location.pathname}`;
+    setFullUrl(url);
+  }, []);
+
+  const { mutate: toggleBookmark, isPending } = useMutation({
+    mutationFn: () => toggleJobBookmarkAction(id ?? ''),
+    onSuccess: (res) => {
+      if (res.success) {
+        refetchBookmarks();
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
+    },
+    onError: () => toast.error('Something went wrong!'),
+  });
+
+  const handleBookmark = () => {
+    if (!id) return;
+
+    //trigger auth modal is user is not logged in
+    if (session.status === 'unauthenticated') {
+      setAuthModel(true);
+      return;
+    }
+    toggleBookmark();
+  };
+
   const openSharePopup = (url: string) => {
     window.open(url, '_blank', 'width=600,height=600');
   };
@@ -41,7 +80,21 @@ export default function JobHeaderBlock({ title, slug }: { title: string; slug: s
     <>
       <div className="flex justify-between items-center">
         <h1 className="text-2xl lg:text-4xl font-bold mb-4">{title}</h1>
-        <Button className="hidden md:block mr-5">Save Job</Button>
+        {isBookmarked('job', id) ? (
+          <Button
+            className="hidden md:flex mr-5 gap-2 items-center text-white"
+            onClick={handleBookmark}
+          >
+            <Bookmark fill="white" /> Remove Job
+          </Button>
+        ) : (
+          <Button
+            className="hidden md:flex mr-5 gap-2 items-center text-white"
+            onClick={handleBookmark}
+          >
+            <Bookmark /> Save Job
+          </Button>
+        )}
       </div>
       <div className="flex items-center gap-2">
         <ActionButton onClick={shareOnWhatsApp}>
@@ -56,8 +109,8 @@ export default function JobHeaderBlock({ title, slug }: { title: string; slug: s
         <ActionButton onClick={copyToClipboard}>
           <Share2 />
         </ActionButton>
-        <ActionButton className="md:hidden w-10 h-10 rounded-full">
-          <Bookmark />
+        <ActionButton className="md:hidden w-10 h-10 rounded-full" onClick={handleBookmark}>
+          <Bookmark fill={isBookmarked('job', id) ? 'orange' : ''} />
         </ActionButton>
       </div>
     </>

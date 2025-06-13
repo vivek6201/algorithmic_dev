@@ -1,6 +1,6 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import TopicForm from './TopicForm';
 import { Button } from '@repo/ui/components/ui/button';
 import { Trash2 } from '@repo/ui';
@@ -35,10 +35,12 @@ export default function TopicSection({
     | undefined;
 }) {
   const searchParams = useSearchParams();
-  const [publishedStatus, setPublishedStatus] = React.useState(
-    topic?.published ? 'publish' : 'draft',
-  );
+  const [publishedStatus, setPublishedStatus] = React.useState<string | null>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    if (topic) setPublishedStatus(topic?.published ? 'publish' : 'draft');
+  }, [topic]);
 
   const handleStatusChange = async (value: string) => {
     try {
@@ -101,20 +103,22 @@ export default function TopicSection({
     <div className="flex flex-col gap-y-5 ">
       <div className="flex justify-between items-center mb-5">
         <p className="font-semibold text-2xl ">{topicSlug ? 'Edit Topic' : 'Create Topic'}</p>
-        <div className="flex items-center gap-2">
-          <Select value={publishedStatus} onValueChange={handleStatusChange}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="publish">Published</SelectItem>
-              <SelectItem value="draft">Draft</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button size={'icon'} variant={'destructive'} onClick={handleDeleteTopic}>
-            <Trash2 />
-          </Button>
-        </div>
+        {topicSlug && (
+          <div className="flex items-center gap-2">
+            <Select value={publishedStatus ?? ''} onValueChange={handleStatusChange}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="publish">Published</SelectItem>
+                <SelectItem value="draft">Draft</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button size={'icon'} variant={'destructive'} onClick={handleDeleteTopic}>
+              <Trash2 />
+            </Button>
+          </div>
+        )}
       </div>
       <TopicForm isEdit={topicSlug ? true : false} slug={chapterSlug} topic={topic} />
     </div>

@@ -26,7 +26,6 @@ import { educationValidation } from '@repo/shared/validations';
 import { updateEducationData } from '@/actions/main/profile';
 import { useSession } from 'next-auth/react';
 import { toast } from '@repo/ui/components/ui/sonner';
-import { useUserProfile } from '@/contexts/ProfileContext';
 import { useIsMobile } from '@repo/ui/hooks/use-mobile';
 import {
   Drawer,
@@ -37,6 +36,7 @@ import {
 } from '@repo/ui/components/ui/drawer';
 import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
 import { useProfileStore } from '@/store/profileStore';
+import { useUserStore } from '@/store/userStore';
 
 export default function EducationModal({
   open,
@@ -80,7 +80,7 @@ export default function EducationModal({
 
 function EducationForm({ handleClose }: { handleClose: () => void }) {
   const session = useSession();
-  const { triggerRefetch } = useUserProfile();
+  const { refetchProfile } = useUserStore();
   const { education } = useProfileStore();
 
   const form = hookForm.useForm<z.infer<typeof educationValidation>>({
@@ -137,12 +137,12 @@ function EducationForm({ handleClose }: { handleClose: () => void }) {
         }
         toast.success(message);
       }
-      triggerRefetch();
     } catch (error) {
       console.error(error instanceof Error ? error.message : error);
       toast.error('internal server error');
     } finally {
       handleClose();
+      refetchProfile();
     }
   }
   return (

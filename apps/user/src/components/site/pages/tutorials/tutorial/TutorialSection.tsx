@@ -1,12 +1,11 @@
 'use client';
 import { Button } from '@repo/ui/components/ui/button';
-import { ChevronLeft, ChevronRight, Menu } from '@repo/ui';
+import { ChevronLeft, ChevronRight, Menu, MenuIcon } from '@repo/ui';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'nextjs-toploader/app';
-import React, { useState } from 'react';
+import React from 'react';
 import HTMLRenderer from '@repo/ui/components/elements/HTMLRenderer';
-import TutorialSidebar from './TutorialSidebar';
-import { useSidebarStore } from '@/store/sidebarStore';
+import { useUtilityStore } from '@/store/sidebarStore';
 
 export default function TutorialSection({
   data,
@@ -29,20 +28,21 @@ export default function TutorialSection({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { setTutorialSidebar } = useSidebarStore();
+  const { setTutorialSidebar } = useUtilityStore();
 
   const handlePageChange = (type: 'next' | 'prev') => {
     if (!nextSlug && type === 'next') return;
     if (!prevSlug && type === 'prev') return;
 
     const newSlug = type === 'next' ? nextSlug : prevSlug;
-    const newPath = pathname.replace(/[^/]+$/, newSlug ?? '');
+    const newPath = pathname.replace(/[^/]+$/, encodeURIComponent(newSlug ?? ''));
 
     router.push(newPath);
   };
 
   return (
     <div className="w-full h-[800px]">
+      {/* Mobile Header */}
       <div className="lg:hidden flex items-center px-4 py-2 border-b border-gray-300 dark:border-gray-700">
         <button
           onClick={() => setTutorialSidebar(true)}
@@ -50,24 +50,13 @@ export default function TutorialSection({
           className="text-blue-600 dark:text-blue-400 focus:outline-none focus:ring focus:ring-blue-500 dark:focus:ring-blue-300 rounded"
         >
           {/* Hamburger icon */}
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            viewBox="0 0 24 24"
-          >
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="12" x2="21" y2="12" />
-            <line x1="3" y1="18" x2="21" y2="18" />
-          </svg>
+          <MenuIcon />
         </button>
         <h1 className="ml-4 font-semibold text-lg text-gray-900 dark:text-gray-100">
           {data.title}
         </h1>
       </div>
+
       <div className="w-full py-5 lg:py-10 lg:px-10 h-full overflow-y-auto scrollbar-none">
         <h2 className="text-2xl font-bold mb-5 ml-4 hidden lg:block">{data.title}</h2>
         <HTMLRenderer content={data.content} />

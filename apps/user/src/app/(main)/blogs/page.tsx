@@ -21,10 +21,10 @@ export default async function page() {
       <div className="lg:hidden">
         <BlogsFilters data={categories ?? []} />
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-5 w-full px-5 xl:px-0 mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-5 w-full xl:px-0 mx-auto mb-5">
         {/* Left Sidebar: Filters for Desktop */}
         <aside className="space-y-4 hidden lg:block w-full h-fit self-start sticky top-24">
-          <div className="p-4 rounded-2xl shadow-md border dark:bg-neutral-900">
+          <div className="rounded-2xl p-4 shadow-md border dark:bg-neutral-900">
             <h2 className="text-xl font-semibold mb-4">Filters</h2>
             <BlogsFilters data={categories ?? []} />
           </div>

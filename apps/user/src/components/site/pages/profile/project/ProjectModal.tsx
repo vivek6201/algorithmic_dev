@@ -27,7 +27,6 @@ import { Textarea } from '@repo/ui/components/ui/textarea';
 import { updateProjectData } from '@/actions/main/profile';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useSession } from 'next-auth/react';
-import { useUserProfile } from '@/contexts/ProfileContext';
 import { useIsMobile } from '@repo/ui/hooks/use-mobile';
 import {
   Drawer,
@@ -38,6 +37,7 @@ import {
 } from '@repo/ui/components/ui/drawer';
 import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
 import { useProfileStore } from '@/store/profileStore';
+import { useUserStore } from '@/store/userStore';
 
 export default function ProjectModal({
   open,
@@ -81,7 +81,7 @@ export default function ProjectModal({
 
 function ProjectForm({ handleClose }: { handleClose: () => void }) {
   const session = useSession();
-  const { triggerRefetch } = useUserProfile();
+  const { refetchProfile } = useUserStore();
   const { project } = useProfileStore();
 
   const form = hookForm.useForm<z.infer<typeof projectValidation>>({
@@ -127,7 +127,7 @@ function ProjectForm({ handleClose }: { handleClose: () => void }) {
       console.error(error instanceof Error ? error.message : error);
       toast.error('internal server error');
     } finally {
-      triggerRefetch();
+      refetchProfile();
       handleClose();
     }
   }

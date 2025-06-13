@@ -21,7 +21,11 @@ export async function GET() {
     let res = await cache.get<BlogCategory[]>('blog-category', []);
 
     if (!res) {
-      res = await prisma.blogCategory.findMany();
+      res = await prisma.blogCategory.findMany({
+        orderBy: {
+          updatedAt: 'desc',
+        },
+      });
       cache.set('blog-category', [], res, 10);
     }
 

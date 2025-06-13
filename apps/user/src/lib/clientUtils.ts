@@ -22,3 +22,14 @@ export const updateParams = (
 
   router?.replace(`?${params.toString()}`);
 };
+
+export function calculateReadTime(htmlContent: string, wpm: number = 200): number {
+  // Remove HTML tags and extra whitespace
+  const text = htmlContent
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const wordCount = text.split(' ').length;
+  const time = Math.ceil(wordCount / wpm);
+  return time;
+}

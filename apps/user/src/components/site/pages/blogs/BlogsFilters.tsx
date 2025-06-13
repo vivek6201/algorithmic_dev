@@ -39,7 +39,7 @@ const BlogsFilters = ({ data }: { data: CategoryType[] }) => {
 
   if (isMobile) {
     return (
-      <div className="px-5">
+      <div className="">
         <DrawerFilter>
           {activeTab?.label === 'category' && (
             <FilterButtonGroup
@@ -55,7 +55,7 @@ const BlogsFilters = ({ data }: { data: CategoryType[] }) => {
 
   return (
     <div className="space-y-6 text-sm">
-      <div>
+      <div className="">
         <h3 className="font-semibold mb-2 dark:text-white">Categories</h3>
         <FilterButtonGroup
           items={data.map((cat) => ({ name: cat.name, value: cat.slug }))}

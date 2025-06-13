@@ -6,12 +6,12 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { Skeleton } from '@repo/ui/components/ui/skeleton';
-import { useUserProfile } from '@/contexts/ProfileContext';
 import UserModal from './UserModal';
+import { useUserStore } from '@/store/userStore';
 
 export default function UserBlock() {
   const session = useSession();
-  const { profileData } = useUserProfile();
+  const { profileData } = useUserStore();
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(!open);

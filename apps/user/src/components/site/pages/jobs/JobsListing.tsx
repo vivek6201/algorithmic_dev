@@ -6,6 +6,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useRef, useCallback } from 'react';
 import { useIsMobile } from '@repo/ui/hooks/use-mobile';
 import { clsx } from '@repo/ui';
+import ListItemSkeleton from '../../shared/ListItemSkeleton';
 
 const LIMIT = 10;
 
@@ -75,7 +76,7 @@ const JobListings = () => {
         /> */}
       </div>
       <main className="flex-1 w-full mx-auto space-y-6">
-        {isLoading && <p>Loading jobs...</p>}
+        {isLoading && Array.from([1, 2, 3, 4, 5]).map((_, i) => <ListItemSkeleton key={i} />)}
         {isError && <p>Failed to load jobs.</p>}
         {!isLoading && jobs.length <= 0 && <p>No jobs found</p>}
         {jobs.map((job: any, index: number) => {

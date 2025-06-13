@@ -1,6 +1,5 @@
 'use client';
 
-import { useUserProfile } from '@/contexts/ProfileContext';
 import { Plus } from '@repo/ui';
 import { Button } from '@repo/ui/components/ui/button';
 import React, { useState } from 'react';
@@ -8,10 +7,11 @@ import ProjectModal from './ProjectModal';
 import { Skeleton } from '@repo/ui/components/ui/skeleton';
 import ProjectCard from './ProjectCard';
 import { useProfileStore } from '@/store/profileStore';
+import { useUserStore } from '@/store/userStore';
 
 export default function ProjectBlock() {
   const [open, setOpen] = useState(false);
-  const { profileData, isLoading } = useUserProfile();
+  const { profileData } = useUserStore();
   const { setProjectForm } = useProfileStore();
 
   const handleAddAction = () => {
@@ -42,12 +42,7 @@ export default function ProjectBlock() {
 
         {/* Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {isLoading ? (
-            <>
-              <Skeleton className="h-40 w-full rounded-lg" />
-              <Skeleton className="h-40 w-full rounded-lg" />
-            </>
-          ) : profileData?.projects?.length ? (
+          {profileData?.projects?.length ? (
             profileData.projects.map((data) => (
               <ProjectCard key={data.id} project={data} handleEditAction={handleEditAction} />
             ))

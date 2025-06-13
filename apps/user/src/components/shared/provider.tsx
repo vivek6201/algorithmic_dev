@@ -6,12 +6,13 @@ import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from '@repo/ui/components/ui/sonner';
 import { SessionProvider } from 'next-auth/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ProfileSync } from './ProfileSync';
 
 function ThemeProvider({ children, ...props }: React.ComponentProps<typeof NextThemesProvider>) {
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 export default function Provider({ children }: { children: React.ReactNode }) {
   const [windowLoaded, setWindowLoaded] = React.useState(false);
@@ -27,7 +28,10 @@ export default function Provider({ children }: { children: React.ReactNode }) {
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
         <Toaster />
         <NextTopLoader showSpinner={false} />
-        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+        <QueryClientProvider client={queryClient}>
+          <ProfileSync />
+          {children}
+        </QueryClientProvider>
       </ThemeProvider>
     </SessionProvider>
   );

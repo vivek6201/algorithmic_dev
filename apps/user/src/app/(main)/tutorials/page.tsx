@@ -17,7 +17,7 @@ export default async function TutorialsPage() {
   return (
     <div className="w-full max-w-[1400px] mx-auto mt-24 min-h-screen md:px-4">
       {/* Mobile Filters */}
-      <div className="lg:hidden">
+      <div className="lg:hidden px-4">
         <TutorialsFilters data={categories ?? []} />
       </div>
 
@@ -33,7 +33,7 @@ export default async function TutorialsPage() {
 
         {/* Center Content */}
         <main className="space-y-4">
-          <div className="md:p-4">
+          <div className="p-4">
             <TutorialsList />
           </div>
         </main>

@@ -20,6 +20,7 @@ import { CustomSelect } from '@repo/ui/components/ui/custom-select';
 import createBlog, { updateBlog } from '@/actions/blogs/blog';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'nextjs-toploader/app';
+import { Textarea } from '@repo/ui/components/ui/textarea';
 
 function BlogForm({
   blog,
@@ -191,7 +192,7 @@ function BlogForm({
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter description url of the blog.." {...field} />
+                  <Textarea placeholder="Enter description of the blog.." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

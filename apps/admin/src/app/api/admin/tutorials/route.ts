@@ -28,6 +28,9 @@ export const GET = async () => {
           categories: true,
           _count: true,
         },
+        orderBy: {
+          updatedAt: 'desc',
+        },
       });
 
       if (tutorials) cache.set('admin-tutorials', [], tutorials, 10);

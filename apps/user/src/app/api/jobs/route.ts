@@ -1,14 +1,8 @@
 import { ExperienceLevel, JobType } from '@repo/db';
 import { prisma } from '@repo/db';
 import { NextRequest, NextResponse } from 'next/server';
-import { Prisma } from '@repo/db';
 import cache from '@repo/shared/cache';
-
-type JobWithCategories = Prisma.JobsGetPayload<{
-  include: {
-    jobCategories: true;
-  };
-}>;
+import { JobWithCategories } from '@/types/main';
 
 export async function GET(req: NextRequest) {
   try {

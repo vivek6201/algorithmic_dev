@@ -1,4 +1,4 @@
-import CTASection from '@/components/site/pages/home/CTASection';
+import FounderSection from '@/components/site/pages/home/FounderSection';
 import FeatureSection from '@/components/site/pages/home/FeatureSection';
 import HeroSection from '@/components/site/pages/home/HeroSection';
 import TestimonialSection from '@/components/site/pages/home/TestimonialSection';
@@ -10,7 +10,7 @@ export default function Home() {
       <HeroSection />
       <FeatureSection />
       <TestimonialSection />
-      <CTASection />
+      <FounderSection />
     </div>
   );
 }

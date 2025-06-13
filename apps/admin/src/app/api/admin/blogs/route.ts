@@ -33,6 +33,9 @@ export async function GET() {
           category: true,
           _count: true,
         },
+        orderBy: {
+          updatedAt: 'desc',
+        },
       });
       cache.set('blogs', [], res, 10);
     }

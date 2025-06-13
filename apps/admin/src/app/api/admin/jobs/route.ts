@@ -24,6 +24,9 @@ export const GET = async () => {
         include: {
           jobCategories: true,
         },
+        orderBy: {
+          updatedAt: 'desc',
+        },
       });
       if (data) cache.set('admin-jobs', [], data, 10);
     }

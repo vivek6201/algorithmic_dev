@@ -46,7 +46,7 @@ model Chapter {
   description String?
   tutorial    Tutorial @relation(fields: [tutorialId], references: [id], onDelete: Cascade)
   tutorialId  String
-  order       Int      
+  order       Int
   topics      Topic[]
 
   createdAt DateTime @default(now())
@@ -91,6 +91,7 @@ model Blog {
   coverImage  String
 
   reactions BlogReaction[]
+  bookmarks Bookmark[]     @relation("BlogBookmarks")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -121,5 +122,5 @@ model BlogReaction {
 
   createdAt DateTime @default(now())
 
-  @@unique([profileId, blogId]) // Ensures one reaction per user per blog
+  @@unique([profileId, blogId])
 }

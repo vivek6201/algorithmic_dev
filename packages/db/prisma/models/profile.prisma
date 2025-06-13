@@ -24,6 +24,7 @@ model Profile {
   educationDetails  Education[]
   experienceDetails Experience[]
   projects          Project[]
+  Bookmarks         Bookmark[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -102,21 +103,33 @@ model Project {
   updatedAt DateTime @updatedAt
 }
 
-// enum BookmarkType {
-//   Jobs
-//   Blogs
-// }
+enum BookmarkType {
+  Jobs
+  Blogs
+}
 
-// model Bookmarks {
-//   id String @id @default(cuid())
-//   type BookmarkType
+model Bookmark {
+  id        String       @id @default(cuid())
+  type      BookmarkType
+  profileId String
+  profile   Profile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
-//   Profile   Profile? @relation(fields: [profileId], references: [id])
-//   profileId String?
+  // Optional relations (only one will be non-null per record)
+  jobId String?
+  job   Jobs?   @relation(name: "JobBookmarks", fields: [jobId], references: [id], onDelete: Cascade)
 
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
+  blogId String?
+  blog   Blog?   @relation(name: "BlogBookmarks", fields: [blogId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Composite unique constraints to prevent duplicates
+  @@unique([profileId, jobId], name: "profileId_jobId")
+  @@unique([profileId, blogId], name: "profileId_blogId")
+  @@index([jobId])
+  @@index([blogId])
+}
 
 model EmployerProfile {
   id     String @id @default(cuid())

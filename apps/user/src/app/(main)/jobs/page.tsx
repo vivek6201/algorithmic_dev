@@ -23,7 +23,7 @@ export default async function JobsPage() {
       </div>
 
       {/* Grid layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-6 mb-5">
         {/* Sticky Left Sidebar Filters */}
         <aside className="hidden lg:block">
           <div className="sticky top-24 z-10 p-4 rounded-2xl shadow-md border bg-white dark:bg-neutral-900">

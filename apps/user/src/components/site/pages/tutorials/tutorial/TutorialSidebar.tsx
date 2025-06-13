@@ -5,15 +5,15 @@ import { usePathname } from 'next/navigation';
 import { useRouter } from 'nextjs-toploader/app';
 import React from 'react';
 import { useIsMobile } from '@repo/ui/hooks/use-mobile';
-import { useSidebarStore } from '@/store/sidebarStore';
+import { useUtilityStore } from '@/store/sidebarStore';
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from '@repo/ui/components/ui/sheet';
+import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
 
 export default function TutorialSidebar({
   data,
@@ -25,7 +25,7 @@ export default function TutorialSidebar({
   const router = useRouter();
   const pathname = usePathname();
   const isMobile = useIsMobile(1024);
-  const { openTutorialSidebar, setTutorialSidebar } = useSidebarStore();
+  const { openTutorialSidebar, setTutorialSidebar } = useUtilityStore();
 
   const navigate = (to: string) => {
     const pathParts = pathname.split('/');
@@ -38,6 +38,7 @@ export default function TutorialSidebar({
       const newPath = pathParts.join('/');
       router.push(newPath);
     }
+    setTutorialSidebar(false);
   };
 
   const renderContent = () => (
@@ -82,7 +83,7 @@ export default function TutorialSidebar({
             <SheetTitle></SheetTitle>
             <SheetDescription></SheetDescription>
           </SheetHeader>
-          <div className="mt-5">{renderContent()}</div>
+          <ScrollArea className="mt-5">{renderContent()}</ScrollArea>
         </SheetContent>
       </Sheet>
     );

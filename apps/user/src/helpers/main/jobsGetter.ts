@@ -1,22 +1,46 @@
-import { JobCategory, Jobs } from '@repo/db';
+import { JobCategory, Jobs, Prisma } from '@repo/db';
 import cache from '@repo/shared/cache';
 import { prisma } from '@repo/db';
+import { JobWithCategories } from '@/types/main';
 
 export const getClientJobBySlug = async (slug: string) => {
   try {
     const decodedSlug = decodeURIComponent(slug);
 
-    let data = await cache.get<Jobs>('client-job-by-slug', [decodedSlug]);
+    let data = await cache.get<JobWithCategories>('client-job-by-slug', [decodedSlug]);
+    let relatedPosts = await cache.get<Jobs[]>('client-related-job-posts', [decodedSlug]);
 
     if (!data) {
       data = await prisma.jobs.findUnique({
         where: { slug: decodedSlug, published: true },
+        include: {
+          jobCategories: true,
+        },
+      });
+
+      const categoryIds = data?.jobCategories?.map((cat) => cat.id);
+
+      relatedPosts = await prisma.jobs.findMany({
+        where: {
+          id: { not: data?.id },
+          published: true,
+          jobCategories: {
+            some: {
+              id: { in: categoryIds },
+            },
+          },
+        },
+        orderBy: {
+          createdAt: 'desc', // Sort by latest
+        },
+        take: 5,
       });
 
       cache.set('client-job-by-slug', [decodedSlug], data);
+      cache.set('client-related-job-posts', [decodedSlug], relatedPosts);
     }
 
-    return { success: true, data };
+    return { success: true, data, relatedPosts };
   } catch (error) {
     console.error(error);
     return {

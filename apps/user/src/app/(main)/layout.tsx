@@ -1,3 +1,4 @@
+import AuthModal from '@/components/site/pages/auth/AuthModal';
 import BottomBar from '@/components/site/shared/BottomBar';
 import Footer from '@/components/site/shared/Footer';
 import Header from '@/components/site/shared/Header';
@@ -15,8 +16,9 @@ export default async function layout({ children }: { children: ReactNode }) {
     <>
       <Header />
       <main>{children}</main>
-      <BottomBar />
       <Footer />
+      <BottomBar />
+      <AuthModal />
     </>
   );
 }

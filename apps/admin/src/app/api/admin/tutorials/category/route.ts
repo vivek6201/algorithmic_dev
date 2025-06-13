@@ -21,7 +21,11 @@ export async function GET() {
     let res = await cache.get<TutorialCategory[]>('admin-tutorial-categories', []);
 
     if (!res) {
-      res = await prisma.tutorialCategory.findMany();
+      res = await prisma.tutorialCategory.findMany({
+        orderBy: {
+          updatedAt: 'desc',
+        },
+      });
       if (res) cache.set('admin-tutorial-categories', [], res, 10);
     }
     return NextResponse.json({ categories: res }, { status: 200 });

@@ -17,7 +17,7 @@ export default async function TutorialLayout({
       <div className="hidden lg:block h-full">
         <TutorialSidebar data={data} topicSlug={topicSlug} />
       </div>
-      {children}
+      <div className="pb-5 w-full">{children}</div>
     </div>
   );
 }

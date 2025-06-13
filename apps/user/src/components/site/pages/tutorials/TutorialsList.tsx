@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { clsx } from '@repo/ui';
 import { useIsMobile } from '@repo/ui/hooks/use-mobile';
+import ListItemSkeleton from '../../shared/ListItemSkeleton';
 
 const LIMIT = 10;
 
@@ -78,7 +79,7 @@ export default function TutorialsList() {
         /> */}
       </div>
       <div className="flex flex-col gap-y-6">
-        {isLoading && <p>Loading tutorials...</p>}
+        {isLoading && Array.from([1, 2, 3, 4, 5]).map((_, i) => <ListItemSkeleton key={i} />)}
         {isError && <p>Failed to load tutorials.</p>}
         {tutorials.map((tutorial: any) => (
           <TutorialCard

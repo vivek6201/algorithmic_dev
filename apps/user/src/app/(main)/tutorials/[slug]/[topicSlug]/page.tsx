@@ -19,7 +19,7 @@ export async function generateMetadata({
 
   return {
     title: `${data.title} | Algorithmic Dev`,
-    // description: data.,
+    // description: `${data.}`
   };
 }
 

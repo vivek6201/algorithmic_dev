@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const { success, data } = await getClientJobBySlug(slug);
+  const { success, data, relatedPosts } = await getClientJobBySlug(slug);
 
   if (!success || !data) {
     return (
@@ -41,7 +41,7 @@ export default async function page({ params }: { params: Promise<{ slug: string 
       <Breadcrumbs />
 
       {/* Header */}
-      <JobHeaderBlock title={data.title} slug={data.slug} />
+      <JobHeaderBlock title={data.title} id={data.id} />
 
       {/* Meta */}
       <div className="flex flex-wrap items-center text-sm gap-4 mb-6"></div>
@@ -56,6 +56,31 @@ export default async function page({ params }: { params: Promise<{ slug: string 
           Apply <ChevronRight />
         </Button>
       </Link>
+
+      {relatedPosts && relatedPosts.length > 0 ? (
+        <div className="mt-16">
+          <h2 className="text-2xl font-bold mb-4">Related Openings</h2>
+          <div className="flex items-center overflow-x-auto scrollbar-none gap-4">
+            {/* Example related post card */}
+            {relatedPosts.map((post) => (
+              <Link
+                href={encodeURIComponent(post.slug)}
+                className="p-4 bg-white dark:bg-gray-900 rounded-xl shadow hover:shadow-lg transition cursor-pointer w-full md:min-w-[24rem] h-[10rem] max-w-lg"
+                key={post.id}
+              >
+                <h4 className="font-semibold mb-2">{post.title}</h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {post.shortDescription.split(' ').length > 30
+                    ? post.shortDescription.split(' ').slice(0, 30).join(' ') + '...'
+                    : post.shortDescription}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 }

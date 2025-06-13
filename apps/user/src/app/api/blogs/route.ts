@@ -43,6 +43,9 @@ export const GET = async (request: NextRequest) => {
           category: true,
           reactions: true,
         },
+        orderBy: {
+          updatedAt: 'desc',
+        },
       });
 
       cache.set('blogs', cacheArgs, blogs);
