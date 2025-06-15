@@ -54,7 +54,7 @@ const getInitials = (name: string) =>
 
 const TestimonialsSection: React.FC = () => {
   return (
-    <section className="w-full py-24 bg-background">
+    <section className="w-full py-24 dark:bg-background bg-gray-100">
       <div className="max-w-7xl mx-auto px-4">
         {/* Heading */}
         <motion.div

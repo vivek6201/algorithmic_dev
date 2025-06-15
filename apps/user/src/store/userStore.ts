@@ -1,13 +1,13 @@
 import { queryClient } from '@/components/shared/provider';
-import { CombinedProfile } from '@/types/main';
+import { BookmarkWithRelations, CombinedProfile } from '@/types/main';
 import { Bookmark } from '@repo/db';
 import { create } from 'zustand';
 
 interface UserStore {
   profileData?: CombinedProfile;
-  bookmarks: Bookmark[];
+  bookmarks: BookmarkWithRelations[];
   setProfile: (data: CombinedProfile) => void;
-  setBookmarks: (data: Bookmark[]) => void;
+  setBookmarks: (data: BookmarkWithRelations[]) => void;
   clearUserData: () => void;
   isBookmarked: (type: 'blog' | 'job', id: string) => boolean;
   refetchProfile: () => Promise<void>;

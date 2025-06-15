@@ -11,8 +11,6 @@ export async function GET(
 
   let data = await cache.get<CombinedProfile>('user-profile', [profileId]);
 
-  console.log({ data });
-
   if (!data) {
     data = await prisma.profile.findUnique({
       where: {

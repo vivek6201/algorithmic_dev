@@ -8,14 +8,16 @@ export const jobCategorySchema = z.object({
 });
 
 export const jobSchema = z.object({
-  title: z.string().min(3),
+  companyName: z.string().min(3),
+  position: z.string().min(3),
+  location: z.string().min(3),
   shortDescription: z.string().min(10),
   description: z.string().min(20),
   slug: z.string().min(3),
   experienceLevel: z.nativeEnum(ExperienceLevel),
   salaryRange: z.string().min(3),
   type: z.nativeEnum(JobType),
-  link: z.string().min(3),
+  link: z.string().min(3).url(),
   image: z.any().optional(),
   categories: z.array(z.string()),
 });

@@ -94,7 +94,7 @@ export default function TutorialsList() {
           />
         ))}
         <div ref={observerRef} className="h-12" />
-        {isFetchingNextPage && <p className="text-center">Loading more tutorials...</p>}
+        {isFetchingNextPage && <ListItemSkeleton />}
       </div>
     </div>
   );

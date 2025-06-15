@@ -7,6 +7,7 @@ import { useRef, useCallback } from 'react';
 import { useIsMobile } from '@repo/ui/hooks/use-mobile';
 import { clsx } from '@repo/ui';
 import ListItemSkeleton from '../../shared/ListItemSkeleton';
+import { JobWithCategories } from '@/types/main';
 
 const LIMIT = 10;
 
@@ -79,7 +80,7 @@ const JobListings = () => {
         {isLoading && Array.from([1, 2, 3, 4, 5]).map((_, i) => <ListItemSkeleton key={i} />)}
         {isError && <p>Failed to load jobs.</p>}
         {!isLoading && jobs.length <= 0 && <p>No jobs found</p>}
-        {jobs.map((job: any, index: number) => {
+        {jobs.map((job: JobWithCategories, index: number) => {
           const isLast = index === jobs.length - 1;
           return (
             <div ref={isLast ? lastJobRef : null} key={job.id}>
@@ -87,7 +88,7 @@ const JobListings = () => {
             </div>
           );
         })}
-        {isFetchingNextPage && <p>Loading more jobs...</p>}
+        {isFetchingNextPage && <ListItemSkeleton />}
       </main>
     </div>
   );

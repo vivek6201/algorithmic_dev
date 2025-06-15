@@ -1,10 +1,9 @@
+import BlogCard from '@/components/site/pages/blogs/BlogCard';
 import BlogClientActions from '@/components/site/pages/blogs/BlogClientActions';
 import Breadcrumbs from '@/components/site/shared/Breadcrumb';
 import { getClientBlogBySlug } from '@/helpers/main/blogGetter';
-import { nextAuthResult } from '@/lib/auth';
 import { calculateReadTime } from '@/lib/clientUtils';
 import HTMLRenderer from '@repo/ui/components/elements/HTMLRenderer';
-import Link from 'next/link';
 import React from 'react';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -92,18 +91,20 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
       {/* Related Posts */}
       {relatedPosts && relatedPosts.length > 0 ? (
         <div className="mt-16">
-          <h2 className="text-2xl font-bold mb-4">Related Posts</h2>
+          <h2 className="text-2xl font-bold mb-4">Related Openings</h2>
           <div className="flex items-center overflow-x-auto scrollbar-none gap-4">
             {/* Example related post card */}
             {relatedPosts.map((post) => (
-              <Link
-                href={encodeURIComponent(post.slug)}
-                className="p-4 bg-white dark:bg-gray-900 rounded-xl shadow hover:shadow-lg transition cursor-pointer w-full md:min-w-[24rem] h-[10rem] max-w-lg"
-                key={post.id}
-              >
-                <h4 className="font-semibold mb-2">{post.title}</h4>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{post.description}</p>
-              </Link>
+              <div key={post.id} className="w-full md:max-w-md flex-shrink-0">
+                <BlogCard
+                  title={post.title}
+                  author={post.authorName}
+                  category={post.category.name}
+                  date={post.updatedAt.toString()}
+                  slug={post.slug}
+                  description={post.description}
+                />
+              </div>
             ))}
           </div>
         </div>
@@ -113,3 +114,12 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
     </div>
   );
 }
+
+// {/* <BlogCard
+// title={post.title} */}
+// author={post.authorName}
+// category={post.category.name}
+// date={post.updatedAt.toString()}
+// slug={post.slug}
+//   // description={post.description}
+// />

@@ -15,7 +15,6 @@ const LIMIT = 10;
 function BlogsList() {
   const searchParams = useSearchParams();
   const categories = searchParams.get('category');
-  const isMobile = useIsMobile();
 
   const fetchBlogs = async ({ pageParam = 1 }) => {
     const response = await axios.get('/api/blogs', {
@@ -100,7 +99,7 @@ function BlogsList() {
               );
             })
           : !isLoading && <p>No Blogs found</p>}
-        {isFetchingNextPage && <p>Loading more blogs...</p>}
+        {isFetchingNextPage && <ListItemSkeleton />}
       </div>
     </div>
   );

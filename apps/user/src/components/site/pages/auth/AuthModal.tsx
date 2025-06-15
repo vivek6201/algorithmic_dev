@@ -19,12 +19,6 @@ export default function AuthModal() {
 
   return (
     <Dialog open={openAuthModal} onOpenChange={setAuthModel}>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
-          {isLogin ? 'Login' : 'Signup'}
-        </Button>
-      </DialogTrigger>
-
       <DialogContent className="sm:max-w-[95vw] md:max-w-[450px] w-[90vw] rounded-2xl px-4 py-6">
         <DialogHeader>
           <DialogTitle />

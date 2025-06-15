@@ -90,7 +90,7 @@ export default function AllJobsClient() {
 
   const filteredJobs = useMemo(() => {
     return jobs.filter((job: Jobs) =>
-      job.title.toLowerCase().includes(debouncedSearch.toLowerCase()),
+      job.companyName.toLowerCase().includes(debouncedSearch.toLowerCase()),
     );
   }, [debouncedSearch, jobs]);
 
@@ -177,7 +177,9 @@ export default function AllJobsClient() {
                   return (
                     <TableRow key={job.id}>
                       <TableCell>{index + 1}</TableCell>
-                      <TableCell>{job.title}</TableCell>
+                      <TableCell>
+                        {job.companyName} is hiring for {job.position} | {job.location}
+                      </TableCell>
                       <TableCell>
                         {job.jobCategories
                           .map(

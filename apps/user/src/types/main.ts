@@ -21,3 +21,18 @@ export type BlogWithCategoryAndReactions = Blog & {
   category: BlogCategory;
   reactions: BlogReaction[];
 };
+
+export type BookmarkWithRelations = Prisma.BookmarkGetPayload<{
+  include: {
+    blog: {
+      include: {
+        category: true;
+      };
+    };
+    job: {
+      include: {
+        jobCategories: true;
+      };
+    };
+  };
+}>;

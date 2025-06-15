@@ -22,6 +22,18 @@ export const GET = async () => {
       orderBy: {
         createdAt: 'desc',
       },
+      include: {
+        blog: {
+          include: {
+            category: true,
+          },
+        },
+        job: {
+          include: {
+            jobCategories: true,
+          },
+        },
+      },
     });
 
     return NextResponse.json({

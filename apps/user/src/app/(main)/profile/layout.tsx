@@ -96,7 +96,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         </AnimatePresence>
 
         {/* Main content */}
-        <main className="mt-4 md:mt-0">{children}</main>
+        <main className="mt-4 md:mt-0 min-h-[800px]">{children}</main>
       </div>
     </div>
   );

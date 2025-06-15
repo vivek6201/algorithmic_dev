@@ -51,7 +51,9 @@ export default function JobsForm({ job, isEdit = false }: { isEdit?: boolean; jo
       salaryRange: '',
       slug: '',
       shortDescription: '',
-      title: '',
+      companyName: '',
+      location: '',
+      position: '',
     },
   });
   const router = useRouter();
@@ -67,9 +69,19 @@ export default function JobsForm({ job, isEdit = false }: { isEdit?: boolean; jo
 
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
-      if (name === 'title') {
-        const generatedSlug = value.title?.toLowerCase().replace(/\s+/g, '-');
-        form.setValue('slug', generatedSlug || '');
+      if (name === 'location' || name === 'companyName' || name === 'position') {
+        const location = value.location || '';
+        const companyName = value.companyName || '';
+        const position = value.position || '';
+
+        const generatedSlug = `${companyName}-is-hiring-for-${position}-|-${location}`
+          .toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace(/[^a-z0-9-]/g, '')
+          .replace(/-+/g, '-')
+          .replace(/^-|-$/g, '');
+
+        form.setValue('slug', generatedSlug);
       }
     });
 
@@ -121,20 +133,48 @@ export default function JobsForm({ job, isEdit = false }: { isEdit?: boolean; jo
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Title</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter Title of the blog.." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <FormField
+              control={form.control}
+              name="companyName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Company Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter name of the company.." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="position"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Position</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter name of the company.." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Location</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter name of the company.." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name="slug"
@@ -162,7 +202,7 @@ export default function JobsForm({ job, isEdit = false }: { isEdit?: boolean; jo
                     ]}
                     onChange={field.onChange}
                     value={field.value}
-                    placeholder="Enter Experience Level"
+                    placeholder="Select Job Type"
                   />
                 </FormControl>
                 <FormMessage />
@@ -181,7 +221,7 @@ export default function JobsForm({ job, isEdit = false }: { isEdit?: boolean; jo
                     options={experienceLevel}
                     onChange={field.onChange}
                     value={field.value}
-                    placeholder="Enter Experience Level"
+                    placeholder="Select Experience Level"
                   />
                 </FormControl>
                 <FormMessage />

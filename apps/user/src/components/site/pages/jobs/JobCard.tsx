@@ -1,16 +1,16 @@
+'use client';
 import { Button } from '@repo/ui/components/ui/button';
-import { JobCategory, Jobs } from '@repo/db';
+import { JobCategory } from '@repo/db';
 import { ChevronRight } from '@repo/ui';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { JobWithCategories } from '@/types/main';
 
-type JobCardProps = { job: Jobs; categories: JobCategory[] };
+type JobCardProps = { job: JobWithCategories; categories: JobCategory[] };
 
 const JobCard = ({ job, categories }: JobCardProps) => {
-  const pathname = usePathname();
   return (
     <Link
-      href={`${pathname}/${job?.slug}`}
+      href={`/jobs/${job?.slug}`}
       className="border rounded-xl p-3 md:p-5 bg-white dark:bg-zinc-900 shadow-sm group hover:shadow-md cursor-pointer transition min-h-[100px] flex flex-col gap-y-5"
     >
       <div>
@@ -25,10 +25,12 @@ const JobCard = ({ job, categories }: JobCardProps) => {
           ))}
         </div>
 
-        <h2 className="text-xl font-semibold group-hover:underline">{job.title}</h2>
+        <h2 className="text-xl font-semibold group-hover:underline">
+          {job.companyName} is hiring for {job.position} | {job.location}
+        </h2>
         <div className="flex gap-x-2 items-center mt-2">
           <Badge title={job.type} />
-          <Badge title={job.experienceLevel.split('_').join(' ')} />
+          <Badge title={job.experienceLevel.toLowerCase().split('_').join(' ')} />
           <Badge title={job.salaryRange} />
         </div>
       </div>
@@ -46,7 +48,7 @@ const JobCard = ({ job, categories }: JobCardProps) => {
 
 export default JobCard;
 
-function Badge({ title }: { title: string }) {
+export function Badge({ title }: { title: string }) {
   return (
     <div className="rounded-full dark:bg-gray-200 bg-black/80 px-2 py-1">
       <p className="text-xs dark:text-black text-white">{title}</p>

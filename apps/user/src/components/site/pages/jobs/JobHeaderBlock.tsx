@@ -10,8 +10,11 @@ import { toggleJobBookmarkAction } from '@/actions/main/bookmark';
 import { useMutation } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useUtilityStore } from '@/store/sidebarStore';
+import { Jobs } from '@repo/db';
+import { Badge } from './JobCard';
+import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
 
-export default function JobHeaderBlock({ title, id }: { title: string; id: string }) {
+export default function JobHeaderBlock({ data, id }: { data: Jobs; id: string }) {
   const [fullUrl, setFullUrl] = useState('');
   const { isBookmarked, refetchBookmarks } = useUserStore();
   const { setAuthModel } = useUtilityStore();
@@ -23,7 +26,7 @@ export default function JobHeaderBlock({ title, id }: { title: string; id: strin
     setFullUrl(url);
   }, []);
 
-  const { mutate: toggleBookmark, isPending } = useMutation({
+  const { mutate: toggleBookmark } = useMutation({
     mutationFn: () => toggleJobBookmarkAction(id ?? ''),
     onSuccess: (res) => {
       if (res.success) {
@@ -79,7 +82,16 @@ export default function JobHeaderBlock({ title, id }: { title: string; id: strin
   return (
     <>
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl lg:text-4xl font-bold mb-4">{title}</h1>
+        <div className="mb-5">
+          <h1 className="text-2xl lg:text-4xl font-bold mb-2">
+            {data.companyName} is hiring for {data.position} | {data.location}
+          </h1>
+          <div className="flex gap-x-2 items-center">
+            <Badge title={data.type} />
+            <Badge title={data.experienceLevel.toLowerCase().split('_').join(' ')} />
+            <Badge title={data.salaryRange} />
+          </div>
+        </div>
         {isBookmarked('job', id) ? (
           <Button
             className="hidden md:flex mr-5 gap-2 items-center text-white"
@@ -110,7 +122,11 @@ export default function JobHeaderBlock({ title, id }: { title: string; id: strin
           <Share2 />
         </ActionButton>
         <ActionButton className="md:hidden w-10 h-10 rounded-full" onClick={handleBookmark}>
-          <Bookmark fill={isBookmarked('job', id) ? 'orange' : ''} />
+          {isBookmarked('job', id ?? '') ? (
+            <IoBookmark className="opacity-80 w-5 h-5" />
+          ) : (
+            <IoBookmarkOutline className="opacity-60 w-5 h-5" />
+          )}
         </ActionButton>
       </div>
     </>

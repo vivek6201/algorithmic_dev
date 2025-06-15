@@ -6,6 +6,8 @@ import { ChevronRight } from '@repo/ui';
 import Link from 'next/link';
 import React from 'react';
 import HTMLRenderer from '@repo/ui/components/elements/HTMLRenderer';
+import { Metadata } from 'next';
+import JobCard from '@/components/site/pages/jobs/JobCard';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -19,9 +21,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   return {
-    title: `${data.title} | Algorithmic Dev`,
+    title: `${data.companyName} is hiring for ${data.position} | Algorithmic Dev`,
     description: data.shortDescription,
-  };
+  } as Metadata;
 }
 
 export default async function page({ params }: { params: Promise<{ slug: string }> }) {
@@ -41,10 +43,7 @@ export default async function page({ params }: { params: Promise<{ slug: string 
       <Breadcrumbs />
 
       {/* Header */}
-      <JobHeaderBlock title={data.title} id={data.id} />
-
-      {/* Meta */}
-      <div className="flex flex-wrap items-center text-sm gap-4 mb-6"></div>
+      <JobHeaderBlock data={data} id={data.id} />
 
       {/* Blog Content */}
       <article className="prose lg:prose-lg dark:prose-invert max-w-none opacity-80">
@@ -63,18 +62,9 @@ export default async function page({ params }: { params: Promise<{ slug: string 
           <div className="flex items-center overflow-x-auto scrollbar-none gap-4">
             {/* Example related post card */}
             {relatedPosts.map((post) => (
-              <Link
-                href={encodeURIComponent(post.slug)}
-                className="p-4 bg-white dark:bg-gray-900 rounded-xl shadow hover:shadow-lg transition cursor-pointer w-full md:min-w-[24rem] h-[10rem] max-w-lg"
-                key={post.id}
-              >
-                <h4 className="font-semibold mb-2">{post.title}</h4>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {post.shortDescription.split(' ').length > 30
-                    ? post.shortDescription.split(' ').slice(0, 30).join(' ') + '...'
-                    : post.shortDescription}
-                </p>
-              </Link>
+              <div key={post.id} className="w-full md:max-w-fit flex-shrink-0">
+                <JobCard categories={post.jobCategories} job={post} />
+              </div>
             ))}
           </div>
         </div>

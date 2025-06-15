@@ -83,7 +83,7 @@ export default function TutorialSidebar({
             <SheetTitle></SheetTitle>
             <SheetDescription></SheetDescription>
           </SheetHeader>
-          <ScrollArea className="mt-5">{renderContent()}</ScrollArea>
+          <ScrollArea className="mt-5 h-[95%]">{renderContent()}</ScrollArea>
         </SheetContent>
       </Sheet>
     );

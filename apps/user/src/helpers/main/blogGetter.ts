@@ -24,7 +24,10 @@ export const getClientBlogBySlug = async (slug: string) => {
   try {
     const decodedSlug = decodeURIComponent(slug);
     let data = await cache.get<BlogWithCategoryAndReactions>('client-blog-by-slug', [decodedSlug]);
-    let relatedPosts = await cache.get<Blog[]>('client-related-blog-posts', [decodedSlug]);
+    let relatedPosts = await cache.get<BlogWithCategoryAndReactions[]>(
+      'client-related-blog-posts',
+      [decodedSlug],
+    );
 
     if (!data) {
       data = await prisma.blog.findUnique({
@@ -44,6 +47,10 @@ export const getClientBlogBySlug = async (slug: string) => {
           category: {
             slug: data?.category.slug,
           },
+        },
+        include: {
+          category: true,
+          reactions: true,
         },
         orderBy: {
           createdAt: 'desc', // Sort by latest

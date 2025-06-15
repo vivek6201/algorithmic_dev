@@ -85,7 +85,7 @@ const signupAction = async (data: z.infer<typeof signupValidation>) => {
       },
     };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return {
       success: false,
       message: 'Internal Server Error',

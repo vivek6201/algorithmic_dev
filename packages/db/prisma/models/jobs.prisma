@@ -24,7 +24,9 @@ model JobCategory {
 model Jobs {
   id String @id @default(cuid())
 
-  title            String
+  companyName      String          @default("Unknown")
+  position         String          @default("Unknown")
+  location         String          @default("Unknown")
   shortDescription String
   description      String
   slug             String          @unique

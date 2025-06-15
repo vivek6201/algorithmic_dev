@@ -1,4 +1,4 @@
-import { JobCategory, Jobs, Prisma } from '@repo/db';
+import { JobCategory } from '@repo/db';
 import cache from '@repo/shared/cache';
 import { prisma } from '@repo/db';
 import { JobWithCategories } from '@/types/main';
@@ -8,7 +8,9 @@ export const getClientJobBySlug = async (slug: string) => {
     const decodedSlug = decodeURIComponent(slug);
 
     let data = await cache.get<JobWithCategories>('client-job-by-slug', [decodedSlug]);
-    let relatedPosts = await cache.get<Jobs[]>('client-related-job-posts', [decodedSlug]);
+    let relatedPosts = await cache.get<JobWithCategories[]>('client-related-job-posts', [
+      decodedSlug,
+    ]);
 
     if (!data) {
       data = await prisma.jobs.findUnique({
@@ -29,6 +31,9 @@ export const getClientJobBySlug = async (slug: string) => {
               id: { in: categoryIds },
             },
           },
+        },
+        include: {
+          jobCategories: true,
         },
         orderBy: {
           createdAt: 'desc', // Sort by latest

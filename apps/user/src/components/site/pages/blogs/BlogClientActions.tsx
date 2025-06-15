@@ -8,6 +8,7 @@ import { toast } from '@repo/ui/components/ui/sonner';
 import { useMutation } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import React from 'react';
+import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';
 
 export default function BlogClientActions({
   data,
@@ -54,10 +55,11 @@ export default function BlogClientActions({
         <ThumbsDown size={20} className="opacity-60" />
       </button> */}
       <button onClick={handleBookmark} disabled={isPending}>
-        <Bookmark
-          className="opacity-60 w-5 h-5"
-          fill={isBookmarked('blog', data?.id ?? '') ? 'orange' : ''}
-        />
+        {isBookmarked('blog', data?.id ?? '') ? (
+          <IoBookmark className="opacity-80 w-5 h-5" />
+        ) : (
+          <IoBookmarkOutline className="opacity-60 w-5 h-5" />
+        )}
       </button>
     </div>
   );
