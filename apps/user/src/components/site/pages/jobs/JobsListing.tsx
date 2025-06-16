@@ -4,9 +4,7 @@ import JobCard from './JobCard';
 import axios from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useRef, useCallback } from 'react';
-import { useIsMobile } from '@repo/ui/hooks/use-mobile';
-import { clsx } from '@repo/ui';
-import ListItemSkeleton from '../../shared/ListItemSkeleton';
+import ListItemSkeleton from '../../shared/Skeletons/ListItemSkeleton';
 import { JobWithCategories } from '@/types/main';
 
 const LIMIT = 10;
@@ -16,7 +14,6 @@ const JobListings = () => {
   const category = searchParams.get('category');
   const type = searchParams.get('type');
   const experience = searchParams.get('experience');
-  const isMobile = useIsMobile();
 
   const fetchJobs = async ({ pageParam = 1 }) => {
     const response = await axios.get('/api/jobs', {

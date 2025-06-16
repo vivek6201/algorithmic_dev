@@ -1,9 +1,12 @@
 import BlogCard from '@/components/site/pages/blogs/BlogCard';
 import BlogClientActions from '@/components/site/pages/blogs/BlogClientActions';
 import Breadcrumbs from '@/components/site/shared/Breadcrumb';
+import RelatedPosts from '@/components/site/shared/RelatedPosts';
 import { getClientBlogBySlug } from '@/helpers/main/blogGetter';
 import { calculateReadTime } from '@/lib/clientUtils';
 import HTMLRenderer from '@repo/ui/components/elements/HTMLRenderer';
+import { CarouselItem } from '@repo/ui/components/ui/carousel';
+import { Metadata } from 'next';
 import React from 'react';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -20,7 +23,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${data.title} | Algorithmic Dev`,
     description: data.description,
-  };
+    openGraph: {
+      type: 'article',
+      authors: [data.authorName, 'Vivek Kumar Gupta'],
+      countryName: 'India',
+      tags: data.category.name,
+    },
+    category: data.category.name,
+    keywords: [data.title, data.category.name],
+  } as Metadata;
 }
 
 export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -91,11 +102,11 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
       {/* Related Posts */}
       {relatedPosts && relatedPosts.length > 0 ? (
         <div className="mt-16">
-          <h2 className="text-2xl font-bold mb-4">Related Openings</h2>
-          <div className="flex items-center overflow-x-auto scrollbar-none gap-4">
-            {/* Example related post card */}
+          <h2 className="text-2xl font-bold mb-4">Related Posts</h2>
+
+          <RelatedPosts>
             {relatedPosts.map((post) => (
-              <div key={post.id} className="w-full md:max-w-md flex-shrink-0">
+              <CarouselItem key={post.id} className="md:basis-1/2 lg:basis-1/3 select-none">
                 <BlogCard
                   title={post.title}
                   author={post.authorName}
@@ -104,9 +115,9 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                   slug={post.slug}
                   description={post.description}
                 />
-              </div>
+              </CarouselItem>
             ))}
-          </div>
+          </RelatedPosts>
         </div>
       ) : (
         ''
@@ -114,12 +125,3 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
     </div>
   );
 }
-
-// {/* <BlogCard
-// title={post.title} */}
-// author={post.authorName}
-// category={post.category.name}
-// date={post.updatedAt.toString()}
-// slug={post.slug}
-//   // description={post.description}
-// />

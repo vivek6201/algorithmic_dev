@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import AdSense from '@/components/shared/adsense';
 import Provider from '@/components/shared/provider';
+import { siteConfig } from '@/lib/site-config';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -15,11 +16,7 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-export const metadata: Metadata = {
-  title: 'Algorithmic Dev',
-  description:
-    'A One-Stop Solution for all your tech related queries. Be it Jobs, tutorials, courses, blogs, helper mini apps',
-};
+export const metadata: Metadata = siteConfig;
 
 export default function RootLayout({
   children,

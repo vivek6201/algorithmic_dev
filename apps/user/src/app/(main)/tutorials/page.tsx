@@ -1,7 +1,9 @@
 import TutorialsFilters from '@/components/site/pages/tutorials/TutorialsFilters';
 import TutorialsList from '@/components/site/pages/tutorials/TutorialsList';
+import FilterSidebarSkeleton from '@/components/site/shared/Skeletons/FilterSidebarSkeleton';
 import { getClientTutorialsCategories } from '@/helpers/main/tutorialGetter';
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Tutorials - Algorithmic Dev',
@@ -9,7 +11,7 @@ export const metadata: Metadata = {
     'A One-Stop Solution for all your tech related queries. Be it Jobs, tutorials, courses, blogs, helper mini apps',
 };
 
-export const revalidate = 60;
+export const revalidate = 120;
 
 export default async function TutorialsPage() {
   const { data: categories } = await getClientTutorialsCategories();

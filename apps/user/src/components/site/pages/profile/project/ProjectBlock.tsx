@@ -4,7 +4,6 @@ import { Plus } from '@repo/ui';
 import { Button } from '@repo/ui/components/ui/button';
 import React, { useState } from 'react';
 import ProjectModal from './ProjectModal';
-import { Skeleton } from '@repo/ui/components/ui/skeleton';
 import ProjectCard from './ProjectCard';
 import { useProfileStore } from '@/store/profileStore';
 import { useUserStore } from '@/store/userStore';

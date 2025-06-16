@@ -33,7 +33,6 @@ type JobProps = {
   salaryRange: string;
   slug: string;
   shortDescription: string;
-  title: string;
 };
 
 const experienceLevel = Object.values($Enums.ExperienceLevel).map((value) => ({

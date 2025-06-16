@@ -1,17 +1,25 @@
 import BlogsFilters from '@/components/site/pages/blogs/BlogsFilters';
 import BlogsList from '@/components/site/pages/blogs/BlogsList';
-import DrawerFilter from '@/components/site/shared/DrawerFilter';
 import { getClientBlogsCategories } from '@/helpers/main/blogGetter';
 import { Metadata } from 'next';
-import React from 'react';
+import React, { Suspense } from 'react';
+
+const blogDesc =
+  'Explore our collection of programming tutorials, tech insights, and development guides. Find articles on algorithms, web development, software engineering, and the latest technology trends to enhance your coding skills.';
 
 export const metadata: Metadata = {
   title: 'Blogs - Algorithmic Dev',
-  description:
-    'A One-Stop Solution for all your tech related queries. Be it Jobs, tutorials, courses, blogs, helper mini apps',
+  openGraph: {
+    type: 'book',
+    locale: 'en-US',
+    countryName: 'India',
+    description: blogDesc,
+  },
+  description: blogDesc,
+  applicationName: 'AlgorithmicDev',
 };
 
-export const revalidate = 60;
+export const revalidate = 120;
 
 export default async function page() {
   const { data: categories } = await getClientBlogsCategories();

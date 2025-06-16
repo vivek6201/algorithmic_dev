@@ -50,8 +50,8 @@ export default JobCard;
 
 export function Badge({ title }: { title: string }) {
   return (
-    <div className="rounded-full dark:bg-gray-200 bg-black/80 px-2 py-1">
-      <p className="text-xs dark:text-black text-white">{title}</p>
+    <div className="inline-flex flex-nowrap items-center rounded-full dark:bg-gray-200 bg-black/80 px-2 py-1 whitespace-nowrap">
+      <span className="text-xs dark:text-black text-white">{title}</span>
     </div>
   );
 }

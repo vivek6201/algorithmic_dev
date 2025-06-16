@@ -3,8 +3,8 @@ import { Button } from '@repo/ui/components/ui/button';
 import { Badge } from '@repo/ui/components/ui/badge';
 import { ArrowRight, Briefcase, Star } from '@repo/ui';
 import { useRouter } from 'nextjs-toploader/app';
-import { motion, useAnimation, useInView } from 'framer-motion';
-import { useRef, useEffect } from 'react';
+import { motion, useAnimation } from 'framer-motion';
+import { useEffect } from 'react';
 
 const technologies = [
   'Web Development',

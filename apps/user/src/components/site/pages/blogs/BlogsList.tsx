@@ -8,7 +8,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useIsMobile } from '@repo/ui/hooks/use-mobile';
 import { clsx } from '@repo/ui';
 import { Skeleton } from '@repo/ui/components/ui/skeleton';
-import ListItemSkeleton from '../../shared/ListItemSkeleton';
+import ListItemSkeleton from '../../shared/Skeletons/ListItemSkeleton';
 
 const LIMIT = 10;
 

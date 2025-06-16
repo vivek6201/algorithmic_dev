@@ -1,5 +1,6 @@
 import TutorialSection from '@/components/site/pages/tutorials/tutorial/TutorialSection';
 import { getClientTutorialTopicBySlug } from '@/helpers/main/tutorialGetter';
+import { Metadata } from 'next';
 import React from 'react';
 
 export async function generateMetadata({
@@ -19,8 +20,8 @@ export async function generateMetadata({
 
   return {
     title: `${data.title} | Algorithmic Dev`,
-    // description: `${data.}`
-  };
+    authors: 'Vivek Kumar Gupta',
+  } as Metadata;
 }
 
 export default async function page({

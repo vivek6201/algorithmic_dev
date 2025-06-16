@@ -6,11 +6,12 @@ import React from 'react';
 
 export const metadata: Metadata = {
   title: 'Jobs - Algorithmic Dev',
+  category: 'Tech Jobs',
   description:
-    'A One-Stop Solution for all your tech related queries. Be it Jobs, tutorials, courses, blogs, helper mini apps',
+    'Discover top tech job opportunities across various categories. Browse software engineering, data science, DevOps, and other technology roles with advanced filtering options to find your perfect match.',
 };
 
-export const revalidate = 60;
+export const revalidate = 120;
 
 export default async function JobsPage() {
   const jobCategories = await getClientJobCategories();
