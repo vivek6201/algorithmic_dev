@@ -5,4 +5,20 @@ module.exports = {
   generateRobotsTxt: true,
   generateIndexSitemap: true,
   exclude: ['/verify', '/profile', '/profile/*'],
+  robotsTxtOptions: {
+    policies: [
+      {
+        userAgent: '*',
+        allow: '/',
+      },
+      {
+        userAgent: 'Googlebot',
+        allow: '/',
+      },
+      {
+        userAgent: 'bingbot',
+        allow: '/',
+      },
+    ],
+  },
 };
