@@ -28,6 +28,7 @@ COPY --from=builder /app/out/full/ ./
 # Run Prisma commands from db package
 RUN pnpm --filter db run prisma:deploy
 RUN pnpm --filter db run prisma:generate
+RUN pnpm --filter user run app:sitemap
 
 RUN pnpm turbo build --filter=user...
 
