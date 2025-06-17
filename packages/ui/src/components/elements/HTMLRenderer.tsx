@@ -11,6 +11,7 @@ export default function HTMLRenderer({ content }: { content: string }) {
           if (domNode.type === 'tag') {
             // Custom Code Block Replacement
             if (domNode.name === 'pre' && domNode.children?.[0]?.name === 'code') {
+              console.log({ domNode });
               const codeContent =
                 domNode.children[0].children?.map((c: any) => c.data).join('') || '';
               return <CodeBlock code={codeContent} />;

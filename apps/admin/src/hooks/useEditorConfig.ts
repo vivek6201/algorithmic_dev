@@ -1,33 +1,41 @@
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
-import Image from '@tiptap/extension-image';
-import CodeBlock from '@tiptap/extension-code-block';
+import ImageResize from 'tiptap-extension-resize-image';
+import Underline from '@tiptap/extension-underline';
 import Youtube from '@tiptap/extension-youtube';
 import { useEffect } from 'react';
+import { all, createLowlight } from 'lowlight';
+
+import { CustomCodeBlock, IndentList } from '@/components/site/shared/editor/CustomBlocks';
 
 interface UseEditorConfigProps {
   content: string;
   onChange: (content: string) => void;
 }
 
+export const lowlight = createLowlight(all);
+
 export const useEditorConfig = ({ content, onChange }: UseEditorConfigProps) => {
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({
-        codeBlock: false, // Disable the default code block to prevent conflicts
-      }),
+      StarterKit.configure({ codeBlock: false }),
+      Underline,
+      ImageResize,
       Link,
-      Image,
-      CodeBlock,
       Youtube.configure({
-        allowFullscreen: false,
+        HTMLAttributes: {
+          class: 'rounded-md aspect-video w-10/12',
+        },
       }),
+      IndentList,
+      CustomCodeBlock.configure({ lowlight }),
     ],
-    content,
     immediatelyRender: false,
+    content: content || '',
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
+      console.log(editor.getJSON());
+      onChange?.(editor.getHTML());
     },
     editorProps: {
       attributes: {

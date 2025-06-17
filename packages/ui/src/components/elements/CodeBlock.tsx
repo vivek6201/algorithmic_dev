@@ -8,7 +8,7 @@ type CodeBlockProps = {
   language?: string;
 };
 
-const CodeBlock: React.FC<CodeBlockProps> = ({ code, language = 'ts' }) => {
+const CodeBlock: React.FC<CodeBlockProps> = ({ code }) => {
   const [copied, setCopied] = useState(false);
   const colors = ['bg-yellow-300', 'bg-orange-300', 'bg-red-600'];
 
@@ -36,7 +36,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code, language = 'ts' }) => {
       </div>
 
       <pre className="p-4 overflow-x-auto text-sm text-gray-100 bg-gray-800 dark:bg-transparent">
-        <code className={`language-${language}`}>{code}</code>
+        <code>{code}</code>
       </pre>
     </div>
   );

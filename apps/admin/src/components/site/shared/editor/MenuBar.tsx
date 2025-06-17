@@ -1,323 +1,183 @@
 'use client';
-import React, { useRef } from 'react';
-import { Editor } from '@tiptap/react';
-import { Button } from '@repo/ui/components/ui/button';
-import { cn } from '@repo/ui/lib/utils';
+
+import uploadFileToCloud from '@/actions/common/upload-file';
 import {
   Bold,
   Italic,
+  Underline as UnderlineIcon,
+  Strikethrough,
+  Code,
   List,
   ListOrdered,
+  Quote,
+  Undo2,
+  Redo2,
+  ImageIcon,
+  YoutubeIcon,
   Heading1,
   Heading2,
-  Pilcrow,
-  Undo,
-  Redo,
-  Link as LinkIcon,
-  Image as ImageIcon,
-  Code,
-  FileJson,
-  TableOfContents,
-  Video,
-  Youtube,
+  Heading3,
+  Heading4,
+  Link,
 } from '@repo/ui';
-import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/ui/popover';
-import uploadFileToCloud from '@/actions/common/upload-file';
-import { toast } from '@repo/ui/components/ui/sonner';
+import { Button } from '@repo/ui/components/ui/button';
+import { Toggle } from '@repo/ui/components/ui/toggle';
+import { Editor } from '@tiptap/react';
 
-interface MenuBarProps {
-  editor: Editor | null;
-}
+export default function MenuBar({ editor }: { editor: Editor | null }) {
+  if (!editor) return null;
 
-const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
-  const imageInputRef = useRef<HTMLInputElement>(null);
-  const videoInputRef = useRef<HTMLInputElement>(null);
+  const insertImage = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
 
-  if (!editor) {
-    return null;
-  }
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
 
-  const addImage = (url: string) => {
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
-    }
+      const form = new FormData();
+      form.append('file', file);
+
+      const res = await uploadFileToCloud(form);
+      editor.chain().focus().setImage({ src: res.secure_url }).run();
+    };
+
+    input.click();
   };
 
-  const addYoutubeVideo = () => {
+  const insertYoutube = () => {
     const url = prompt('Enter YouTube URL');
-
     if (url) {
       editor.commands.setYoutubeVideo({
         src: url,
-        width: Math.max(320) || 640,
-        height: Math.max(180) || 480,
+        width: 640,
+        height: 480,
       });
     }
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const toastId = toast.loading('Uploading image...');
-
-      try {
-        const result = await uploadFileToCloud(formData);
-        addImage(result.secure_url);
-        toast.success('Image uploaded!', { id: toastId });
-      } catch (error) {
-        console.error(error);
-        toast.error('Image upload failed.', { id: toastId });
-      } finally {
-        e.target.value = ''; // Reset input
-      }
+  const insertLink = () => {
+    const url = prompt('Enter link');
+    if (url) {
+      editor.commands.setLink({
+        href: url,
+        target: '__blank',
+      });
     }
   };
 
-  const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const videoUrl = URL.createObjectURL(file);
-      // Insert video HTML
-      editor
-        .chain()
-        .focus()
-        .insertContent(`<video controls src="${videoUrl}" style="max-width: 100%"></video>`)
-        .run();
-      e.target.value = ''; // Reset input
-    }
-  };
-
-  const insertTableOfContents = () => {
-    // Insert a marker for table of contents that will be processed when rendering
-    editor.chain().focus().insertContent('<div class="table-of-contents-marker"></div>').run();
-  };
-
-  const insertJsonBlock = () => {
-    // Insert a pre-formatted JSON block
-    editor.chain().focus().insertContent('<pre class="language-json">{}</pre>').run();
-  };
+  const headingLevels = [
+    { level: 1, icon: Heading1 },
+    { level: 2, icon: Heading2 },
+    { level: 3, icon: Heading3 },
+    { level: 4, icon: Heading4 },
+  ];
 
   return (
-    <div className="flex flex-wrap gap-1 p-2 border-b">
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        className={cn('p-2 h-auto', editor.isActive('bold') ? 'bg-muted' : '')}
-        aria-label="Bold"
+    <div className="flex flex-wrap items-center gap-2 p-1 border-b">
+      {/* Toggle Buttons */}
+      <Toggle
+        pressed={editor.isActive('bold')}
+        onPressedChange={() => editor.chain().focus().toggleBold().run()}
       >
-        <Bold className="h-4 w-4" />
-      </Button>
+        <Bold size={16} />
+      </Toggle>
 
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-        className={cn('p-2 h-auto', editor.isActive('italic') ? 'bg-muted' : '')}
-        aria-label="Italic"
+      <Toggle
+        pressed={editor.isActive('italic')}
+        onPressedChange={() => editor.chain().focus().toggleItalic().run()}
       >
-        <Italic className="h-4 w-4" />
-      </Button>
+        <Italic size={16} />
+      </Toggle>
 
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        className={cn('p-2 h-auto', editor.isActive('heading', { level: 1 }) ? 'bg-muted' : '')}
-        aria-label="Heading 1"
+      <Toggle
+        pressed={editor.isActive('underline')}
+        onPressedChange={() => editor.chain().focus().toggleUnderline().run()}
       >
-        <Heading1 className="h-4 w-4" />
-      </Button>
+        <UnderlineIcon size={16} />
+      </Toggle>
 
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={cn('p-2 h-auto', editor.isActive('heading', { level: 2 }) ? 'bg-muted' : '')}
-        aria-label="Heading 2"
+      <Toggle
+        pressed={editor.isActive('strike')}
+        onPressedChange={() => editor.chain().focus().toggleStrike().run()}
       >
-        <Heading2 className="h-4 w-4" />
-      </Button>
+        <Strikethrough size={16} />
+      </Toggle>
 
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={cn('p-2 h-auto', editor.isActive('bulletList') ? 'bg-muted' : '')}
-        aria-label="Bullet List"
+      <Toggle
+        pressed={editor.isActive('codeBlock')}
+        onPressedChange={() => editor.chain().focus().toggleCodeBlock().run()}
       >
-        <List className="h-4 w-4" />
-      </Button>
+        <Code size={16} />
+      </Toggle>
 
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={cn('p-2 h-auto', editor.isActive('orderedList') ? 'bg-muted' : '')}
-        aria-label="Ordered List"
+      <Toggle
+        pressed={editor.isActive('bulletList')}
+        onPressedChange={() => editor.chain().focus().toggleBulletList().run()}
       >
-        <ListOrdered className="h-4 w-4" />
-      </Button>
+        <List size={16} />
+      </Toggle>
 
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        onClick={() => editor.chain().focus().setParagraph().run()}
-        className={cn('p-2 h-auto', editor.isActive('paragraph') ? 'bg-muted' : '')}
-        aria-label="Paragraph"
+      <Toggle
+        pressed={editor.isActive('orderedList')}
+        onPressedChange={() => editor.chain().focus().toggleOrderedList().run()}
       >
-        <Pilcrow className="h-4 w-4" />
-      </Button>
+        <ListOrdered size={16} />
+      </Toggle>
 
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        className={cn('p-2 h-auto', editor.isActive('codeBlock') ? 'bg-muted' : '')}
-        aria-label="Code Block"
+      <Toggle
+        pressed={editor.isActive('blockquote')}
+        onPressedChange={() => editor.chain().focus().toggleBlockquote().run()}
       >
-        <Code className="h-4 w-4" />
-      </Button>
+        <Quote size={16} />
+      </Toggle>
 
+      {headingLevels.map(({ level, icon: Icon }) => (
+        <Toggle
+          key={level}
+          pressed={editor.isActive('heading', { level })}
+          onPressedChange={() =>
+            editor
+              .chain()
+              .focus()
+              .toggleHeading({ level: level as any })
+              .run()
+          }
+        >
+          <Icon size={16} />
+        </Toggle>
+      ))}
+
+      {/* Non-Toggle Actions */}
       <Button
         type="button"
-        variant="ghost"
-        size="sm"
-        onClick={insertJsonBlock}
-        className="p-2 h-auto"
-        aria-label="JSON Block"
-      >
-        <FileJson className="h-4 w-4" />
-      </Button>
-
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        onClick={addYoutubeVideo}
-        className="p-2 h-auto"
-        aria-label="Youtube Video"
-      >
-        <Youtube className="h-4 w-4" />
-      </Button>
-
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        onClick={insertTableOfContents}
-        className="p-2 h-auto"
-        aria-label="Table of Contents"
-      >
-        <TableOfContents className="h-4 w-4" />
-      </Button>
-
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
+        size="icon"
+        variant="outline"
         onClick={() => editor.chain().focus().undo().run()}
-        disabled={!editor.can().chain().focus().undo().run()}
-        className="p-2 h-auto"
-        aria-label="Undo"
       >
-        <Undo className="h-4 w-4" />
+        <Undo2 size={16} />
       </Button>
 
       <Button
         type="button"
-        variant="ghost"
-        size="sm"
+        size="icon"
+        variant="outline"
         onClick={() => editor.chain().focus().redo().run()}
-        disabled={!editor.can().chain().focus().redo().run()}
-        className="p-2 h-auto"
-        aria-label="Redo"
       >
-        <Redo className="h-4 w-4" />
+        <Redo2 size={16} />
       </Button>
 
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            className={cn('p-2 h-auto', editor.isActive('link') ? 'bg-muted' : '')}
-            aria-label="Link"
-          >
-            <LinkIcon className="h-4 w-4" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-80 p-4">
-          <div className="space-y-2">
-            <h4 className="font-medium">Insert Link</h4>
-            <input
-              type="text"
-              placeholder="https://example.com"
-              className="w-full p-2 border rounded"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  const target = e.target as HTMLInputElement;
-                  if (target.value) {
-                    editor.chain().focus().setLink({ href: target.value }).run();
-                    target.value = '';
-                    document.body.click(); // Close popover
-                  }
-                }
-              }}
-            />
-          </div>
-        </PopoverContent>
-      </Popover>
-
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        onClick={() => imageInputRef.current?.click()}
-        className="p-2 h-auto"
-        aria-label="Image"
-      >
-        <ImageIcon className="h-4 w-4" />
-        <input
-          ref={imageInputRef}
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={handleImageUpload}
-        />
+      <Button type="button" size="icon" variant="outline" onClick={insertImage}>
+        <ImageIcon size={16} />
       </Button>
 
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        onClick={() => videoInputRef.current?.click()}
-        className="p-2 h-auto"
-        aria-label="Video"
-      >
-        <Video className="h-4 w-4" />
-        <input
-          ref={videoInputRef}
-          type="file"
-          accept="video/*"
-          className="hidden"
-          onChange={handleVideoUpload}
-        />
+      <Button type="button" size="icon" variant="outline" onClick={insertYoutube}>
+        <YoutubeIcon size={16} />
+      </Button>
+      <Button type="button" size="icon" variant="outline" onClick={insertLink}>
+        <Link size={16} />
       </Button>
     </div>
   );
-};
-
-export default MenuBar;
+}
