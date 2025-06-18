@@ -9,7 +9,7 @@ import { useUserStore } from '@/store/userStore';
 import { toggleJobBookmarkAction } from '@/actions/main/bookmark';
 import { useMutation } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import { useUtilityStore } from '@/store/sidebarStore';
+import { useUtilityStore } from '@/store/utilityStore';
 import { Jobs } from '@repo/db';
 import { Badge } from './JobCard';
 import { IoBookmark, IoBookmarkOutline } from 'react-icons/io5';

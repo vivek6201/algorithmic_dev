@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useRouter } from 'nextjs-toploader/app';
 import React from 'react';
 import HTMLRenderer from '@repo/ui/components/elements/HTMLRenderer';
-import { useUtilityStore } from '@/store/sidebarStore';
+import { useUtilityStore } from '@/store/utilityStore';
 
 export default function TutorialSection({
   data,

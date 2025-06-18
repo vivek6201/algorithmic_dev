@@ -4,3 +4,4 @@ export * from './jobValidation';
 export * from './profile';
 export * from './tutorialValidation';
 export * from './adminValidation';
+export * from './feedbackValidation';

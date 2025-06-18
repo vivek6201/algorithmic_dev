@@ -10,7 +10,7 @@ import {
 import { Button } from '@repo/ui/components/ui/button';
 import { AuthModalForm } from './AuthForm'; // Assuming AuthForm is in the same directory
 import { useState } from 'react';
-import { useUtilityStore } from '@/store/sidebarStore';
+import { useUtilityStore } from '@/store/utilityStore';
 
 export default function AuthModal() {
   const { openAuthModal, setAuthModel } = useUtilityStore();

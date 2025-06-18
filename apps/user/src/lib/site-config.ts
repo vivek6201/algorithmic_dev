@@ -28,6 +28,8 @@ export const siteConfig: Metadata = {
     'AlgorithmicDev coding platform',
     'daily job updates',
     'Data Structures',
+    'tech jobs',
+    'latest jobs',
     'Algorithms',
     'Python',
     'Java',

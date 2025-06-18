@@ -3,8 +3,10 @@ import { Button } from '@repo/ui/components/ui/button';
 import { Badge } from '@repo/ui/components/ui/badge';
 import { ArrowRight, Briefcase, Star } from '@repo/ui';
 import { useRouter } from 'nextjs-toploader/app';
-import { motion, useAnimation } from 'framer-motion';
+import { motion, useAnimation } from 'motion/react';
 import { useEffect } from 'react';
+import { cn } from '@repo/ui/lib/utils';
+import ContainTextFlip from '@repo/ui/components/elements/TextFlip';
 
 const technologies = [
   'Web Development',
@@ -32,6 +34,7 @@ export default function HeroSection() {
   const router = useRouter();
   const floatControls1 = useAnimation();
   const floatControls2 = useAnimation();
+  const words = ['Building', 'Learning', 'Applying'];
 
   useEffect(() => {
     const floatLoop = async (controls: any, delay = 0) => {
@@ -73,19 +76,22 @@ export default function HeroSection() {
           </div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            initial={{
+              opacity: 0,
+            }}
+            whileInView={{
+              opacity: 1,
+            }}
             viewport={{ once: true }}
-            className="text-3xl md:text-7xl font-bold mb-6 leading-tight"
+            transition={{ duration: 0.6 }}
+            className={cn(
+              'mx-auto relative mb-6 max-w-[70%] text-center text-4xl leading-normal font-bold tracking-tight text-zinc-700 md:text-7xl dark:text-zinc-100',
+            )}
+            layout
           >
-            <span className="gradient-text">Master New Skills</span>
-            <br />
-            <span className="text-foreground">with Expert-Led</span>
-            <br />
-            <span className="text-foreground">Learning Paths</span>
+            Become Job-Ready by Actually <ContainTextFlip words={words} />
+            {/* <Blips /> */}
           </motion.h1>
-
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -106,7 +112,7 @@ export default function HeroSection() {
           >
             <Button
               size="lg"
-              className="text-base md:text-lg px-8 py-6"
+              className="text-base md:text-lg px-8 py-6 text-white"
               onClick={() => router.push('/blogs')}
             >
               Start Learning Today
@@ -124,7 +130,7 @@ export default function HeroSection() {
           </motion.div>
 
           {/* Tech badges (looping) */}
-          <div className="overflow-hidden space-y-4 mt-6">
+          <div className="relative overflow-hidden mt-6 space-y-4">
             <InfiniteBadgeScroll items={technologies} direction="left" />
             <InfiniteBadgeScroll items={moreTechnologies} direction="right" />
           </div>
@@ -134,36 +140,40 @@ export default function HeroSection() {
   );
 }
 
-// Framer Motion loop for badges
-const InfiniteBadgeScroll = ({
-  items,
-  direction = 'left',
-}: {
+type InfiniteBadgeScrollProps = {
   items: string[];
-  direction: 'left' | 'right';
-}) => {
-  const xStart = direction === 'left' ? 0 : -100;
-  const xEnd = direction === 'left' ? -100 : 0;
+  direction?: 'left' | 'right';
+};
+
+export const InfiniteBadgeScroll = ({ items, direction = 'left' }: InfiniteBadgeScrollProps) => {
+  const isLeft = direction === 'left';
+  const animation = {
+    x: isLeft ? ['0%', '-50%'] : ['-50%', '0%'],
+  };
 
   return (
-    <motion.div
-      className="flex whitespace-nowrap"
-      animate={{ x: [`${xStart}%`, `${xEnd}%`] }}
-      transition={{
-        repeat: Infinity,
-        duration: 15,
-        ease: 'linear',
-      }}
-    >
-      {[...items, ...items].map((tech, index) => (
-        <Badge
-          key={index}
-          variant="secondary"
-          className="mx-2 px-4 py-2 text-sm font-medium bg-primary/10 text-primary border-primary/20 flex-shrink-0"
-        >
-          {tech}
-        </Badge>
-      ))}
-    </motion.div>
+    <div className="overflow-hidden w-full">
+      <motion.div
+        className="flex gap-4 w-max"
+        animate={animation}
+        transition={{
+          repeat: Infinity,
+          repeatType: 'loop',
+          duration: 20,
+          ease: 'linear',
+        }}
+      >
+        {/* Duplicate at least 2x to fill loop */}
+        {[...items, ...items, ...items].map((tech, index) => (
+          <Badge
+            key={index}
+            variant="secondary"
+            className="px-4 py-2 text-sm font-medium bg-primary/10 text-primary border-primary/20 flex-shrink-0"
+          >
+            {tech}
+          </Badge>
+        ))}
+      </motion.div>
+    </div>
   );
 };

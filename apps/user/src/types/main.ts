@@ -1,4 +1,6 @@
 import { Blog, BlogCategory, BlogReaction, Prisma } from '@repo/db';
+import { feedbackSchema } from '@repo/shared/validations';
+import { z } from '@repo/ui';
 
 const profileWithAllDetails = Prisma.validator<Prisma.ProfileInclude>()({
   address: true,
@@ -36,3 +38,5 @@ export type BookmarkWithRelations = Prisma.BookmarkGetPayload<{
     };
   };
 }>;
+
+export type FeedbackFormData = z.infer<typeof feedbackSchema>;

@@ -44,7 +44,7 @@ export default function FounderSection() {
           <div className="flex justify-center gap-4 mt-6">
             <Button variant="ghost" size="icon" asChild>
               <a href="https://github.com/vivek6201" target="_blank" rel="noopener noreferrer">
-                <FaGithub className="h-5 w-5 text-black" />
+                <FaGithub className="h-5 w-5 text-black dark:text-white" />
               </a>
             </Button>
             <Button variant="ghost" size="icon" asChild>
@@ -54,12 +54,12 @@ export default function FounderSection() {
                 rel="noopener noreferrer"
                 referrerPolicy="origin"
               >
-                <FaLinkedin className="h-5 w-5 text-black" />
+                <FaLinkedin className="h-5 w-5 text-black dark:text-white" />
               </a>
             </Button>
             <Button variant="ghost" size="icon" asChild>
               <a href="https://x.com/_Vivek_930" target="_blank" rel="noopener noreferrer">
-                <X className="h-5 w-5 text-black" />
+                <X className="h-5 w-5 text-black dark:text-white" />
               </a>
             </Button>
           </div>

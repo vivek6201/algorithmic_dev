@@ -1,6 +1,6 @@
 'use client';
 import { toggleBlogBookmarkAction } from '@/actions/main/bookmark';
-import { useUtilityStore } from '@/store/sidebarStore';
+import { useUtilityStore } from '@/store/utilityStore';
 import { useUserStore } from '@/store/userStore';
 import { BlogWithCategoryAndReactions } from '@/types/main';
 import { Bookmark, ThumbsDown, ThumbsUp } from '@repo/ui';

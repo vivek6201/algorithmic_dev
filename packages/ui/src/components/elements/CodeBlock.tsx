@@ -20,7 +20,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code }) => {
 
   return (
     <div className="not-prose bg-[#1e1e1e] rounded-lg overflow-hidden shadow-md my-4">
-      <div className="border-b bg-gray-300 dark:bg-gray-900 py-2 px-5 flex justify-between items-center">
+      <div className="border-b bg-gray-400 dark:bg-gray-900 py-2 px-5 flex justify-between items-center">
         <div className="flex gap-2 items-center">
           {colors.map((classname) => (
             <div key={classname} className={cn('rounded-full w-2.5 aspect-square', classname)} />
@@ -28,7 +28,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code }) => {
         </div>
         <button
           onClick={handleCopy}
-          className="flex items-center gap-1 text-black/80 dark:text-gray-400 dark:hover:text-white text-sm bg-black/30 px-2 py-1 rounded"
+          className="flex items-center gap-1 text-white text-sm bg-black/50 px-2 py-1 rounded"
         >
           {copied ? <Check size={16} /> : <Copy size={16} />}
           {copied ? 'Copied' : 'Copy'}

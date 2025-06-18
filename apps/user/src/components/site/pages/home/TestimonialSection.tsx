@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Carousel, CarouselContent, CarouselItem } from '@repo/ui/components/ui/carousel';
 import { Card, CardContent } from '@repo/ui/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@repo/ui/components/ui/avatar';
@@ -79,7 +79,7 @@ const TestimonialsSection: React.FC = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
         >
-          <Carousel opts={{ align: 'start', loop: true }} className="w-full flex flex-col">
+          <Carousel opts={{ align: 'start', loop: true }} className="w-11/12 mx-auto flex flex-col">
             <CarouselContent>
               {testimonials.map((testimonial, index) => (
                 <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 px-2">
@@ -89,7 +89,7 @@ const TestimonialsSection: React.FC = () => {
                     transition={{ duration: 0.4, delay: index * 0.1 }}
                     viewport={{ once: true }}
                   >
-                    <Card className="h-full rounded-2xl border border-muted bg-muted/20 shadow-sm dark:bg-muted/30 transition hover:shadow-md">
+                    <Card className="h-full w-10/12 rounded-2xl border border-muted bg-muted/20 shadow-sm dark:bg-muted/30 transition hover:shadow-md">
                       <CardContent className="flex flex-col justify-between h-full p-6 gap-6">
                         <p className="text-sm text-muted-foreground leading-relaxed">
                           “{testimonial.content}”
@@ -122,11 +122,6 @@ const TestimonialsSection: React.FC = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-
-            {/* <div className="flex justify-center mt-8 gap-4">
-              <CarouselPrevious className="rounded-full hover:scale-105 transition" />
-              <CarouselNext className="rounded-full hover:scale-105 transition" />
-            </div> */}
           </Carousel>
         </motion.div>
       </div>

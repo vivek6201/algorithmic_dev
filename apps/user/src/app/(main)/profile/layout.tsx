@@ -2,7 +2,7 @@
 
 import ProfileSidebar from '@/components/site/pages/profile/profileSidebar';
 import React, { ReactNode, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 
 export default function Layout({ children }: { children: ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -40,7 +40,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           <ProfileSidebar />
         </div>
 
-        {/* Mobile Sidebar Drawer with Framer Motion */}
+        {/* Mobile Sidebar Drawer with Motion/React */}
         <AnimatePresence>
           {sidebarOpen && (
             <>

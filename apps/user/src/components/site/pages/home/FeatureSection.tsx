@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Card, CardContent } from '@repo/ui/components/ui/card';
 import { BookOpen, Briefcase, FileText, Users, Trophy, Clock } from '@repo/ui';
 

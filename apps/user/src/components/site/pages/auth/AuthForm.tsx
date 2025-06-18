@@ -24,7 +24,7 @@ import signupAction from '@/actions/auth/signup';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { signIn } from 'next-auth/react';
 import { CheckCircle, hookForm, zodResolver, z } from '@repo/ui';
-import { useUtilityStore } from '@/store/sidebarStore';
+import { useUtilityStore } from '@/store/utilityStore';
 
 interface Proptype extends React.ComponentPropsWithoutRef<'div'> {
   isLogin: boolean;
