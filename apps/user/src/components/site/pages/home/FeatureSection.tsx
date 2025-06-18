@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'motion/react';
+import { Easing, motion } from 'motion/react';
 import { Card, CardContent } from '@repo/ui/components/ui/card';
 import { BookOpen, Briefcase, FileText, Users, Trophy, Clock } from '@repo/ui';
 
@@ -56,7 +56,7 @@ const cardVariants = {
     transition: {
       delay: i * 0.1,
       duration: 0.5,
-      ease: 'easeOut',
+      ease: 'easeOut' as Easing,
     },
   }),
 };
