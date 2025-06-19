@@ -70,16 +70,7 @@ export function AuthModalForm() {
   };
 
   return (
-    <div className="w-full sm:min-w-[320px] sm:max-w-sm space-y-4">
-      <div className="space-y-1 text-center">
-        <h2 className="text-2xl font-semibold">{isLoginMode ? 'Login' : 'Signup'}</h2>
-        <p className="text-sm text-muted-foreground">
-          {isLoginMode
-            ? 'Enter your email below to login to your account'
-            : 'Enter your details to create an account'}
-        </p>
-      </div>
-
+    <div className="w-full sm:min-w-[320px] space-y-2 md:space-y-4">
       {isLoginMode ? <LoginForm /> : <SignupForm />}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
