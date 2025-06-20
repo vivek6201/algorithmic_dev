@@ -36,7 +36,7 @@ export function AuthForm({ isLogin }: Proptype) {
   };
 
   return (
-    <Card className="w-full max-w-sm sm:max-w-md">
+    <Card className="w-11/12 max-w-sm sm:max-w-md">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl text-center">{isLogin ? 'Login' : 'Signup'}</CardTitle>
         <CardDescription className="text-center text-sm">
@@ -169,14 +169,14 @@ function LoginForm() {
                   >
                     {showPass ? 'Hide' : 'Show'}
                   </Button>
-                  <Button
+                  {/* <Button
                     variant={'link'}
                     type="button"
                     className="text-blue-400 cursor-pointer self-end"
                     onClick={() => router.push('/reset-pass')}
                   >
                     Reset Password
-                  </Button>
+                  </Button> */}
                 </div>
               </FormControl>
               <FormMessage />

@@ -1,9 +1,9 @@
 import BlogCard from '@/components/site/pages/blogs/BlogCard';
 import BlogClientActions from '@/components/site/pages/blogs/BlogClientActions';
 import Breadcrumbs from '@/components/site/shared/Breadcrumb';
-import RelatedPosts from '@/components/site/shared/RelatedPosts';
 import { getClientBlogBySlug } from '@/helpers/main/blogGetter';
 import { calculateReadTime } from '@/lib/clientUtils';
+import CustomCarousal from '@repo/ui/components/elements/CustomCarousal';
 import HTMLRenderer from '@repo/ui/components/elements/HTMLRenderer';
 import { CarouselItem } from '@repo/ui/components/ui/carousel';
 import { Metadata } from 'next';
@@ -104,7 +104,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
         <div className="mt-16">
           <h2 className="text-2xl font-bold mb-4">Related Posts</h2>
 
-          <RelatedPosts>
+          <CustomCarousal>
             {relatedPosts.map((post) => (
               <CarouselItem key={post.id} className="md:basis-1/2 lg:basis-1/3 select-none">
                 <BlogCard
@@ -117,7 +117,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                 />
               </CarouselItem>
             ))}
-          </RelatedPosts>
+          </CustomCarousal>
         </div>
       ) : (
         ''

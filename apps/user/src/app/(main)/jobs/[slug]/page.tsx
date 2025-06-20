@@ -9,7 +9,7 @@ import HTMLRenderer from '@repo/ui/components/elements/HTMLRenderer';
 import { Metadata } from 'next';
 import JobCard from '@/components/site/pages/jobs/JobCard';
 import { CarouselItem } from '@repo/ui/components/ui/carousel';
-import RelatedPosts from '@/components/site/shared/RelatedPosts';
+import CustomCarousal from '@repo/ui/components/elements/CustomCarousal';
 
 export const revalidate = 3600;
 
@@ -74,13 +74,13 @@ export default async function page({ params }: { params: Promise<{ slug: string 
       {relatedPosts && relatedPosts.length > 0 ? (
         <div className="mt-16">
           <h2 className="text-2xl font-bold mb-4">Related Openings</h2>
-          <RelatedPosts>
+          <CustomCarousal>
             {relatedPosts.map((post) => (
               <CarouselItem key={post.id} className="md:basis-1/2 lg:basis-1/3 select-none">
                 <JobCard categories={post.jobCategories} job={post} />
               </CarouselItem>
             ))}
-          </RelatedPosts>
+          </CustomCarousal>
         </div>
       ) : (
         ''
