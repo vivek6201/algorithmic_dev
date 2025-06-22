@@ -1,5 +1,5 @@
 import { BlogWithCategoryAndReactions } from '@/types/main';
-import { Blog, BlogCategory, prisma } from '@repo/db';
+import { BlogCategory, prisma } from '@repo/db';
 import cache from '@repo/shared/cache';
 
 export const getClientBlogsCategories = async () => {

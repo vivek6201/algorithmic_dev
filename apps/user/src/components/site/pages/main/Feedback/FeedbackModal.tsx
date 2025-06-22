@@ -1,7 +1,7 @@
 'use client';
 
 import { useUtilityStore } from '@/store/utilityStore';
-import { MessageSquare, X } from '@repo/ui';
+import { MessageSquare } from '@repo/ui';
 import { Button } from '@repo/ui/components/ui/button';
 import { motion } from 'motion/react';
 import { ScrollArea } from '@repo/ui/components/ui/scroll-area';

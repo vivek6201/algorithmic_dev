@@ -165,6 +165,12 @@
   @apply font-mono bg-gray-100 px-1 rounded dark:bg-gray-800 dark:text-gray-300;
 }
 
+.ProseMirror p,
+.ProseMirror li {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
 @layer base {
   * {
     @apply border-border;

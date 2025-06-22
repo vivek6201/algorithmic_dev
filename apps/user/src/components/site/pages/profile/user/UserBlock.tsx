@@ -3,7 +3,7 @@
 import { Pen } from '@repo/ui';
 import { Button } from '@repo/ui/components/ui/button';
 import { useSession } from 'next-auth/react';
-import Image from 'next/image';
+import LazyImage from '@repo/ui/components/elements/LazyImage';
 import React, { useState } from 'react';
 import { Skeleton } from '@repo/ui/components/ui/skeleton';
 import UserModal from './UserModal';
@@ -31,7 +31,7 @@ export default function UserBlock() {
           </div>
         ) : (
           <div className="flex items-center gap-6">
-            <Image
+            <LazyImage
               alt={session.data?.user?.name ?? 'User Image'}
               src={profileData?.image ?? '/placeholder.svg'}
               width={96}

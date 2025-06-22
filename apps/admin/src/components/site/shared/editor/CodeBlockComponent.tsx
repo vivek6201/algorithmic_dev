@@ -44,7 +44,6 @@ export default function CodeBlockComponent({
         <Select
           value={language}
           onValueChange={(value) => {
-            console.log(language);
             updateAttributes({ language: value });
           }}
         >

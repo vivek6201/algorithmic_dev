@@ -19,6 +19,10 @@ type TutorialWithRelations = Prisma.TutorialGetPayload<{
           orderBy: {
             order: 'asc';
           };
+          select: {
+            slug: true;
+            id: true;
+          };
         };
       };
     };
@@ -80,6 +84,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
                 take: 1,
                 orderBy: {
                   order: 'asc',
+                },
+                select: {
+                  slug: true,
+                  id: true,
                 },
               },
             },

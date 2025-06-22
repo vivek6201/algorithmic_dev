@@ -1,9 +1,9 @@
 'use client';
 
-import Image from 'next/image';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Button } from '@repo/ui/components/ui/button';
+import LazyImage from './LazyImage';
 
 export default function ImageBlock({ src, alt }: { src: string; alt: string }) {
   const [isZoomed, setIsZoomed] = useState(false);
@@ -15,7 +15,7 @@ export default function ImageBlock({ src, alt }: { src: string; alt: string }) {
     <>
       {/* Thumbnail */}
       <div className="flex w-full items-center justify-center">
-        <Image
+        <LazyImage
           src={src}
           alt={alt}
           width={600}
@@ -54,14 +54,13 @@ export default function ImageBlock({ src, alt }: { src: string; alt: string }) {
               className="relative max-w-[90vw] max-h-[90vh]"
               onClick={(e) => e.stopPropagation()} // Prevent closing modal on image click
             >
-              <Image
+              <LazyImage
                 src={src}
                 alt={alt}
                 width={1200}
                 height={800}
                 onClick={handleClose}
                 className="object-contain w-full h-full rounded-md cursor-zoom-out"
-                priority
               />
             </motion.div>
           </motion.div>

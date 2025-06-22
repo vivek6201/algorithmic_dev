@@ -1,6 +1,7 @@
 'use client';
+
+import LazyImage from '@repo/ui/components/elements/LazyImage';
 import { Button } from '@repo/ui/components/ui/button';
-import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
@@ -8,7 +9,7 @@ export default function NotFoundClient() {
   return (
     <div className="h-screen w-full flex flex-col items-center justify-center gap-10">
       <p className="font-bold text-xl">Oops! Looks like you are got lost…</p>
-      <Image
+      <LazyImage
         src={'/not-found.svg'}
         alt="not found"
         width={500}

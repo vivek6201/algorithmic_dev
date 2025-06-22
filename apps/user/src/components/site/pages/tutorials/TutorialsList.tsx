@@ -5,8 +5,6 @@ import TutorialCard from './TutorialCard';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { clsx } from '@repo/ui';
-import { useIsMobile } from '@repo/ui/hooks/use-mobile';
 import ListItemSkeleton from '../../shared/Skeletons/ListItemSkeleton';
 
 const LIMIT = 10;
@@ -14,7 +12,6 @@ const LIMIT = 10;
 export default function TutorialsList() {
   const searchParams = useSearchParams();
   const categories = searchParams.get('category');
-  const isMobile = useIsMobile();
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   const fetchTutorials = async ({ pageParam = 1 }) => {

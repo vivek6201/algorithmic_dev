@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/components/ui/avatar';
-import { Menu, X } from '@repo/ui';
 import ThemeToggler from './theme-toggler';
 import UserProfileSheet from '../pages/profile/ProfileSheet';
 import { useSession } from 'next-auth/react';
@@ -12,7 +11,6 @@ import { useRouter } from 'nextjs-toploader/app';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const session = useSession();
   const router = useRouter();
