@@ -5,9 +5,6 @@ import BlogCard from './BlogCard';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useIsMobile } from '@repo/ui/hooks/use-mobile';
-import { clsx } from '@repo/ui';
-import { Skeleton } from '@repo/ui/components/ui/skeleton';
 import ListItemSkeleton from '../../shared/Skeletons/ListItemSkeleton';
 
 const LIMIT = 10;

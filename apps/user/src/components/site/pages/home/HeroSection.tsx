@@ -63,7 +63,7 @@ export default function HeroSection() {
         animate={floatControls2}
       />
 
-      <div className="container mx-auto text-center relative z-10">
+      <div className="sm:container mx-auto text-center relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -76,21 +76,16 @@ export default function HeroSection() {
           </div>
 
           <motion.h1
-            initial={{
-              opacity: 0,
-            }}
-            whileInView={{
-              opacity: 1,
-            }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className={cn(
-              'mx-auto relative mb-6 max-w-[70%] text-center text-4xl leading-normal font-bold tracking-tight text-zinc-700 md:text-7xl dark:text-zinc-100',
+              'mx-auto relative mb-6 max-w-4xl text-center text-4xl sm:text-5xl lg:text-6xl leading-tight font-bold tracking-tight text-zinc-700 dark:text-zinc-100 text-balance',
             )}
             layout
           >
-            Become Job-Ready by Actually <ContainTextFlip words={words} />
-            {/* <Blips /> */}
+            Become Job-Ready by Actually <ContainTextFlip words={words} className="inline" />
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 10 }}

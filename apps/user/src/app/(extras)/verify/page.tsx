@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import { Loader2 } from '@repo/ui';
-import Image from 'next/image';
+import LazyImage from '@repo/ui/components/elements/LazyImage';
 import { useSearchParams } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 
@@ -45,7 +45,7 @@ export default function VerifyPage() {
     if (!success) {
       return (
         <>
-          <Image src={'/fail-icon.png'} width={500} height={500} alt="fail" />
+          <LazyImage src={'/fail-icon.png'} width={500} height={500} alt="fail" />
           <p className="font-bold text-xl">Email Verification Failed!</p>
         </>
       );
@@ -53,7 +53,7 @@ export default function VerifyPage() {
 
     return (
       <>
-        <Image src={'/success-icon.svg'} width={500} height={500} alt="Success" />
+        <LazyImage src={'/success-icon.svg'} width={500} height={500} alt="Success" />
         <p className="font-bold text-xl">Email Verified Successfully!</p>
       </>
     );

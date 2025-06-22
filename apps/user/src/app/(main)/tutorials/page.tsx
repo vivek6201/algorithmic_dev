@@ -1,9 +1,7 @@
 import TutorialsFilters from '@/components/site/pages/tutorials/TutorialsFilters';
 import TutorialsList from '@/components/site/pages/tutorials/TutorialsList';
-import FilterSidebarSkeleton from '@/components/site/shared/Skeletons/FilterSidebarSkeleton';
 import { getClientTutorialsCategories } from '@/helpers/main/tutorialGetter';
 import { Metadata } from 'next';
-import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Tutorials - Algorithmic Dev',

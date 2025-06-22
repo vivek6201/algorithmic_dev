@@ -2,9 +2,9 @@
 
 import { Button } from '@repo/ui/components/ui/button';
 import { Sparkles, X } from '@repo/ui';
-import Image from 'next/image';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { Badge } from '@repo/ui/components/ui/badge';
+import LazyImage from '@repo/ui/components/elements/LazyImage';
 
 export default function FounderSection() {
   return (
@@ -22,7 +22,7 @@ export default function FounderSection() {
         </h2>
 
         <div className="max-w-[280px] sm:max-w-[480px] flex justify-center mb-10 border border-10 border-orange-500 rounded-full overflow-hidden">
-          <Image
+          <LazyImage
             src="/founder-image.jpg"
             alt="Vivek Kumar Gupta"
             width={500}

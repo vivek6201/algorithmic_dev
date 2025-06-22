@@ -34,7 +34,6 @@ export const useEditorConfig = ({ content, onChange }: UseEditorConfigProps) => 
     immediatelyRender: false,
     content: content || '',
     onUpdate: ({ editor }) => {
-      console.log(editor.getJSON());
       onChange?.(editor.getHTML());
     },
     editorProps: {
