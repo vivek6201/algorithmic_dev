@@ -41,7 +41,7 @@ export default function TutorialSection({
   };
 
   return (
-    <div className="w-full h-[800px] overflow-hidden py-5">
+    <div className="w-full h-[800px] overflow-hidden pb-5">
       {/* Mobile Header */}
       <div className="lg:hidden flex items-center px-4 py-2 border-b border-gray-300 dark:border-gray-700">
         <button
