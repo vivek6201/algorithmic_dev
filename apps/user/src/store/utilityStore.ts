@@ -9,6 +9,8 @@ interface UtilityStore {
   setIsLoginMode: (value: boolean) => void;
   openFeedbackModal: boolean;
   setOpenFeedbackModal: (value: boolean) => void;
+  openBugModal: boolean;
+  setOpenBugModal: (value: boolean) => void;
 }
 
 export const useUtilityStore = create<UtilityStore>((set) => ({
@@ -20,4 +22,6 @@ export const useUtilityStore = create<UtilityStore>((set) => ({
   setIsLoginMode: (value) => set({ isLoginMode: value }),
   openFeedbackModal: false,
   setOpenFeedbackModal: (value) => set({ openFeedbackModal: value }),
+  openBugModal: false,
+  setOpenBugModal: (value) => set({ openBugModal: value }),
 }));

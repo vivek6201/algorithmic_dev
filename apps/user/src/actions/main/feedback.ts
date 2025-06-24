@@ -1,8 +1,8 @@
 'use server';
-import { FeedbackFormData } from '@/types/main';
+import { BugFormData, FeedbackFormData } from '@/types/main';
 import { prisma } from '@repo/db';
 import { safeAction } from '@repo/shared/utils';
-import { feedbackSchema } from '@repo/shared/validations';
+import { bugSchema, feedbackSchema } from '@repo/shared/validations';
 
 const feedbackHandler = async (values: FeedbackFormData) => {
   await prisma.feedback.create({
@@ -14,4 +14,15 @@ const feedbackHandler = async (values: FeedbackFormData) => {
   };
 };
 
+const bugHandler = async (values: BugFormData) => {
+  await prisma.bug.create({
+    data: values,
+  });
+
+  return {
+    message: 'Bug Reported Successfully',
+  };
+};
+
 export const feedbackAction = safeAction({ schema: feedbackSchema, handler: feedbackHandler });
+export const bugAction = safeAction({ schema: bugSchema, handler: bugHandler });

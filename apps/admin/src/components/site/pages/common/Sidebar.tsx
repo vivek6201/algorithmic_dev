@@ -3,23 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, JSX } from 'react';
-import {
-  Briefcase,
-  BookOpen,
-  Newspaper,
-  Menu,
-  LogOut,
-  Globe,
-  ChevronLeft,
-  ChevronRight,
-  FolderOpen,
-  ListFilter,
-  clsx,
-  Workflow,
-  User,
-  ContactRound,
-  LayoutDashboard,
-} from '@repo/ui';
+import { Menu, LogOut, ChevronLeft, ChevronRight, clsx } from '@repo/ui';
 import {
   Sheet,
   SheetContent,
@@ -35,63 +19,8 @@ import {
   AccordionTrigger,
 } from '@repo/ui/components/ui/accordion';
 import { signOut, useSession } from 'next-auth/react';
-
-interface SidebarChildItem {
-  name: string;
-  href: string;
-  icon: React.ComponentType<{ className?: string }>;
-}
-
-interface SidebarItem {
-  name: string;
-  href: string;
-  icon: React.ComponentType<{ className?: string }>;
-  children?: SidebarChildItem[];
-}
-
-const sidebarItems: SidebarItem[] = [
-  {
-    name: 'Dashboard',
-    href: '/dashboard',
-    icon: LayoutDashboard,
-  },
-  {
-    name: 'Jobs',
-    href: '/dashboard/jobs/all',
-    icon: Briefcase,
-    children: [
-      { name: 'Categories', href: '/dashboard/jobs/categories', icon: FolderOpen },
-      { name: 'All jobs', href: '/dashboard/jobs', icon: FolderOpen },
-    ],
-  },
-  {
-    name: 'Tutorials',
-    href: '/dashboard/tutorials/all',
-    icon: BookOpen,
-    children: [
-      { name: 'Categories', href: '/dashboard/tutorials/categories', icon: FolderOpen },
-      { name: 'All Tutorials', href: '/dashboard/tutorials', icon: ListFilter },
-    ],
-  },
-  {
-    name: 'Blogs',
-    href: '/dashboard/blogs/all',
-    icon: Newspaper,
-    children: [
-      { name: 'Categories', href: '/dashboard/blogs/categories', icon: FolderOpen },
-      { name: 'All Blogs', href: '/dashboard/blogs', icon: ListFilter },
-    ],
-  },
-  {
-    name: 'Actions',
-    href: '/dashboard/actions',
-    icon: Workflow,
-    children: [
-      { name: 'Profile', href: '/dashboard/actions/profile', icon: User },
-      { name: 'List Admins', href: '/dashboard/actions/list-admins', icon: ContactRound },
-    ],
-  },
-];
+import { SidebarChildItem, SidebarItem } from '@/types/main';
+import { sidebarItems } from '@/lib/constants';
 
 const AdminSidebar = () => {
   const pathname = usePathname();
@@ -115,7 +44,7 @@ const AdminSidebar = () => {
           'w-full flex items-center gap-3 justify-start px-4 py-2 rounded-md transition-all font-medium',
           isLinkActive(item.href)
             ? 'bg-white text-gray-900 shadow-md'
-            : 'hover:bg-gray-700 hover:shadow-sm',
+            : 'hover:bg-gray-300 dark:hover:bg-gray-700 hover:shadow-sm',
           collapsed && !isMobile ? 'justify-center px-0' : '',
           isChild ? 'text-sm pl-8' : '',
           'mt-2',
@@ -146,7 +75,7 @@ const AdminSidebar = () => {
         >
           <div className="flex items-center gap-3">
             <item.icon className="w-5 h-5" />
-            <span>{item.name}</span>
+            {!collapsed && <span>{item.name}</span>}
           </div>
         </AccordionTrigger>
         <AccordionContent className="pl-4 mt-1 space-y-1">
@@ -191,13 +120,6 @@ const AdminSidebar = () => {
               })}
             </nav>
             <div className="mt-6 border-t border-gray-700 pt-4 space-y-2">
-              <Link
-                href="/"
-                className="flex items-center gap-3 px-4 py-2 rounded-md transition-all hover:bg-gray-700"
-              >
-                <Globe className="w-5 h-5" />
-                <span>Go to Website</span>
-              </Link>
               <Button
                 onClick={() =>
                   signOut({

@@ -25,7 +25,7 @@ export const useEditorConfig = ({ content, onChange }: UseEditorConfigProps) => 
       Link,
       Youtube.configure({
         HTMLAttributes: {
-          class: 'rounded-md aspect-video w-10/12',
+          class: 'rounded-md aspect-video w-full md:w-10/12 mx-auto',
         },
       }),
       IndentList,

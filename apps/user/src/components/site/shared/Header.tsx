@@ -60,7 +60,7 @@ const Header = () => {
             {isLoggedIn ? (
               <UserProfileSheet>
                 <Avatar className="h-9 w-9 cursor-pointer hover:scale-105 transition-transform">
-                  <AvatarImage src={session.data?.user?.image ?? '/placeholder.svg'} alt="User" />
+                  <AvatarImage src={session.data?.user?.image as string} alt="User" />
                   <AvatarFallback>{session.data?.user?.name?.[0]}</AvatarFallback>
                 </Avatar>
               </UserProfileSheet>
