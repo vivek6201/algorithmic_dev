@@ -33,7 +33,7 @@ export default function UserBlock() {
           <div className="flex items-center gap-6">
             <LazyImage
               alt={session.data?.user?.name ?? 'User Image'}
-              src={profileData?.image ?? '/placeholder.svg'}
+              src={profileData?.image as string}
               width={96}
               height={96}
               className="h-24 w-24 rounded-full object-cover border border-muted"

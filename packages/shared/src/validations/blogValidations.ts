@@ -14,3 +14,5 @@ export const blogFormSchema = z.object({
   coverImage: z.string().optional(),
   description: z.string().min(3, 'Minimum 3 characters are required'),
 });
+
+export const blogAutosaveSchema = blogFormSchema.partial();

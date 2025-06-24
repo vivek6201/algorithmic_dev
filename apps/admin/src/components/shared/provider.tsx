@@ -11,7 +11,7 @@ function ThemeProvider({ children, ...props }: React.ComponentProps<typeof NextT
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 export default function Provider({ children }: { children: React.ReactNode }) {
   const [windowLoaded, setWindowLoaded] = React.useState(false);

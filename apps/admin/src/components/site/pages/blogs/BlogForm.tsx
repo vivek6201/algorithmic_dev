@@ -1,46 +1,52 @@
 'use client';
-import React, { useEffect } from 'react';
+
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { useRouter } from 'nextjs-toploader/app';
+import { useQuery } from '@tanstack/react-query';
+import { toast } from '@repo/ui/components/ui/sonner';
 import { zodResolver } from '@repo/ui';
 import { hookForm } from '@repo/ui';
-import { blogFormSchema } from '@repo/shared/validations';
 import { z } from '@repo/ui';
-import { Button } from '@repo/ui/components/ui/button';
 import {
   Form,
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
+  FormControl,
   FormMessage,
 } from '@repo/ui/components/ui/form';
 import { Input } from '@repo/ui/components/ui/input';
-import RichTextEditor from '@/components/site/shared/editor/TextEditor';
-import { useQuery } from '@tanstack/react-query';
-import { CustomSelect } from '@repo/ui/components/ui/custom-select';
-import createBlog, { updateBlog } from '@/actions/blogs/blog';
-import { toast } from '@repo/ui/components/ui/sonner';
-import { useRouter } from 'nextjs-toploader/app';
+import { Button } from '@repo/ui/components/ui/button';
 import { Textarea } from '@repo/ui/components/ui/textarea';
+import { CustomSelect } from '@repo/ui/components/ui/custom-select';
+import RichTextEditor from '@/components/site/shared/editor/TextEditor';
+import createBlog, { updateBlog } from '@/actions/blogs/blog';
+import { blogFormSchema } from '@repo/shared/validations';
+import uploadFileToCloud from '@/actions/common/upload-file';
 
-function BlogForm({
-  blog,
-  isEdit = false,
-}: {
+type BlogFormProps = {
   isEdit: boolean;
   blog?: z.infer<typeof blogFormSchema>;
-}) {
+};
+
+export default function BlogForm({ blog, isEdit }: BlogFormProps) {
+  const [uploading, setUploading] = useState(false);
+  const router = useRouter();
+
   const form = hookForm.useForm<z.infer<typeof blogFormSchema>>({
     resolver: zodResolver(blogFormSchema),
     defaultValues: {
-      author: '',
-      categoryId: '',
-      content: '',
-      coverImage: '',
-      description: '',
       title: '',
       slug: '',
+      categoryId: '',
+      author: '',
+      coverImage: '',
+      description: '',
+      content: '',
     },
   });
+
   const {
     data: categories = [],
     isPending,
@@ -48,179 +54,216 @@ function BlogForm({
   } = useQuery({
     queryKey: ['blog-categories'],
     queryFn: async () => {
-      const response = await fetch('/api/admin/blogs/category');
-      const data = await response.json();
+      const res = await fetch('/api/admin/blogs/category');
+      const data = await res.json();
       return data.categories || [];
     },
   });
-  const router = useRouter();
 
+  // Prefill form when editing
   useEffect(() => {
     if (isEdit && blog) {
       form.reset(blog);
     }
   }, [isEdit, blog, form]);
 
+  // Generate slug from title
   useEffect(() => {
-    const subscription = form.watch((value, { name }) => {
+    const sub = form.watch((value, { name }) => {
       if (name === 'title') {
-        const generatedSlug = value.title?.toLowerCase().replace(/\s+/g, '-');
-        form.setValue('slug', generatedSlug || '');
+        const slug = value.title?.toLowerCase().replace(/\s+/g, '-') || '';
+        form.setValue('slug', slug);
       }
     });
+    return () => sub.unsubscribe();
+  }, [form]);
 
-    return () => subscription.unsubscribe();
-  }, [form, isEdit]);
+  //fix this later
+  const handleImageUpload = async (file: File) => {
+    setUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await uploadFileToCloud(formData);
+    setUploading(false);
 
-  async function onSubmit(values: z.infer<typeof blogFormSchema>) {
-    if (isEdit) {
-      if (!blog) {
-        toast.error('Blog data is missing.');
-        return;
-      }
-      const { success, message } = await updateBlog(blog.slug, values);
-
-      if (!success) {
-        toast.error(message);
-        return;
-      }
-
-      toast.success('Blog updated successfully!');
-      router.push('/dashboard/blogs');
-    } else {
-      const { success, error, message } = await createBlog(values);
-
-      if (!error && !success) {
-        console.error(error);
-        toast.error(message);
-        return;
-      }
-
-      toast.success('Blog created successfully');
-      router.push('/dashboard/blogs');
+    if (!res) {
+      toast.error('Failed to upload image');
+      return;
     }
-  }
+
+    form.setValue('coverImage', res.secure_url);
+  };
+
+  const onSubmit = async (values: z.infer<typeof blogFormSchema>) => {
+    const result = isEdit ? await updateBlog(blog?.slug || '', values) : await createBlog(values);
+
+    if (!result.success) {
+      toast.error(result.message || 'Something went wrong');
+      return;
+    }
+
+    toast.success(isEdit ? 'Blog updated!' : 'Blog created!');
+    router.push('/dashboard/blogs');
+  };
 
   return (
-    <div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Title</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter Title of the blog.." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="slug"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Slug</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter category Slug" {...field} readOnly />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="categoryId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Category</FormLabel>
-                <FormControl>
-                  <CustomSelect
-                    value={field.value}
-                    onChange={field.onChange}
-                    options={
-                      error
-                        ? []
-                        : //@typescript-eslint/no-explicit-any
-                          categories.map((cat: any) => ({
-                            label: cat.name,
-                            value: cat.id,
-                          }))
-                    }
-                    isLoading={isPending}
-                    placeholder="Select a category"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="author"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Author</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter author of the blog.." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {/* Title */}
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Title</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter blog title..." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-          <FormField
-            control={form.control}
-            name="coverImage"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Cover Image</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter cover image url of the blog.." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="Enter description of the blog.." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="content"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Content</FormLabel>
-                <FormControl>
-                  <RichTextEditor
-                    content={field.value}
-                    onChange={field.onChange}
-                    className="min-h-[300px]"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        {/* Slug (readonly) */}
+        <FormField
+          control={form.control}
+          name="slug"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Slug</FormLabel>
+              <FormControl>
+                <Input {...field} readOnly disabled />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-          <Button type="submit">Submit</Button>
-        </form>
-      </Form>
-    </div>
+        {/* Category */}
+        <FormField
+          control={form.control}
+          name="categoryId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Category</FormLabel>
+              <FormControl>
+                <CustomSelect
+                  value={field.value}
+                  onChange={field.onChange}
+                  options={
+                    error
+                      ? []
+                      : categories.map((cat: any) => ({
+                          label: cat.name,
+                          value: cat.id,
+                        }))
+                  }
+                  isLoading={isPending}
+                  placeholder="Select a category"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Author */}
+        <FormField
+          control={form.control}
+          name="author"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Author</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter author's name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Cover Image Upload */}
+        <FormField
+          control={form.control}
+          name="coverImage"
+          render={() => (
+            <FormItem>
+              <FormLabel>Cover Image</FormLabel>
+              <FormControl>
+                <div className="flex flex-col gap-y-4">
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleImageUpload(file);
+                    }}
+                  />
+                  {uploading && <p className="text-sm text-muted-foreground">Uploading...</p>}
+                  {form.watch('coverImage') !== '' && (
+                    <div className="flex items-center gap-4">
+                      <Image
+                        src={form.watch('coverImage') || ''}
+                        alt="Cover Preview"
+                        width={500}
+                        height={300}
+                        className="h-32 w-auto object-cover rounded-md"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="icon"
+                        onClick={() => {
+                          form.setValue('coverImage', '');
+                        }}
+                      >
+                        Clear
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Description */}
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea placeholder="Short summary or teaser..." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Content */}
+        <FormField
+          control={form.control}
+          name="content"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Content</FormLabel>
+              <FormControl>
+                <RichTextEditor
+                  content={field.value}
+                  onChange={field.onChange}
+                  className="min-h-[300px]"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit">{isEdit ? 'Update Blog' : 'Publish Blog'}</Button>
+      </form>
+    </Form>
   );
 }
-
-export default BlogForm;

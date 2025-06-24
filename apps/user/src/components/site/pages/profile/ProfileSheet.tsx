@@ -31,7 +31,7 @@ const UserProfileSheet = ({ children }: UserProfileSheetProps) => {
           {/* User Info */}
           <div className="flex items-center space-x-4">
             <Avatar className="h-16 w-16">
-              <AvatarImage src={session.data?.user?.image ?? '/placeholder.svg'} alt="User" />
+              <AvatarImage src={session.data?.user?.image as string} alt="User" />
               <AvatarFallback className="text-xl">{session.data?.user?.name?.[0]}</AvatarFallback>
             </Avatar>
             <div>

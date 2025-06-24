@@ -1,4 +1,10 @@
 // tutorial schema
+enum ItemStatus {
+  DRAFT
+  PUBLISHED
+  PRIVATE
+  SCHEDULED
+}
 
 model TutorialCategory {
   id        String                       @id @default(cuid())
@@ -30,6 +36,7 @@ model Tutorial {
   slug        String                       @unique
   description String
   published   Boolean                      @default(false)
+  status      ItemStatus                   @default(DRAFT)
   chapters    Chapter[]
   categories  TutorialCategoryOnTutorial[]
 
@@ -40,14 +47,15 @@ model Tutorial {
 // This is the join table for many-to-many
 
 model Chapter {
-  id          String   @id @default(cuid())
+  id          String     @id @default(cuid())
   title       String
-  slug        String   @unique // Unique slug (optional)
+  slug        String     @unique // Unique slug (optional)
   description String?
-  tutorial    Tutorial @relation(fields: [tutorialId], references: [id], onDelete: Cascade)
+  tutorial    Tutorial   @relation(fields: [tutorialId], references: [id], onDelete: Cascade)
   tutorialId  String
   order       Int
   topics      Topic[]
+  status      ItemStatus @default(DRAFT)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -56,14 +64,15 @@ model Chapter {
 }
 
 model Topic {
-  id        String  @id @default(cuid())
+  id        String     @id @default(cuid())
   title     String
-  slug      String  @unique
+  slug      String     @unique
   content   String
   order     Int
-  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  chapter   Chapter    @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   chapterId String
-  published Boolean @default(false)
+  published Boolean    @default(false)
+  status    ItemStatus @default(DRAFT)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -88,6 +97,7 @@ model Blog {
   categoryId  String
   authorName  String
   published   Boolean      @default(false)
+  status      ItemStatus   @default(DRAFT)
   coverImage  String
 
   reactions BlogReaction[]
@@ -100,11 +110,13 @@ model Blog {
 }
 
 model BlogCategory {
-  id        String  @id @default(cuid())
-  name      String  @unique
-  slug      String  @unique
-  published Boolean @default(false)
-  blogs     Blog[]
+  id        String     @id @default(cuid())
+  name      String     @unique
+  slug      String     @unique
+  published Boolean    @default(false)
+  status    ItemStatus @default(DRAFT)
+
+  blogs Blog[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -118,7 +130,7 @@ model BlogReaction {
   profileId String
   blog      Blog         @relation(fields: [blogId], references: [id], onDelete: Cascade)
   blogId    String
-  type      ReactionType // Enum for LIKE or DISLIKE
+  type      ReactionType
 
   createdAt DateTime @default(now())
 

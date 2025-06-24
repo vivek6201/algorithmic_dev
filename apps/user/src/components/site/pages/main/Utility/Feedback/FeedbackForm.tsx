@@ -1,6 +1,6 @@
-import { FeedbackFormData } from '@/types/main';
-import { feedbackSchema } from '@repo/shared/validations';
-import { Heart, hookForm, Send, Star, zodResolver } from '@repo/ui';
+import { BugFormData, FeedbackFormData } from '@/types/main';
+import { bugSchema, feedbackSchema } from '@repo/shared/validations';
+import { Bug, Heart, hookForm, Send, Star, zodResolver } from '@repo/ui';
 import React, { useMemo, useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import {
@@ -12,15 +12,11 @@ import {
   FormMessage,
 } from '@repo/ui/components/ui/form';
 import { AnimatePresence, motion } from 'motion/react';
-import { Input } from '@repo/ui/components/ui/input';
-import { cn } from '@repo/ui/lib/utils';
 import { Textarea } from '@repo/ui/components/ui/textarea';
-import { RadioGroup, RadioGroupItem } from '@repo/ui/components/ui/radio-group';
-import { Label } from '@repo/ui/components/ui/label';
-import { feedbackTypes } from '@/lib/constants';
 import { feedbackAction } from '@/actions/main/feedback';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useUtilityStore } from '@/store/utilityStore';
+import { cn } from '@repo/ui/lib/utils';
 
 export default function FeedbackForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -30,15 +26,10 @@ export default function FeedbackForm() {
   const form = hookForm.useForm<FeedbackFormData>({
     resolver: zodResolver(feedbackSchema),
     defaultValues: {
-      name: '',
-      email: undefined,
-      message: '',
       rating: undefined,
-      type: undefined,
+      message: '',
     },
   });
-
-  const selectedType = form.watch('type');
 
   async function onSubmit(values: FeedbackFormData) {
     setIsLoading(true);
@@ -93,125 +84,17 @@ export default function FeedbackForm() {
       className="w-full max-w-md mx-auto"
     >
       <div className="text-center mb-6">
-        <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl mb-4 mx-auto">
+        <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl mb-4 mx-auto">
           <Heart className="w-6 h-6 text-white" />
         </div>
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white/80 mb-2">
-          We'd love your feedback
+          Give your Valuable feedback
         </h2>
         <p className="text-gray-600">Help us improve by sharing your thoughts</p>
       </div>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          {/* Personal Information */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 }}
-            className="space-y-4"
-          >
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Email (optional)" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </motion.div>
-
-          {/* Feedback Type */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <FormField
-              control={form.control}
-              name="type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>What type of feedback is this?</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      className="space-y-2"
-                    >
-                      {feedbackTypes.map((type) => {
-                        const Icon = type.icon;
-                        return (
-                          <motion.div
-                            key={type.id}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                          >
-                            <Label
-                              htmlFor={type.id}
-                              className={cn(
-                                'flex items-center space-x-3 p-3 rounded-lg border-2 cursor-pointer transition-all duration-200',
-                                selectedType === type.id
-                                  ? `${type.bgColor} ${type.color} border-current`
-                                  : 'bg-gray-50 dark:bg-transparent border-gray-200 dark:border-border hover:bg-gray-100',
-                              )}
-                            >
-                              <RadioGroupItem value={type.id} id={type.id} className="sr-only" />
-                              <div
-                                className={cn(
-                                  'flex items-center justify-center w-8 h-8 rounded-full',
-                                )}
-                              >
-                                <Icon
-                                  className={cn(
-                                    'w-4 h-4',
-                                    selectedType === type.id ? type.color : 'text-gray-400',
-                                  )}
-                                />
-                              </div>
-                              <div>
-                                <div className="font-medium ">{type.label}</div>
-                                <div
-                                  className={cn(
-                                    'text-sm text-gray-500',
-                                    selectedType === type.id && 'dark:text-gray-400',
-                                  )}
-                                >
-                                  {type.description}
-                                </div>
-                              </div>
-                            </Label>
-                          </motion.div>
-                        );
-                      })}
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </motion.div>
-
           {/* Rating */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -259,11 +142,12 @@ export default function FeedbackForm() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
+            className="flex flex-col md:flex-row gap-2"
           >
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:transform-none disabled:opacity-50"
+              className="w-full bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-200 disabled:opacity-50"
             >
               <AnimatePresence mode="wait">
                 {isLoading ? (
@@ -290,6 +174,14 @@ export default function FeedbackForm() {
                   </motion.div>
                 )}
               </AnimatePresence>
+            </Button>
+            <Button
+              type="button"
+              variant={'secondary'}
+              onClick={() => setOpenFeedbackModal(false)}
+              className="w-full "
+            >
+              Ask me later
             </Button>
           </motion.div>
         </form>

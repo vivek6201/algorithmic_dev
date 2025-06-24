@@ -1,16 +1,21 @@
-enum FeedbackType {
-    Bug
-    Suggestions
-    General
-}
-
 model Feedback {
-    id      String       @id @default(cuid())
-    name    String
-    email   String?
-    type    FeedbackType
+    id String @id @default(cuid())
+
     rating  Int
     message String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Bug {
+    id      String  @id @default(cuid())
+    name    String
+    email   String?
+    message String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 // model NewsletterSubscription {
