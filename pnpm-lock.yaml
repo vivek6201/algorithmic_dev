@@ -539,9 +539,6 @@ importers:
       '@tailwindcss/typography':
         specifier: ^0.5.16
         version: 0.5.16(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@22.15.32)(typescript@5.8.3)))
-      '@types/highlight.js':
-        specifier: ^10.1.0
-        version: 10.1.0
       '@types/node':
         specifier: ^22.15.19
         version: 22.15.32
@@ -2475,13 +2472,6 @@ packages:
       {
         integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==,
       }
-
-  '@types/highlight.js@10.1.0':
-    resolution:
-      {
-        integrity: sha512-77hF2dGBsOgnvZll1vymYiNUtqJ8cJfXPD6GG/2M0aLRc29PkvB7Au6sIDjIEFcSICBhCh2+Pyq6WSRS7LUm6A==,
-      }
-    deprecated: This is a stub types definition. highlight.js provides its own type definitions, so you do not need this installed.
 
   '@types/json-schema@7.0.15':
     resolution:
@@ -7879,10 +7869,6 @@ snapshots:
   '@types/hast@3.0.4':
     dependencies:
       '@types/unist': 3.0.3
-
-  '@types/highlight.js@10.1.0':
-    dependencies:
-      highlight.js: 11.11.1
 
   '@types/json-schema@7.0.15': {}
 
