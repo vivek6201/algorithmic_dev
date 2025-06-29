@@ -23,7 +23,7 @@ export default async function page() {
           Algorithmic Dev
         </span>
       </h2>
-      <AuthForm isLogin={true} />
+      <AuthForm />
     </div>
   );
 }
