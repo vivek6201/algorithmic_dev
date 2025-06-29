@@ -85,8 +85,8 @@ export default function page() {
             <section className="space-y-4">
               <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">Contact Us</h2>
               <p className="text-gray-700 dark:text-gray-300">
-                We'd love to hear from you—whether it's feedback, suggestions, or partnership ideas.
-                Reach out to us at{' '}
+                We&apos;d love to hear from you—whether it&apos;s feedback, suggestions, or
+                partnership ideas. Reach out to us at{' '}
               </p>
               <a
                 href="mailto:algorithmicdev9@gmail.com"

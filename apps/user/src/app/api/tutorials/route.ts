@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Prisma } from '@repo/db';
 
 // Define the type for tutorials with related data
-type TutorialWithRelations = Prisma.TutorialGetPayload<{
+export type TutorialWithRelations = Prisma.TutorialGetPayload<{
   include: {
     categories: {
       include: {

@@ -161,7 +161,7 @@ export function CreateTutorialModal({
                           error
                             ? []
                             : //@typescript-eslint/no-explicit-any
-                              categories.map((cat: any) => ({
+                              categories.map((cat: { name: string; id: string }) => ({
                                 label: cat.name,
                                 value: cat.id,
                               }))

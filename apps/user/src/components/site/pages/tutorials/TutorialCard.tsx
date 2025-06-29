@@ -3,26 +3,22 @@ import { ArrowRight, BookIcon } from '@repo/ui';
 import { Button } from '@repo/ui/components/ui/button';
 import { useRouter } from 'nextjs-toploader/app';
 import { usePathname } from 'next/navigation';
+import { TutorialWithRelations } from '@/app/api/tutorials/route';
 
-type Props = {
-  title: string;
-  description: string;
-  chapters: number;
-  publishedAt: string;
-  tags: string[];
-  slug: string;
+interface TutorialCardProps extends TutorialWithRelations {
   topicSlug: string;
-};
+  tags: string[];
+}
 
 const TutorialCard = ({
   title,
-  description,
-  chapters,
   slug,
   topicSlug,
-  publishedAt,
   tags,
-}: Props) => {
+  description,
+  chapters,
+  createdAt,
+}: TutorialCardProps) => {
   const router = useRouter();
   const pathname = usePathname();
   return (
@@ -42,7 +38,7 @@ const TutorialCard = ({
 
       <div className="flex flex-wrap gap-2 text-sm mb-3">
         <span className="px-3 py-1 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded-full flex items-center gap-1">
-          <BookIcon size={14} /> {chapters} Chapters
+          <BookIcon size={14} /> {chapters.length} Chapters
         </span>
       </div>
 
@@ -58,7 +54,7 @@ const TutorialCard = ({
             </span>
           ))}
         </div>
-        <span>{publishedAt}</span>
+        <span>{new Date(createdAt).toDateString()}</span>
       </div>
     </div>
   );

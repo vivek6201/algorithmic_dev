@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import ListItemSkeleton from '../../shared/Skeletons/ListItemSkeleton';
+import { BlogWithCategoryAndReactions } from '@/types/main';
 
 const LIMIT = 10;
 
@@ -80,18 +81,11 @@ function BlogsList() {
         )}
         {isError && <p>Failed to load Blogs.</p>}
         {!isLoading && blogs.length > 0
-          ? blogs.map((blog: any, index: number) => {
+          ? blogs.map((blog: BlogWithCategoryAndReactions, index: number) => {
               const isLast = index === blogs.length - 1;
               return (
                 <div ref={isLast ? lastBlogRef : null} key={blog.id}>
-                  <BlogCard
-                    title={blog.title}
-                    description={blog.description}
-                    author={blog.authorName}
-                    category={blog.category.name}
-                    date={blog.updatedAt}
-                    slug={blog.slug}
-                  />
+                  <BlogCard {...blog} categoryName={blog.category.name} />
                 </div>
               );
             })

@@ -14,12 +14,13 @@ import {
   SheetTitle,
 } from '@repo/ui/components/ui/sheet';
 import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
+import { ChapterWithTopic } from '@/helpers/main/tutorialGetter';
 
 export default function TutorialSidebar({
   data,
   topicSlug,
 }: {
-  data: any;
+  data: ChapterWithTopic[] | undefined;
   topicSlug: string | null;
 }) {
   const router = useRouter();
@@ -43,11 +44,11 @@ export default function TutorialSidebar({
 
   const renderContent = () => (
     <div className="flex flex-col gap-y-5">
-      {data.map((chapter: any) => (
+      {data?.map((chapter) => (
         <div key={chapter.id}>
           <p className="font-medium">{chapter.title}</p>
           <div className="flex flex-col gap-y-1 my-4">
-            {chapter.topics.map((topic: any) => (
+            {chapter.topics.map((topic) => (
               <div
                 onClick={() => navigate(encodeURIComponent(topic.slug))}
                 key={topic.id}

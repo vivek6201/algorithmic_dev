@@ -89,7 +89,7 @@ export default function page() {
               >
                 algorithmicdev9@gmail.com
               </a>
-              . We're always happy to help!
+              . We&apos;re always happy to help!
             </p>
 
             <p className="text-sm text-gray-500 dark:text-gray-600 italic">

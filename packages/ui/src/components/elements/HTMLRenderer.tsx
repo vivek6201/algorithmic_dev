@@ -1,7 +1,27 @@
 'use client';
-import parse from 'html-react-parser';
+import parse, { DOMNode, Element, Text } from 'html-react-parser';
 import CodeBlock from './CodeBlock';
 import ImageBlock from './ImageBlock';
+
+// Type guards for better type checking
+function isElement(node: DOMNode): node is Element {
+  return node.type === 'tag';
+}
+
+function isText(node: DOMNode): node is Text {
+  return node.type === 'text';
+}
+
+function hasChildren(node: Element): node is Element & { children: DOMNode[] } {
+  return Array.isArray(node.children);
+}
+
+function getTextContent(children: DOMNode[]): string {
+  return children
+    .filter(isText)
+    .map((child) => child.data)
+    .join('');
+}
 
 export default function HTMLRenderer({ content }: { content: string }) {
   return (
@@ -14,19 +34,28 @@ export default function HTMLRenderer({ content }: { content: string }) {
       dark:prose-pre:bg-gray-800 dark:prose-code:bg-gray-800"
     >
       {parse(content, {
-        replace: (domNode: any) => {
-          if (domNode.type === 'tag') {
-            if (domNode.name === 'pre' && domNode.children?.[0]?.name === 'code') {
-              const codeContent =
-                domNode.children[0].children?.map((c: any) => c.data).join('') || '';
-              return <CodeBlock code={codeContent} />;
+        replace: (domNode: DOMNode) => {
+          if (isElement(domNode)) {
+            if (domNode.name === 'pre' && hasChildren(domNode)) {
+              const codeElement = domNode.children.find(
+                (child): child is Element =>
+                  isElement(child as DOMNode) && (child as Element).name === 'code',
+              );
+
+              if (codeElement && hasChildren(codeElement)) {
+                const codeContent = getTextContent(codeElement.children);
+                return <CodeBlock code={codeContent} />;
+              }
             }
 
-            if (domNode.name === 'img') {
+            // Handle images
+            if (domNode.name === 'img' && domNode.attribs) {
               const { src, alt } = domNode.attribs;
-              return <ImageBlock src={src} alt={alt || ''} />;
+              return src ? <ImageBlock src={src} alt={alt || ''} /> : null;
             }
           }
+
+          return undefined; // Let html-react-parser handle other elements normally
         },
       })}
     </div>

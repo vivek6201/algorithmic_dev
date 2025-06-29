@@ -46,7 +46,7 @@ export default function EducationBlock() {
             ))
           ) : (
             <div className="col-span-full text-muted-foreground text-sm">
-              No education added yet. Click "Add" to get started.
+              No education added yet. Click &quot;Add&quot; to get started.
             </div>
           )}
         </div>

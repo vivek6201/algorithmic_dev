@@ -16,11 +16,11 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "prettier": "^3.5.3",
-    "turbo": "^2.5.3",
-    "husky": "^9.1.7"
+    "husky": "^9.1.7",
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.4"
   },
-  "packageManager": "pnpm@10.12.2",
+  "packageManager": "pnpm@10.12.4",
   "engines": {
     "node": ">=20.17.0"
   }

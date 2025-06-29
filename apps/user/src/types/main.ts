@@ -2,15 +2,13 @@ import { Blog, BlogCategory, BlogReaction, Prisma } from '@repo/db';
 import { bugSchema, feedbackSchema } from '@repo/shared/validations';
 import { z } from '@repo/ui';
 
-const profileWithAllDetails = Prisma.validator<Prisma.ProfileInclude>()({
-  address: true,
-  educationDetails: true,
-  experienceDetails: true,
-  projects: true,
-});
-
 export type CombinedProfile = Prisma.ProfileGetPayload<{
-  include: typeof profileWithAllDetails;
+  include: {
+    address: true;
+    educationDetails: true;
+    experienceDetails: true;
+    projects: true;
+  };
 }>;
 
 export type JobWithCategories = Prisma.JobsGetPayload<{

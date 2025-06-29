@@ -153,7 +153,7 @@ export default function BlogForm({ blog, isEdit }: BlogFormProps) {
                   options={
                     error
                       ? []
-                      : categories.map((cat: any) => ({
+                      : categories.map((cat: { name: string; id: string }) => ({
                           label: cat.name,
                           value: cat.id,
                         }))

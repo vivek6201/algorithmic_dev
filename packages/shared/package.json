@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {},
   "exports": {
     "./cloudinary": "./src/cloudinary/index.ts",
@@ -29,6 +30,7 @@
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^22.15.19",
-    "@types/react": "^19.1.6"
+    "@types/react": "^19.1.6",
+    "eslint": "^9.29.0"
   }
 }

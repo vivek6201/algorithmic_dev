@@ -6,17 +6,16 @@ import Underline from '@tiptap/extension-underline';
 import Youtube from '@tiptap/extension-youtube';
 import { useEffect } from 'react';
 import { all, createLowlight } from 'lowlight';
-import { IndentList } from '@/components/site/shared/editor/CustomBlocks';
 import { CodeBlockLowlight } from '@tiptap/extension-code-block-lowlight';
+import { IndentList } from '@/components/shared/editor/CustomBlocks';
 
 interface UseEditorConfigProps {
   content: string;
-  onChange: (content: string) => void;
 }
 
 export const lowlight = createLowlight(all);
 
-export const useEditorConfig = ({ content, onChange }: UseEditorConfigProps) => {
+export const useEditorConfig = ({ content }: UseEditorConfigProps) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ codeBlock: false }),
@@ -39,11 +38,7 @@ export const useEditorConfig = ({ content, onChange }: UseEditorConfigProps) => 
       IndentList,
       CodeBlockLowlight.configure({ lowlight }),
     ],
-    immediatelyRender: false,
     content: content || '',
-    onUpdate: ({ editor }) => {
-      onChange?.(editor.getHTML());
-    },
     editorProps: {
       attributes: {
         class:

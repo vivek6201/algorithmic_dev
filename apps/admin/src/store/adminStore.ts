@@ -18,8 +18,8 @@ export const useAdminStore = create<AdminState>((set) => ({
       const response = await fetch('/api/admin');
       const { data } = await response.json();
       set({ admins: data, loading: false });
-    } catch (err: any) {
-      set({ error: err.message || 'Failed to fetch', loading: false });
+    } catch (err) {
+      set({ error: err instanceof Error ? err.message : 'Failed to fetch', loading: false });
     }
   },
 }));
