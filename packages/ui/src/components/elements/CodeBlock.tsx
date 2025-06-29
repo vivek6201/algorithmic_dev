@@ -1,11 +1,28 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Copy, Check } from '@repo/ui';
 import { cn } from '@repo/ui/lib/utils';
+import { createLowlight, all } from 'lowlight';
+import 'highlight.js/styles/github-dark.css';
 
 type CodeBlockProps = {
   code: string;
   language?: string;
+};
+
+const lowlight = createLowlight(all);
+
+const renderNode = (node: any, index: number): React.ReactNode => {
+  if (node.type === 'text') {
+    return node.value;
+  }
+
+  const Tag = node.tagName || 'span';
+  return (
+    <Tag key={index} className={node.properties?.className?.join(' ')}>
+      {node.children?.map((child: any, i: number) => renderNode(child, i))}
+    </Tag>
+  );
 };
 
 const CodeBlock: React.FC<CodeBlockProps> = ({ code }) => {
@@ -18,9 +35,11 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code }) => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const highlighted = lowlight.highlightAuto(code);
+
   return (
     <div className="not-prose bg-[#1e1e1e] rounded-lg overflow-hidden shadow-md my-4">
-      <div className="border-b bg-gray-400 dark:bg-gray-900 py-2 px-5 flex justify-between items-center">
+      <div className="border-b bg-[#151c25dc] dark:bg-gray-900 py-2 px-5 flex justify-between items-center border-none shadow ">
         <div className="flex gap-2 items-center">
           {colors.map((classname) => (
             <div key={classname} className={cn('rounded-full w-2.5 aspect-square', classname)} />
@@ -35,8 +54,10 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code }) => {
         </button>
       </div>
 
-      <pre className="p-4 overflow-x-auto text-sm text-gray-100 bg-gray-800 dark:bg-transparent">
-        <code>{code}</code>
+      <pre className="overflow-x-auto text-sm text-gray-100 bg-gray-800 dark:bg-transparent">
+        <code className={`hljs`}>
+          {highlighted.children.map((node, index) => renderNode(node, index))}
+        </code>
       </pre>
     </div>
   );
