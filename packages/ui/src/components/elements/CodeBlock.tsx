@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Copy, Check } from '@repo/ui';
 import { cn } from '@repo/ui/lib/utils';
 import { createLowlight, all } from 'lowlight';

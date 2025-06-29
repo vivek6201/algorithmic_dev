@@ -47,6 +47,6 @@ export const nextJsConfig = [
     },
   },
   {
-    ignores: ['**/.next/**', '**/.turbo/**', '**/node_modules/**', 'next-sitemap.config.js'],
+    ignores: ['**/.next/**', '**/.turbo/**', '**/node_modules/**', 'next-sitemap.config.cjs'],
   },
 ];

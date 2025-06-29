@@ -27,6 +27,7 @@ export type BookmarkWithRelations = Prisma.BookmarkGetPayload<{
     blog: {
       include: {
         category: true;
+        reactions: true;
       };
     };
     job: {

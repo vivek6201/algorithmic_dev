@@ -51,21 +51,14 @@ export default function ClientBookmark() {
           {hasBlogs ? (
             bookmarks
               .filter(({ type }) => type === BookmarkType.Blogs)
-              .map(({ blog }) => (
-                <BlogCard
-                  key={blog?.slug}
-                  author={blog?.authorName ?? ''}
-                  category={blog?.category?.name ?? ''}
-                  date={blog?.createdAt.toString() ?? ''}
-                  description={blog?.description ?? ''}
-                  slug={blog?.slug ?? ''}
-                  title={blog?.title ?? ''}
-                />
-              ))
+              .map(
+                ({ blog, id }) =>
+                  blog && <BlogCard {...blog} categoryName={blog.category.name ?? ''} key={id} />,
+              )
           ) : (
             <EmptyState
               title="No Blog Bookmarks"
-              description="You haven’t bookmarked any blogs yet."
+              description="You haven't bookmarked any blogs yet."
             />
           )}
         </TabsContent>

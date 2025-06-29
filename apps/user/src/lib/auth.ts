@@ -13,6 +13,8 @@ declare module 'next-auth' {
   }
 }
 
+export const runtime = 'nodejs';
+
 const isProd = process.env.NODE_ENV === 'production';
 
 export const nextAuthResult = NextAuth({

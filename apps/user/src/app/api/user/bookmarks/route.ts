@@ -26,6 +26,7 @@ export const GET = async () => {
         blog: {
           include: {
             category: true,
+            reactions: true,
           },
         },
         job: {
