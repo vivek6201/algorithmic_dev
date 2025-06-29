@@ -2,8 +2,6 @@
 import React, { useState } from 'react';
 import { Copy, Check } from '@repo/ui';
 import { cn } from '@repo/ui/lib/utils';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 type CodeBlockProps = {
   code: string;
@@ -22,7 +20,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code }) => {
 
   return (
     <div className="not-prose bg-[#1e1e1e] rounded-lg overflow-hidden shadow-md my-4">
-      <div className="border-b bg-[#1D1F21] dark:bg-gray-900 py-2 px-5 flex justify-between items-center shadow-md dark:shadow-none border-none">
+      <div className="border-b bg-gray-400 dark:bg-gray-900 py-2 px-5 flex justify-between items-center">
         <div className="flex gap-2 items-center">
           {colors.map((classname) => (
             <div key={classname} className={cn('rounded-full w-2.5 aspect-square', classname)} />
@@ -37,9 +35,9 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code }) => {
         </button>
       </div>
 
-      <SyntaxHighlighter language="javascript" style={atomDark}>
-        {code}
-      </SyntaxHighlighter>
+      <pre className="p-4 overflow-x-auto text-sm text-gray-100 bg-gray-800 dark:bg-transparent">
+        <code>{code}</code>
+      </pre>
     </div>
   );
 };
