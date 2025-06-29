@@ -26,7 +26,7 @@ const JobFilters = ({ data }: { data: CategoryType[] }) => {
 
   useEffect(() => {
     setTabs(jobTabs);
-  }, []);
+  }, [setTabs]);
 
   const selectedCategories = searchParams.get('category')?.split(',') ?? [];
   const selectedJobTypes = searchParams.get('type')?.split(',') ?? [];

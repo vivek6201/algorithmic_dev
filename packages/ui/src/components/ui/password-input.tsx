@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { cn } from '@repo/ui/lib/utils';
-import { Button } from './button';
 import { Eye, EyeClosed } from 'lucide-react';
 
 const PasswordInput = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, ...props }, ref) => {
     const [show, setShow] = React.useState(false);
 
     return (

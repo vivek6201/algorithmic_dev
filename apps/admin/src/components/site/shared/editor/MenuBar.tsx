@@ -22,7 +22,7 @@ import {
 } from '@repo/ui';
 import { Button } from '@repo/ui/components/ui/button';
 import { Toggle } from '@repo/ui/components/ui/toggle';
-import { Editor } from '@tiptap/react';
+import type { Editor } from '@tiptap/react';
 
 export default function MenuBar({ editor }: { editor: Editor | null }) {
   if (!editor) return null;
@@ -141,7 +141,7 @@ export default function MenuBar({ editor }: { editor: Editor | null }) {
             editor
               .chain()
               .focus()
-              .toggleHeading({ level: level as any })
+              .toggleHeading({ level: level as 1 | 2 | 3 | 4 | 5 | 6 })
               .run()
           }
         >

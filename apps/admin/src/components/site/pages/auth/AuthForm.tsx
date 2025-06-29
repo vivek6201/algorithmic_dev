@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from '@repo/ui/components/ui/form';
 import { Input } from '@repo/ui/components/ui/input';
-import { loginValidation, signupValidation } from '@repo/shared/validations';
+import { loginValidation } from '@repo/shared/validations';
 import { useState } from 'react';
 import { useRouter } from 'nextjs-toploader/app';
 import { toast } from '@repo/ui/components/ui/sonner';
@@ -24,11 +24,7 @@ import { signIn } from 'next-auth/react';
 import { hookForm, zodResolver } from '@repo/ui';
 import { z } from '@repo/ui';
 
-interface Proptype extends React.ComponentPropsWithoutRef<'div'> {
-  isLogin: boolean;
-}
-
-export function AuthForm({ isLogin }: Proptype) {
+export function AuthForm() {
   return (
     <Card className="w-11/12 max-w-[450px]">
       <CardHeader>

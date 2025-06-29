@@ -17,7 +17,7 @@ export default function DrawerFilter({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (tabs.length > 0 && tabs[0]) setActiveTab(tabs[0]);
-  }, []);
+  }, [setActiveTab, activeTab, tabs]);
 
   return (
     <div className="block lg:hidden mb-4">

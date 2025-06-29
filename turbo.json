@@ -5,10 +5,28 @@
     "build": {
       "dependsOn": ["^build", "^db:generate"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**", "node_modules/.prisma/**"],
+      "env": [
+        "DATABASE_URL",
+        "CLOUDINARY_API_SECRET",
+        "CLOUDINARY_API_KEY",
+        "CLOUDINARY_CLOUD_NAME",
+        "REDIS_URL",
+        "AUTH_SECRET",
+        "AUTH_URL"
+      ]
     },
     "lint": {
-      "dependsOn": ["^lint"]
+      "dependsOn": ["^lint"],
+      "env": [
+        "AUTH_SECRET",
+        "CLOUDINARY_CLOUD_NAME",
+        "CLOUDINARY_API_KEY",
+        "CLOUDINARY_API_SECRET",
+        "NODE_ENV",
+        "GOOGLE_CLIENT_ID",
+        "GOOGLE_CLIENT_SECRET"
+      ]
     },
     "dev": {
       "dependsOn": ["^db:generate"],
@@ -16,14 +34,17 @@
       "persistent": true
     },
     "db:generate": {
-      "cache": false
+      "cache": false,
+      "env": ["DATABASE_URL"]
     },
     "db:migrate": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "env": ["DATABASE_URL"]
     },
     "db:deploy": {
-      "cache": false
+      "cache": false,
+      "env": ["DATABASE_URL"]
     }
   }
 }

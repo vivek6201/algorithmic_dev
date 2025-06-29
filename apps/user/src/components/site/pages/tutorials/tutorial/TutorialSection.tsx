@@ -1,11 +1,12 @@
 'use client';
 import { Button } from '@repo/ui/components/ui/button';
-import { ChevronLeft, ChevronRight, Menu, MenuIcon } from '@repo/ui';
+import { ChevronLeft, ChevronRight, MenuIcon } from '@repo/ui';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'nextjs-toploader/app';
 import React from 'react';
 import HTMLRenderer from '@repo/ui/components/elements/HTMLRenderer';
 import { useUtilityStore } from '@/store/utilityStore';
+// import { EditorContent } from '@tiptap/react';
 
 export default function TutorialSection({
   data,
@@ -52,7 +53,7 @@ export default function TutorialSection({
           {/* Hamburger icon */}
           <MenuIcon />
         </button>
-        <h1 className="ml-4 font-semibold text-lg text-gray-900 dark:text-gray-100">
+        <h1 className="md:ml-4 font-semibold text-lg text-gray-900 dark:text-gray-100">
           {data.title}
         </h1>
       </div>

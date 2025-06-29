@@ -240,8 +240,7 @@ export default function JobsForm({ job, isEdit = false }: { isEdit?: boolean; jo
                     options={
                       error
                         ? []
-                        : //@typescript-eslint/no-explicit-any
-                          categories.map((cat: any) => ({
+                        : categories.map((cat: { name: string; id: string }) => ({
                             label: cat.name,
                             value: cat.id,
                           }))

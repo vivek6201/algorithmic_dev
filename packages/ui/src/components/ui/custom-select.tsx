@@ -43,7 +43,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
     : options.find((opt) => opt.value === value);
 
   return (
-    <Select
+    <Select<Option, typeof isMulti>
       isMulti={isMulti}
       options={options}
       value={selected}
@@ -51,12 +51,12 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
       defaultValue={defaultValue}
       isSearchable
       placeholder={placeholder}
-      onChange={(selectedOption: any) => {
+      onChange={(selectedOption) => {
         if (isMulti) {
-          const values = (selectedOption || []).map((opt: Option) => opt.value);
+          const values = ((selectedOption as Option[]) || []).map((opt) => opt.value);
           onChange(values);
         } else {
-          onChange(selectedOption?.value || '');
+          onChange((selectedOption as Option)?.value || '');
         }
       }}
       styles={{

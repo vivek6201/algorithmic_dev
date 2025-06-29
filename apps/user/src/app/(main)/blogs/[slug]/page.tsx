@@ -107,14 +107,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
           <CustomCarousal>
             {relatedPosts.map((post) => (
               <CarouselItem key={post.id} className="md:basis-1/2 lg:basis-1/3 select-none">
-                <BlogCard
-                  title={post.title}
-                  author={post.authorName}
-                  category={post.category.name}
-                  date={post.updatedAt.toString()}
-                  slug={post.slug}
-                  description={post.description}
-                />
+                <BlogCard {...post} categoryName={post.category.name} />
               </CarouselItem>
             ))}
           </CustomCarousal>

@@ -1,7 +1,7 @@
-import { BugFormData, FeedbackFormData } from '@/types/main';
-import { bugSchema, feedbackSchema } from '@repo/shared/validations';
-import { Bug, Heart, hookForm, Send, Star, zodResolver } from '@repo/ui';
-import React, { useMemo, useState } from 'react';
+import { FeedbackFormData } from '@/types/main';
+import { feedbackSchema } from '@repo/shared/validations';
+import { Heart, hookForm, Send, Star, zodResolver } from '@repo/ui';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import {
   Form,
@@ -44,13 +44,18 @@ export default function FeedbackForm() {
     setOpenFeedbackModal(false);
   }
 
-  const handleRatingClick = (value: number) => {
-    setRating(value);
-    form.setValue('rating', value);
-  };
+  // Wrap handleRatingClick in useCallback to prevent unnecessary re-renders
+  const handleRatingClick = useCallback(
+    (value: number) => {
+      setRating(value);
+      form.setValue('rating', value);
+    },
+    [form],
+  );
 
-  const StarComponent = useMemo(
-    () => () => (
+  // Add displayName to the component
+  const StarComponent = useMemo(() => {
+    const Component = () => (
       <div className="flex space-x-1">
         {[1, 2, 3, 4, 5].map((star) => (
           <motion.button
@@ -72,9 +77,12 @@ export default function FeedbackForm() {
           </motion.button>
         ))}
       </div>
-    ),
-    [hoverRating, rating],
-  );
+    );
+
+    // Add displayName to fix the warning
+    Component.displayName = 'StarComponent';
+    return Component;
+  }, [handleRatingClick, hoverRating, rating]);
 
   return (
     <motion.div
@@ -189,3 +197,5 @@ export default function FeedbackForm() {
     </motion.div>
   );
 }
+
+FeedbackForm.displayName = 'FeedbackForm';

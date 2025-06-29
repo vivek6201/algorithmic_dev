@@ -1,4 +1,4 @@
-import { Chapter, Topic, Tutorial, TutorialCategory } from '@repo/db';
+import { Chapter, Prisma, Topic, TutorialCategory } from '@repo/db';
 import cache from '@repo/shared/cache';
 import { prisma } from '@repo/db';
 
@@ -18,7 +18,7 @@ export const getClientTutorialsCategories = async () => {
   }
 };
 
-type ChapterWithTopic = Chapter & {
+export type ChapterWithTopic = Chapter & {
   topics: {
     id: string;
     title: string;
@@ -67,11 +67,15 @@ export const getClientTutorialChapters = async (tutorialSlug: string) => {
   }
 };
 
-type TutorialWithChapters = Tutorial & {
-  chapters: (Chapter & {
-    topics: Topic[];
-  })[];
-};
+export type TutorialWithChapters = Prisma.TutorialGetPayload<{
+  include: {
+    chapters: {
+      include: {
+        topics: true;
+      };
+    };
+  };
+}>;
 
 export const getClientTutorialBySlug = async (slug: string) => {
   try {

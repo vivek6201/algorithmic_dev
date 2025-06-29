@@ -14,7 +14,6 @@ import {
 import { updateTutorialTopicStatus } from '@/actions/tutorials/publish';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { deleteTutorialTopic } from '@/actions/tutorials/topics';
-import { useRouter } from 'nextjs-toploader/app';
 
 export default function TopicSection({
   topic,
@@ -36,7 +35,6 @@ export default function TopicSection({
 }) {
   const searchParams = useSearchParams();
   const [publishedStatus, setPublishedStatus] = React.useState<string | null>(null);
-  const router = useRouter();
 
   useEffect(() => {
     if (topic) setPublishedStatus(topic?.published ? 'publish' : 'draft');
@@ -86,7 +84,7 @@ export default function TopicSection({
       console.error(error);
       toast.error('Something went wrong!');
     }
-  }, [topic?.id, router, searchParams]);
+  }, [topic?.id, searchParams]);
 
   const chapterSlug = searchParams.get('chapterSlug');
   const topicSlug = searchParams.get('topicSlug');

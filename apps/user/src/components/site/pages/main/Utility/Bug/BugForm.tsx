@@ -1,6 +1,6 @@
 import { BugFormData } from '@/types/main';
 import { bugSchema } from '@repo/shared/validations';
-import { Bug, hookForm, Send, Star, zodResolver } from '@repo/ui';
+import { Bug, hookForm, Send, zodResolver } from '@repo/ui';
 import React, { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import {

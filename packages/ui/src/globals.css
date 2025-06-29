@@ -165,6 +165,15 @@
   @apply font-mono bg-gray-100 px-1 rounded dark:bg-gray-800 dark:text-gray-300;
 }
 
+.ProseMirror iframe[src*='youtube.com'] {
+  @apply aspect-video max-w-full h-auto my-4 rounded-lg shadow-sm;
+  display: block;
+}
+
+.dark .ProseMirror iframe {
+  @apply shadow-md;
+}
+
 .ProseMirror p,
 .ProseMirror li {
   word-break: break-word;

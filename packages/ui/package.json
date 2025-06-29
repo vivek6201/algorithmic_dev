@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "ui": "pnpm dlx shadcn@latest",
     "lint": "eslint ."
@@ -18,7 +19,8 @@
     "@types/node": "^22.15.19",
     "@types/react": "^19.1.4",
     "tailwind-scrollbar": "^3",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "eslint": "^9.29.0"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",

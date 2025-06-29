@@ -1,4 +1,3 @@
-import { Tutorial } from '@repo/db';
 import cache from '@repo/shared/cache';
 import { prisma } from '@repo/db';
 import { NextResponse } from 'next/server';

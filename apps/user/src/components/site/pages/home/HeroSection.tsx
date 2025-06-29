@@ -37,9 +37,11 @@ export default function HeroSection() {
   const words = ['Building', 'Learning', 'Applying'];
 
   useEffect(() => {
-    const floatLoop = async (controls: any, delay = 0) => {
+    let isMounted = true;
+
+    const floatLoop = async (controls: typeof floatControls1, delay = 0) => {
       await new Promise((r) => setTimeout(r, delay));
-      while (true) {
+      while (isMounted) {
         await controls.start({ y: -20, transition: { duration: 2, ease: 'easeInOut' } });
         await controls.start({ y: 0, transition: { duration: 2, ease: 'easeInOut' } });
       }
@@ -47,7 +49,13 @@ export default function HeroSection() {
 
     floatLoop(floatControls1);
     floatLoop(floatControls2, 1000);
-  }, []);
+
+    return () => {
+      isMounted = false;
+      floatControls1.stop();
+      floatControls2.stop();
+    };
+  }, [floatControls1, floatControls2]);
 
   return (
     <section className="pt-32 pb-20 px-4 relative overflow-hidden w-full">

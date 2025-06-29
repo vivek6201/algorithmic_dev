@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import ListItemSkeleton from '../../shared/Skeletons/ListItemSkeleton';
+import { TutorialWithRelations } from '@/app/api/tutorials/route';
 
 const LIMIT = 10;
 
@@ -43,19 +44,18 @@ export default function TutorialsList() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries?.[0]?.isIntersecting && hasNextPage && !isFetchingNextPage) {
+        if (entries[0]?.isIntersecting && hasNextPage && !isFetchingNextPage) {
           fetchNextPage();
         }
       },
       { threshold: 1.0 },
     );
 
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
-    }
+    const currentRef = observerRef.current;
+    if (currentRef) observer.observe(currentRef);
 
     return () => {
-      if (observerRef.current) observer.unobserve(observerRef.current);
+      if (currentRef) observer.unobserve(currentRef);
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
@@ -78,16 +78,12 @@ export default function TutorialsList() {
       <div className="flex flex-col gap-y-6">
         {isLoading && Array.from([1, 2, 3, 4, 5]).map((_, i) => <ListItemSkeleton key={i} />)}
         {isError && <p>Failed to load tutorials.</p>}
-        {tutorials.map((tutorial: any) => (
+        {tutorials.map((tutorial: TutorialWithRelations) => (
           <TutorialCard
             key={tutorial.id}
-            title={tutorial.title}
-            description={tutorial.description}
-            chapters={tutorial._count.chapters}
-            slug={tutorial.slug}
-            topicSlug={tutorial?.chapters?.[0]?.topics?.[0]?.slug}
-            publishedAt={new Date(tutorial.createdAt).toDateString()}
-            tags={tutorial.categories.map((c: any) => c.category.name)}
+            {...tutorial}
+            topicSlug={tutorial?.chapters?.[0]?.topics?.[0]?.slug ?? ''}
+            tags={tutorial.categories.map((c) => c.category.name)}
           />
         ))}
         <div ref={observerRef} className="h-12" />

@@ -26,7 +26,7 @@ const TutorialFilters = ({ data }: { data: CategoryType[] }) => {
 
   useEffect(() => {
     setTabs(tutorialFilterTabs);
-  }, []);
+  }, [setTabs]);
   const selected = searchParams.get('category')?.split(',') ?? [];
 
   const clearFilters = () => {

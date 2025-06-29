@@ -14,7 +14,12 @@ export default function page() {
         <p className="font-bold md:text-2xl">Reach out</p>
         <p className="text-lg opacity-70">
           You can contact us via email at{' '}
-          <a href="mailto:algorithmicdev9@gmail.com" className="text-blue-500" target="_blank">
+          <a
+            href="mailto:algorithmicdev9@gmail.com"
+            className="text-blue-500"
+            target="_blank"
+            rel="noreferrer"
+          >
             algorithmicdev9@gmail.com
           </a>
           . We will do our best to respond to your inquiry as soon as possible.
@@ -26,7 +31,12 @@ export default function page() {
         <p className="text-lg opacity-70">
           We welcome your feedback and suggestions. Help us improve by sharing your thoughts with us
           on{' '}
-          <a target="_blank" href="https://x.com/_Vivek_930" className="text-blue-500">
+          <a
+            target="_blank"
+            href="https://x.com/_Vivek_930"
+            className="text-blue-500"
+            rel="noreferrer"
+          >
             X (Formally Twitter)
           </a>
         </p>

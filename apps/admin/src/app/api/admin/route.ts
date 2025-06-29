@@ -2,6 +2,7 @@ import { nextAuthResult } from '@/lib/auth';
 import { Admin, prisma } from '@repo/db';
 import cache from '@repo/shared/cache';
 import { NextResponse } from 'next/server';
+import { omit } from '@repo/shared/utils';
 
 export const GET = async () => {
   try {
@@ -25,7 +26,7 @@ export const GET = async () => {
       if (admins) cache.set<Admin[]>('admin-list', [], admins, 10);
     }
 
-    const adminsWithoutPassword = admins.map(({ password, ...rest }) => rest);
+    const adminsWithoutPassword = admins.map((admin: Admin) => omit(admin, ['password']));
 
     return NextResponse.json(
       {

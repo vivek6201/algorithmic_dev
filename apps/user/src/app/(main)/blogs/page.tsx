@@ -2,7 +2,7 @@ import BlogsFilters from '@/components/site/pages/blogs/BlogsFilters';
 import BlogsList from '@/components/site/pages/blogs/BlogsList';
 import { getClientBlogsCategories } from '@/helpers/main/blogGetter';
 import { Metadata } from 'next';
-import React, { Suspense } from 'react';
+import React from 'react';
 
 const blogDesc =
   'Explore our collection of programming tutorials, tech insights, and development guides. Find articles on algorithms, web development, software engineering, and the latest technology trends to enhance your coding skills.';

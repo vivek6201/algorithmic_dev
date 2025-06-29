@@ -44,13 +44,13 @@ export const ProfileSync = () => {
     if (isProfileFetched && profileData) {
       setProfile(profileData);
     }
-  }, [isProfileFetched, profileData]);
+  }, [setProfile, isProfileFetched, profileData]);
 
   useEffect(() => {
     if (isBookmarksFetched && bookmarksData) {
       setBookmarks(bookmarksData);
     }
-  }, [isBookmarksFetched, bookmarksData]);
+  }, [setBookmarks, isBookmarksFetched, bookmarksData]);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -58,7 +58,7 @@ export const ProfileSync = () => {
       queryClient.removeQueries({ queryKey: ['profile'] });
       queryClient.removeQueries({ queryKey: ['bookmarks'] });
     }
-  }, [status]);
+  }, [status, clearUserData]);
 
   return null;
 };

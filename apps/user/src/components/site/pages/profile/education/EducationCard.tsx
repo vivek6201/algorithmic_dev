@@ -1,8 +1,9 @@
 import React from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { useProfileStore } from '@/store/profileStore';
+import { Education } from '@repo/db';
 
-const EducationCard = ({ data, handleModal }: { data: any; handleModal: () => void }) => {
+const EducationCard = ({ data, handleModal }: { data: Education; handleModal: () => void }) => {
   const { schoolName, degree, fieldOfStudy, startDate, endDate, grade, currentlyEnrolled } = data;
   const { setEducationForm } = useProfileStore();
 

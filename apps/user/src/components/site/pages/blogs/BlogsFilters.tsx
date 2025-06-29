@@ -27,7 +27,7 @@ const BlogsFilters = ({ data }: { data: CategoryType[] }) => {
 
   useEffect(() => {
     setTabs(blogTabs);
-  }, []);
+  }, [setTabs]);
 
   const selected = searchParams.get('category')?.split(',') ?? [];
 

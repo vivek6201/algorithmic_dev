@@ -47,7 +47,7 @@ export default function ProjectBlock() {
             ))
           ) : (
             <div className="col-span-full text-muted-foreground text-sm">
-              No projects added yet. Click "Add" to get started.
+              No projects added yet. Click &quot;Add&quot; to get started.
             </div>
           )}
         </div>

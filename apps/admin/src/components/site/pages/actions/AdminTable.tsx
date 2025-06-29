@@ -27,9 +27,7 @@ export default function AdminTable<TValue>({ columns }: DataTableProps<TValue>) 
   useEffect(() => {
     if (data) return;
     fetchUsers();
-  }, []);
-
-  if (error) return <p>Error: {error}</p>;
+  }, [data, fetchUsers]);
 
   const table = TanstackTable.useReactTable({
     data: !loading && data ? data : [],
@@ -43,6 +41,8 @@ export default function AdminTable<TValue>({ columns }: DataTableProps<TValue>) 
       columnFilters,
     },
   });
+
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <>

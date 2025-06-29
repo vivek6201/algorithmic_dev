@@ -1,6 +1,5 @@
 'use client';
 import React, { useState } from 'react';
-import { cn } from '@repo/ui/lib/utils';
 import { useIsMobile } from '@repo/ui/hooks/use-mobile';
 import { Button } from '@repo/ui/components/ui/button';
 import {
@@ -82,7 +81,7 @@ function ResetModal({ open, handleOpen }: { open: boolean; handleOpen: () => voi
           <DrawerDescription>This dialog Allows you to change your password</DrawerDescription>
         </DrawerHeader>
         <div className="px-4">
-          <PasswordForm className="px-4" />
+          <PasswordForm />
         </div>
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
@@ -93,7 +92,7 @@ function ResetModal({ open, handleOpen }: { open: boolean; handleOpen: () => voi
     </Drawer>
   );
 }
-function PasswordForm({ className }: React.ComponentProps<'form'>) {
+function PasswordForm() {
   const session = useSession();
   const [loading, setLoading] = useState(false);
   const form = hookForm.useForm<z.infer<typeof resetPassValidation>>({
