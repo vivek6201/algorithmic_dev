@@ -32,7 +32,9 @@ export default function FounderSection() {
         </div>
 
         <div className="max-w-xl text-center">
-          <h3 className="text-2xl text-black font-semibold mb-1">Vivek Kumar Gupta</h3>
+          <h3 className="text-2xl text-black dark:text-white font-semibold mb-1">
+            Vivek Kumar Gupta
+          </h3>
           <p className="text-black/70 font-bold dark:text-gray-400 mb-4">Founder, AlgorithmicDev</p>
 
           <p className="text-black/80 dark:text-gray-300 text-base leading-relaxed">

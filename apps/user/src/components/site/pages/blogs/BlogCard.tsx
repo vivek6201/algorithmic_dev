@@ -40,7 +40,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
       {/* Author + Date */}
       <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 w-full">
         <span>By {authorName}</span>
-        <span>{updatedAt.toDateString()}</span>
+        <span>{new Date(updatedAt).toDateString()}</span>
       </div>
     </div>
   );
