@@ -2,7 +2,6 @@ import { Blog, BlogCategory } from '@repo/db';
 import cache from '@repo/shared/cache';
 import { prisma } from '@repo/db';
 import { NextResponse } from 'next/server';
-import { nextAuthResult } from '@/lib/auth';
 
 type BlogWithExtras = Blog & {
   category: BlogCategory;
@@ -13,18 +12,6 @@ type BlogWithExtras = Blog & {
 
 export async function GET() {
   try {
-    const session = await nextAuthResult.auth();
-
-    if (!session?.user) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'Unauthorized Access',
-        },
-        { status: 403 },
-      );
-    }
-
     let res = await cache.get<BlogWithExtras[]>('blogs', []);
 
     if (!res) {

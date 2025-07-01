@@ -162,8 +162,8 @@ importers:
         specifier: ^8.5.3
         version: 8.5.5
       prettier:
-        specifier: ^3.5.3
-        version: 3.5.3
+        specifier: ^3.6.2
+        version: 3.6.2
       tailwindcss:
         specifier: ^3.4.17
         version: 3.4.17(ts-node@10.9.2(@types/node@20.19.1)(typescript@5.8.3))
@@ -274,8 +274,8 @@ importers:
         specifier: ^8.5.3
         version: 8.5.5
       prettier:
-        specifier: ^3.5.3
-        version: 3.5.3
+        specifier: ^3.6.2
+        version: 3.6.2
       tailwindcss:
         specifier: ^3.4.17
         version: 3.4.17(ts-node@10.9.2(@types/node@20.19.1)(typescript@5.8.3))
@@ -5344,14 +5344,6 @@ packages:
       }
     engines: { node: '>= 0.8.0' }
 
-  prettier@3.5.3:
-    resolution:
-      {
-        integrity: sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw==,
-      }
-    engines: { node: '>=14' }
-    hasBin: true
-
   prettier@3.6.2:
     resolution:
       {
@@ -9716,8 +9708,6 @@ snapshots:
   preact@10.11.3: {}
 
   prelude-ls@1.2.1: {}
-
-  prettier@3.5.3: {}
 
   prettier@3.6.2: {}
 

@@ -1,4 +1,3 @@
-import { nextAuthResult } from '@/lib/auth';
 import { Admin, prisma } from '@repo/db';
 import cache from '@repo/shared/cache';
 import { NextResponse } from 'next/server';
@@ -6,18 +5,6 @@ import { omit } from '@repo/shared/utils';
 
 export const GET = async () => {
   try {
-    const session = await nextAuthResult.auth();
-
-    if (session?.user?.role !== 'SuperAdmin') {
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'Unauthorized Access',
-        },
-        { status: 403 },
-      );
-    }
-
     let admins = await cache.get<Admin[]>('admin-list', []);
 
     if (!admins) {
