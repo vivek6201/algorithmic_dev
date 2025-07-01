@@ -16,11 +16,12 @@ const TutorialCard = ({
   topicSlug,
   tags,
   description,
-  chapters,
   createdAt,
+  _count,
 }: TutorialCardProps) => {
   const router = useRouter();
   const pathname = usePathname();
+
   return (
     <div className="border rounded-2xl p-5 shadow-sm hover:shadow-md transition dark:border-neutral-700 dark:bg-neutral-900">
       <div
@@ -38,7 +39,7 @@ const TutorialCard = ({
 
       <div className="flex flex-wrap gap-2 text-sm mb-3">
         <span className="px-3 py-1 bg-indigo-100 dark:bg-indigo-800 text-indigo-700 dark:text-indigo-200 rounded-full flex items-center gap-1">
-          <BookIcon size={14} /> {chapters.length} Chapters
+          <BookIcon size={14} /> {_count.chapters} Chapters
         </span>
       </div>
 

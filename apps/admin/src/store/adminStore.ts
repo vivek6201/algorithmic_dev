@@ -15,7 +15,7 @@ export const useAdminStore = create<AdminState>((set) => ({
   fetchUsers: async () => {
     set({ loading: true, error: null });
     try {
-      const response = await fetch('/api/admin');
+      const response = await fetch('/api/super-admin');
       const { data } = await response.json();
       set({ admins: data, loading: false });
     } catch (err) {

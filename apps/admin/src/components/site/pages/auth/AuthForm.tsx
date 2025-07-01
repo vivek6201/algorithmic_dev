@@ -55,7 +55,7 @@ function LoginForm() {
     const response = await signIn('credentials', {
       email: values.email,
       password: values.password,
-      redirect: false,
+      redirectTo: '/dashboard',
     });
     toast.dismiss(timeout);
 

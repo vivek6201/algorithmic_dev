@@ -40,6 +40,8 @@ export const nextAuthResult = NextAuth({
   ],
   session: {
     strategy: 'jwt',
+    maxAge: 5 * 60,
+    updateAge: 2 * 60,
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -58,8 +60,8 @@ export const nextAuthResult = NextAuth({
     },
   },
   pages: {
-    signIn: '/', // Custom sign-in page if needed
-    error: '/', // Error handling page
+    signIn: '/',
+    error: '/',
   },
   cookies: {
     sessionToken: {
@@ -75,3 +77,5 @@ export const nextAuthResult = NextAuth({
   },
   debug: !isProd, // Enable debug mode in dev
 });
+
+export const { handlers, auth } = nextAuthResult;
