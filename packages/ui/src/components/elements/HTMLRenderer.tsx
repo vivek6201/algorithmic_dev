@@ -53,6 +53,25 @@ export default function HTMLRenderer({ content }: { content: string }) {
               const { src, alt } = domNode.attribs;
               return src ? <ImageBlock src={src} alt={alt || ''} /> : null;
             }
+
+            if (domNode.name === 'iframe' && domNode.attribs?.src?.includes('youtube')) {
+              const { attribs } = domNode;
+              return (
+                <div className="w-full aspect-video rounded-lg shadow-sm my-4 max-w-full">
+                  <iframe
+                    src={attribs.src}
+                    title={attribs.title || 'YouTube video'}
+                    allow={
+                      attribs.allow ||
+                      'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                    }
+                    className="w-full h-full rounded-lg"
+                    allowFullScreen
+                    loading="lazy"
+                  />
+                </div>
+              );
+            }
           }
 
           return undefined; // Let html-react-parser handle other elements normally

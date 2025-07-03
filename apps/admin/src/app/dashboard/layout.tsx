@@ -1,5 +1,6 @@
 import AdminSidebar from '@/components/site/pages/common/Sidebar';
 import Breadcrumbs from '@/components/site/shared/Breadcrumb';
+import CheckAuth from '@/components/site/shared/CheckAuth';
 import ThemeToggler from '@/components/site/shared/theme-toggler';
 import { Metadata } from 'next';
 import React, { ReactNode } from 'react';
@@ -12,18 +13,21 @@ export const metadata: Metadata = {
 
 const AdminLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="flex h-screen flex-col lg:flex-row">
-      <AdminSidebar />
-      <main className="flex-1 p-5 overflow-y-auto">
-        <div className="flex justify-between items-center">
-          <Breadcrumbs />
-          <div className="-translate-y-2">
-            <ThemeToggler />
+    <>
+      <CheckAuth />
+      <div className="flex h-screen flex-col lg:flex-row">
+        <AdminSidebar />
+        <main className="flex-1 p-5 overflow-y-auto">
+          <div className="flex justify-between items-center">
+            <Breadcrumbs />
+            <div className="-translate-y-2">
+              <ThemeToggler />
+            </div>
           </div>
-        </div>
-        {children}
-      </main>
-    </div>
+          {children}
+        </main>
+      </div>
+    </>
   );
 };
 
