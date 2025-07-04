@@ -17,11 +17,11 @@ export default function FounderSection() {
           <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
           MEET YOUR INSTRUCTOR
         </Badge>
-        <h2 className="text-3xl text-black dark:text-white sm:text-5xl font-bold my-10">
+        <h2 className="text-3xl text-black dark:text-white md:text-5xl font-bold my-10">
           The Architect of Your Success
         </h2>
 
-        <div className="max-w-[280px] sm:max-w-[480px] flex justify-center mb-10 border border-10 border-orange-500 rounded-full overflow-hidden">
+        <div className="max-w-[280px] md:max-w-[480px] flex justify-center mb-10 border border-10 border-orange-500 rounded-full overflow-hidden">
           <LazyImage
             src="/founder-image.jpg"
             alt="Vivek Kumar Gupta"

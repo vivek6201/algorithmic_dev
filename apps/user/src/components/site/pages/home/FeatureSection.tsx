@@ -72,7 +72,7 @@ export default function FeaturesSection() {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6">
             Why Choose <span className="gradient-text">AlgorithmicDev?</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">

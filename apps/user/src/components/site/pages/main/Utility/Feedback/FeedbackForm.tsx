@@ -107,14 +107,14 @@ export default function FeedbackForm() {
         <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl mb-4 mx-auto">
           <Heart className="w-6 h-6 text-white" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white/80 mb-2">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white/80 ">
           Give your Valuable feedback
         </h2>
         <p className="text-gray-600">Help us improve by sharing your thoughts</p>
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-4">
           {/* Rating */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -149,7 +149,11 @@ export default function FeedbackForm() {
                 <FormItem>
                   <FormLabel>Message</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Enter your valuable feedback" {...field} />
+                    <Textarea
+                      placeholder="Enter your valuable feedback"
+                      {...field}
+                      className="text-sm md:text-base"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

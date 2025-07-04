@@ -1,3 +1,9 @@
+enum LetterType {
+    Blogs
+    Jobs
+    All
+}
+
 model Feedback {
     id String @id @default(cuid())
 
@@ -18,8 +24,12 @@ model Bug {
     updatedAt DateTime @updatedAt
 }
 
-// model NewsletterSubscription {
-//     id         String  @id @default(cuid())
-//     email      String  @unique
-//     subscribed Boolean
-// }
+model NewsletterSubscription {
+    id         String     @id @default(cuid())
+    email      String     @unique
+    subscribed Boolean
+    letterType LetterType
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}

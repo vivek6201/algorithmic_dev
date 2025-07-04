@@ -57,6 +57,8 @@ function BlogsList() {
 
   const blogs = data?.pages.flatMap((page) => page.blogs) ?? [];
 
+  console.log({ blogs });
+
   return (
     <div className="relative">
       {/* Header and Search bar */}
