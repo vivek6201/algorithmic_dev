@@ -10,3 +10,9 @@ export const feedbackSchema = z.object({
   rating: z.number().min(1).max(5),
   message: z.string().min(10, 'Message must be at least 10 characters'),
 });
+
+export const newsletterSchema = z.object({
+  email: z.string().email(),
+  isTechnical: z.boolean(),
+  isJobs: z.boolean(),
+});

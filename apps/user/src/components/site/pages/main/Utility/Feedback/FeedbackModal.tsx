@@ -4,13 +4,7 @@ import { useUtilityStore } from '@/store/utilityStore';
 import { motion } from 'motion/react';
 import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
 import React, { useEffect } from 'react';
-import { useIsMobile } from '@repo/ui/hooks';
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerTitle,
-} from '@repo/ui/components/ui/drawer';
+
 import {
   Dialog,
   DialogContent,
@@ -24,7 +18,6 @@ import { FeedbackStatus } from '@/types/main';
 
 export default function FeedbackModal() {
   const { openFeedbackModal, setOpenFeedbackModal } = useUtilityStore();
-  const isMobile = useIsMobile();
 
   const { value: feedbackStatus } = useLocalStorage<FeedbackStatus>('feedback-status', {
     action: 'later',
@@ -49,28 +42,11 @@ export default function FeedbackModal() {
     return () => clearTimeout(timer);
   }, [feedbackStatus, setOpenFeedbackModal]);
 
-  if (isMobile) {
-    return (
-      <>
-        <Drawer open={openFeedbackModal} onOpenChange={setOpenFeedbackModal}>
-          <DrawerContent
-            className="p-0 border-0 h-[60vh] overflow-hidden"
-            onInteractOutside={(e) => e.preventDefault()}
-          >
-            <DrawerTitle className="sr-only">Feedback Form</DrawerTitle>
-            <DrawerDescription className="sr-only">Give your valuable feedback</DrawerDescription>
-            <ModalContent />
-          </DrawerContent>
-        </Drawer>
-      </>
-    );
-  }
-
   return (
     <>
       <Dialog open={openFeedbackModal} onOpenChange={setOpenFeedbackModal}>
         <DialogContent
-          className="sm:max-w-[500px] p-0 border-0 shadow-none max-h-[90vh] overflow-hidden"
+          className="w-11/12 rounded-md sm:max-w-[500px] p-0 border-0 shadow-none max-h-[90vh] overflow-hidden"
           onInteractOutside={(e) => e.preventDefault()}
         >
           <DialogTitle className="sr-only">Feedback Form</DialogTitle>
@@ -96,7 +72,7 @@ function ModalContent() {
       {/* Content with ScrollArea */}
       <div className="flex-1 overflow-hidden">
         <ScrollArea className="h-full">
-          <div className="p-6">
+          <div className="p-4 md:p-6">
             <FeedbackForm />
           </div>
         </ScrollArea>

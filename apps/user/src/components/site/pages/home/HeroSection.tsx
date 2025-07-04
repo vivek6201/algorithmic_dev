@@ -1,182 +1,130 @@
 'use client';
+
 import { Button } from '@repo/ui/components/ui/button';
 import { Badge } from '@repo/ui/components/ui/badge';
-import { ArrowRight, Briefcase, Star } from '@repo/ui';
+import { ArrowRight } from '@repo/ui';
+import { motion } from 'motion/react';
 import { useRouter } from 'nextjs-toploader/app';
-import { motion, useAnimation } from 'motion/react';
-import { useEffect } from 'react';
-import { cn } from '@repo/ui/lib/utils';
 import ContainTextFlip from '@repo/ui/components/elements/TextFlip';
 
-const technologies = [
-  'Web Development',
-  'Android Development',
-  'iOS Development',
-  'React',
-  'Node.js',
-  'Python',
-  'Machine Learning',
-  'Data Science',
+const categories = [
+  { name: 'Tutorials', icon: '📘', href: '/tutorials' },
+  { name: 'Jobs', icon: '💼', href: '/jobs' },
+  { name: 'Blogs', icon: '📝', href: '/blogs' },
+  { name: 'Hire', icon: '🧑‍💻', href: '/jobs/hire' },
 ];
 
-const moreTechnologies = [
-  'DevOps',
-  'Cloud Computing',
-  'UI/UX Design',
-  'Blockchain',
-  'Cybersecurity',
-  'Game Development',
-  'Full Stack Development',
-  'Flutter',
-];
+const skills = ['React', 'Python', 'Machine Learning', 'Data Science', 'Node.js', 'Flutter'];
 
 export default function HeroSection() {
   const router = useRouter();
-  const floatControls1 = useAnimation();
-  const floatControls2 = useAnimation();
   const words = ['Building', 'Learning', 'Applying'];
 
-  useEffect(() => {
-    let isMounted = true;
-
-    const floatLoop = async (controls: typeof floatControls1, delay = 0) => {
-      await new Promise((r) => setTimeout(r, delay));
-      while (isMounted) {
-        await controls.start({ y: -20, transition: { duration: 2, ease: 'easeInOut' } });
-        await controls.start({ y: 0, transition: { duration: 2, ease: 'easeInOut' } });
-      }
-    };
-
-    floatLoop(floatControls1);
-    floatLoop(floatControls2, 1000);
-
-    return () => {
-      isMounted = false;
-      floatControls1.stop();
-      floatControls2.stop();
-    };
-  }, [floatControls1, floatControls2]);
-
   return (
-    <section className="pt-32 pb-20 px-4 relative overflow-hidden w-full">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-purple-500/5 w-full" />
-
+    <section className="relative w-full px-4 sm:px-8 pt-24 sm:pt-32 pb-20 bg-white dark:bg-background overflow-hidden">
+      {/* Floating blurred background blobs */}
       <motion.div
-        className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl"
-        animate={floatControls1}
+        className="absolute top-10 left-10 w-60 h-60 bg-primary/10 rounded-full blur-3xl z-0"
+        animate={{ y: [0, -20, 0] }}
+        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
       />
       <motion.div
-        className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"
-        animate={floatControls2}
+        className="absolute bottom-10 right-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl z-0"
+        animate={{ y: [0, 20, 0] }}
+        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
       />
 
-      <div className="sm:container mx-auto text-center relative z-10">
+      <div className="relative z-10 max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
+        {/* LEFT: Main Content with animation */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="w-full lg:w-1/2 text-center lg:text-left"
         >
-          <div className="inline-flex items-center bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-            <Star className="w-4 h-4 mr-2" />
-            <p className="text-xs sm:text-sm">Trusted by 50,000+ learners worldwide</p>
-          </div>
+          <Badge className="bg-blue-100 text-blue-600 border-none text-xs sm:text-sm px-3 py-1 rounded-full mb-4">
+            #1 Platform for Tech Careers
+          </Badge>
 
-          <motion.h1
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className={cn(
-              'mx-auto relative mb-6 max-w-4xl text-center text-4xl sm:text-5xl lg:text-6xl leading-tight font-bold tracking-tight text-zinc-700 dark:text-zinc-100 text-balance',
-            )}
-            layout
-          >
-            Become Job-Ready by Actually <ContainTextFlip words={words} className="inline" />
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            viewport={{ once: true }}
-            className="text-sm md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed"
-          >
-            Discover comprehensive tutorials, insightful blogs, and career opportunities all in one
-            place. Learn at your own pace with our chapter-wise approach.
-          </motion.p>
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight mb-2 text-zinc-900 dark:text-white">
+            Master <span className="text-blue-600 dark:text-blue-400">Code</span> &{' '}
+            <span className="text-purple-600 dark:text-purple-500">Career</span>
+          </h1>
 
-          <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            viewport={{ once: true }}
-          >
+          <h2 className="text-base sm:text-xl md:text-2xl font-medium text-muted-foreground mb-4">
+            Become Job-Ready by Actually{' '}
+            <ContainTextFlip
+              words={words}
+              className="inline text-primary dark:text-blue-400 font-semibold"
+            />
+          </h2>
+
+          <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-8">
+            Transform your passion into profession with our comprehensive learning ecosystem. From
+            tutorials to dream jobs – we&apos;ve got you covered.
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8 sm:mb-10">
+            <Button size="lg" className="px-6 text-base" onClick={() => router.push('/blogs')}>
+              Start Learning Free <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
             <Button
               size="lg"
-              className="text-base md:text-lg px-8 py-6 text-white"
+              variant="outline"
+              className="px-6 text-base"
               onClick={() => router.push('/blogs')}
             >
-              Start Learning Today
-              <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="text-base md:text-lg px-8 py-6"
-              onClick={() => router.push('/jobs')}
-            >
-              <Briefcase className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
               Explore Jobs
             </Button>
-          </motion.div>
-
-          {/* Tech badges (looping) */}
-          <div className="relative overflow-hidden mt-6 space-y-4">
-            <InfiniteBadgeScroll items={technologies} direction="left" />
-            <InfiniteBadgeScroll items={moreTechnologies} direction="right" />
           </div>
+
+          {/* Category Buttons */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 justify-center lg:justify-start">
+            {categories.map(({ name, icon, href }) => (
+              <Button
+                key={name}
+                variant="ghost"
+                size="lg"
+                className="w-full h-24 flex flex-col items-center justify-center border rounded-xl hover:bg-muted transition"
+                onClick={() => router.push(href)}
+              >
+                <div className="text-2xl">{icon}</div>
+                <span className="text-sm mt-1">{name}</span>
+              </Button>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* RIGHT: Skills Card (Hidden on small screens) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
+          className="hidden lg:flex w-full sm:max-w-sm lg:w-[360px] bg-gradient-to-br from-white to-blue-50 dark:from-muted dark:to-muted/40 border dark:border-muted-foreground/10 shadow-xl rounded-2xl p-6 flex-col justify-between h-full"
+        >
+          <h3 className="text-md font-semibold mb-4 text-left">Popular Skills</h3>
+
+          <div className="flex flex-col gap-2 mb-4">
+            {skills.map((skill) => (
+              <Button
+                key={skill}
+                variant="ghost"
+                className="group justify-start text-left text-sm px-3 py-2 rounded-md hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors"
+              >
+                <span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 mt-1 group-hover:scale-125 transition-transform" />
+                {skill}
+              </Button>
+            ))}
+          </div>
+
+          <Button className="w-full text-sm" onClick={() => router.push('/tutorials')}>
+            Explore All Tutorials <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
         </motion.div>
       </div>
     </section>
   );
 }
-
-type InfiniteBadgeScrollProps = {
-  items: string[];
-  direction?: 'left' | 'right';
-};
-
-export const InfiniteBadgeScroll = ({ items, direction = 'left' }: InfiniteBadgeScrollProps) => {
-  const isLeft = direction === 'left';
-  const animation = {
-    x: isLeft ? ['0%', '-50%'] : ['-50%', '0%'],
-  };
-
-  return (
-    <div className="overflow-hidden w-full">
-      <motion.div
-        className="flex gap-4 w-max"
-        animate={animation}
-        transition={{
-          repeat: Infinity,
-          repeatType: 'loop',
-          duration: 20,
-          ease: 'linear',
-        }}
-      >
-        {/* Duplicate at least 2x to fill loop */}
-        {[...items, ...items, ...items].map((tech, index) => (
-          <Badge
-            key={index}
-            variant="secondary"
-            className="px-4 py-2 text-sm font-medium bg-primary/10 text-primary border-primary/20 flex-shrink-0"
-          >
-            {tech}
-          </Badge>
-        ))}
-      </motion.div>
-    </div>
-  );
-};

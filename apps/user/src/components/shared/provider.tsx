@@ -25,7 +25,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
 
   return (
     <SessionProvider>
-      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
         <Toaster />
         <NextTopLoader showSpinner={false} />
         <QueryClientProvider client={queryClient}>
