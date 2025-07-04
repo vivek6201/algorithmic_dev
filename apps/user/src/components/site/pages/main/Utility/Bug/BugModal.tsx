@@ -6,7 +6,7 @@ import { Button } from '@repo/ui/components/ui/button';
 import { motion } from 'motion/react';
 import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
 import React from 'react';
-import { useIsMobile } from '@repo/ui/hooks/use-mobile';
+import { useIsMobile } from '@repo/ui/hooks';
 import {
   Drawer,
   DrawerContent,

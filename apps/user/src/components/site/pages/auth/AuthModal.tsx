@@ -11,7 +11,7 @@ import { Button } from '@repo/ui/components/ui/button';
 import { AuthModalForm } from './AuthForm';
 import { useUtilityStore } from '@/store/utilityStore';
 import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
-import { useIsMobile } from '@repo/ui/hooks/use-mobile';
+import { useIsMobile } from '@repo/ui/hooks';
 import {
   Drawer,
   DrawerContent,

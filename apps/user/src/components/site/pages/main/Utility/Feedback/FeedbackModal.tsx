@@ -4,7 +4,7 @@ import { useUtilityStore } from '@/store/utilityStore';
 import { motion } from 'motion/react';
 import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
 import React, { useEffect } from 'react';
-import { useIsMobile } from '@repo/ui/hooks/use-mobile';
+import { useIsMobile } from '@repo/ui/hooks';
 import {
   Drawer,
   DrawerContent,
@@ -18,25 +18,36 @@ import {
   DialogTitle,
 } from '@repo/ui/components/ui/dialog';
 import FeedbackForm from './FeedbackForm';
+import { FEEDBACK_DELAY, ONE_DAY, ONE_WEEK } from '@/lib/constants';
+import { useLocalStorage } from '@repo/ui/hooks';
+import { FeedbackStatus } from '@/types/main';
 
 export default function FeedbackModal() {
   const { openFeedbackModal, setOpenFeedbackModal } = useUtilityStore();
-  const delay = 60000;
   const isMobile = useIsMobile();
 
-  useEffect(() => {
-    // Check if feedback has already been shown in this session
-    const hasShownFeedback = Boolean(sessionStorage.getItem('feedback-shown'));
+  const { value: feedbackStatus } = useLocalStorage<FeedbackStatus>('feedback-status', {
+    action: 'later',
+    timestamp: 0,
+  });
 
-    if (hasShownFeedback) return;
+  useEffect(() => {
+    const now = Date.now();
+    const { action, timestamp } = feedbackStatus;
+
+    const timeSince = now - timestamp;
+    const shouldShow =
+      (action === 'submitted' && timeSince >= ONE_WEEK) ||
+      (action === 'later' && timeSince >= ONE_DAY);
+
+    if (!shouldShow) return;
 
     const timer = setTimeout(() => {
-      sessionStorage.setItem('feedback-shown', 'true');
       setOpenFeedbackModal(true);
-    }, delay);
+    }, FEEDBACK_DELAY); // wait 1 minute after eligible
 
     return () => clearTimeout(timer);
-  }, [delay, setOpenFeedbackModal]);
+  }, [feedbackStatus, setOpenFeedbackModal]);
 
   if (isMobile) {
     return (

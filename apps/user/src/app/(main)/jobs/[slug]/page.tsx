@@ -61,12 +61,27 @@ export default async function page({ params }: { params: Promise<{ slug: string 
       <JobHeaderBlock data={data} id={data.id} />
 
       {/* Blog Content */}
-      <article className="prose lg:prose-lg dark:prose-invert max-w-none opacity-80">
+      <article className="prose lg:prose-lg dark:prose-invert max-w-none opacity-80 mb-5">
         {<HTMLRenderer content={data.description} />}
       </article>
+      <div className="bg-blue-400/20 rounded-md p-5 leading-tight w-full border border-blue-400 text-black dark:text-white">
+        <p>
+          These opportunities were not posted on our platform and are from the official career page
+          of their respective companies We have filtered these jobs for you so that you get
+          everything at one place on our platform. Share these opportunities with your friends as
+          well to let them know.
+        </p>
+        <p className="mt-2">
+          Read our{' '}
+          <Link href={'/tnc'} className="italic underline dark:text-blue-300 text-blue-800">
+            Terms and Conditions
+          </Link>
+        </p>
+        <p className="mt-5">- Team AlgorithmicDev</p>
+      </div>
 
-      <Link href={data.link} target="_blank" className="my-10">
-        <Button size={'lg'} className="cursor-pointer">
+      <Link href={data.link} target="_blank">
+        <Button size={'lg'} className="cursor-pointer mt-10">
           Apply <ChevronRight />
         </Button>
       </Link>

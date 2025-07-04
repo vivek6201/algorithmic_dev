@@ -40,3 +40,8 @@ export type BookmarkWithRelations = Prisma.BookmarkGetPayload<{
 
 export type FeedbackFormData = z.infer<typeof feedbackSchema>;
 export type BugFormData = z.infer<typeof bugSchema>;
+
+export type FeedbackStatus = {
+  action: 'submitted' | 'later';
+  timestamp: number;
+};

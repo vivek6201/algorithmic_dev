@@ -27,7 +27,7 @@ import { Textarea } from '@repo/ui/components/ui/textarea';
 import { updateProjectData } from '@/actions/main/profile';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useSession } from 'next-auth/react';
-import { useIsMobile } from '@repo/ui/hooks/use-mobile';
+import { useIsMobile } from '@repo/ui/hooks';
 import {
   Drawer,
   DrawerContent,
