@@ -1,4 +1,4 @@
-import { FeedbackFormData } from '@/types/main';
+import { FeedbackFormData, FeedbackStatus } from '@/types/main';
 import { feedbackSchema } from '@repo/shared/validations';
 import { Heart, hookForm, Send, Star, zodResolver } from '@repo/ui';
 import React, { useCallback, useMemo, useState } from 'react';
@@ -17,12 +17,18 @@ import { feedbackAction } from '@/actions/main/feedback';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useUtilityStore } from '@/store/utilityStore';
 import { cn } from '@repo/ui/lib/utils';
+import { useLocalStorage } from '@repo/ui/hooks';
 
 export default function FeedbackForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { setOpenFeedbackModal } = useUtilityStore();
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
+  const { setValue: setFeedbackStatus } = useLocalStorage<FeedbackStatus>('feedback-status', {
+    action: 'later',
+    timestamp: 0,
+  });
+
   const form = hookForm.useForm<FeedbackFormData>({
     resolver: zodResolver(feedbackSchema),
     defaultValues: {
@@ -30,6 +36,11 @@ export default function FeedbackForm() {
       message: '',
     },
   });
+
+  const handleAskLater = () => {
+    setFeedbackStatus({ action: 'later', timestamp: Date.now() });
+    setOpenFeedbackModal(false);
+  };
 
   async function onSubmit(values: FeedbackFormData) {
     setIsLoading(true);
@@ -41,6 +52,7 @@ export default function FeedbackForm() {
       toast.error(res.error);
     }
     setIsLoading(false);
+    setFeedbackStatus({ action: 'submitted', timestamp: Date.now() });
     setOpenFeedbackModal(false);
   }
 
@@ -186,7 +198,7 @@ export default function FeedbackForm() {
             <Button
               type="button"
               variant={'secondary'}
-              onClick={() => setOpenFeedbackModal(false)}
+              onClick={handleAskLater}
               className="w-full "
             >
               Ask me later

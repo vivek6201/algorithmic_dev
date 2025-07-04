@@ -75,7 +75,7 @@
     "./postcss.config": "./postcss.config.mjs",
     "./tailwind.config": "./tailwind.config.ts",
     "./lib/*": "./src/lib/*.ts",
-    "./hooks/*": "./src/hooks/*.ts",
+    "./hooks": "./src/hooks/index.ts",
     ".": "./src/index.ts",
     "./components/elements": "./src/components/elements/*.tsx",
     "./components/*": "./src/components/*.tsx"

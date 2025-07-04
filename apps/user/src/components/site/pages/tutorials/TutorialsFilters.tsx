@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useFilterStore } from '@/store/filterStore';
 import { tutorialFilterTabs } from '@/lib/constants';
-import { useIsMobile } from '@repo/ui/hooks/use-mobile';
+import { useIsMobile } from '@repo/ui/hooks';
 import DrawerFilter from '../../shared/DrawerFilter';
 import FilterButtonGroup from '../../shared/FilterButtonGroup';
 import { updateParams } from '@/lib/clientUtils';

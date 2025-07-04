@@ -33,7 +33,7 @@ import {
 import { Input } from '@repo/ui/components/ui/input';
 import { PasswordInput } from '@repo/ui/components/ui/password-input';
 import { toast } from '@repo/ui/components/ui/sonner';
-import { useIsMobile } from '@repo/ui/hooks/use-mobile';
+import { useIsMobile } from '@repo/ui/hooks';
 import { useState } from 'react';
 
 export const adminColumns: TanstackTable.ColumnDef<Admin>[] = [

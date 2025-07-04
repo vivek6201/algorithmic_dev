@@ -26,7 +26,7 @@ import { educationValidation } from '@repo/shared/validations';
 import { updateEducationData } from '@/actions/main/profile';
 import { useSession } from 'next-auth/react';
 import { toast } from '@repo/ui/components/ui/sonner';
-import { useIsMobile } from '@repo/ui/hooks/use-mobile';
+import { useIsMobile } from '@repo/ui/hooks';
 import {
   Drawer,
   DrawerContent,

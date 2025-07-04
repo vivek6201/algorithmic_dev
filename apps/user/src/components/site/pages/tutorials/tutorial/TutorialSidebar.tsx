@@ -4,7 +4,7 @@ import { BookOpen } from '@repo/ui';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'nextjs-toploader/app';
 import React from 'react';
-import { useIsMobile } from '@repo/ui/hooks/use-mobile';
+import { useIsMobile } from '@repo/ui/hooks';
 import { useUtilityStore } from '@/store/utilityStore';
 import {
   Sheet,
