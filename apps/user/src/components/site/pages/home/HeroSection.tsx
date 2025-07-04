@@ -11,7 +11,7 @@ const categories = [
   { name: 'Tutorials', icon: '📘', href: '/tutorials' },
   { name: 'Jobs', icon: '💼', href: '/jobs' },
   { name: 'Blogs', icon: '📝', href: '/blogs' },
-  { name: 'Hire', icon: '🧑‍💻', href: '/hire' },
+  { name: 'Hire', icon: '🧑‍💻', href: '/jobs/hire' },
 ];
 
 const skills = ['React', 'Python', 'Machine Learning', 'Data Science', 'Node.js', 'Flutter'];
@@ -62,7 +62,7 @@ export default function HeroSection() {
 
           <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-8">
             Transform your passion into profession with our comprehensive learning ecosystem. From
-            tutorials to dream jobs – we've got you covered.
+            tutorials to dream jobs – we&apos;ve got you covered.
           </p>
 
           {/* CTA Buttons */}

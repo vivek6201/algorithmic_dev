@@ -3,14 +3,7 @@ import { newsletterSchema } from '@repo/shared/validations';
 import { hookForm, Loader, z, zodResolver } from '@repo/ui';
 import React, { useState } from 'react';
 import { IoPeople } from 'react-icons/io5';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@repo/ui/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@repo/ui/components/ui/form';
 import { Input } from '@repo/ui/components/ui/input';
 import { Button } from '@repo/ui/components/ui/button';
 import { Checkbox } from '@repo/ui/components/ui/checkbox';

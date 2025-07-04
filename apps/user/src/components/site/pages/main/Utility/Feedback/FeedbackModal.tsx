@@ -4,13 +4,7 @@ import { useUtilityStore } from '@/store/utilityStore';
 import { motion } from 'motion/react';
 import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
 import React, { useEffect } from 'react';
-import { useIsMobile } from '@repo/ui/hooks';
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerTitle,
-} from '@repo/ui/components/ui/drawer';
+
 import {
   Dialog,
   DialogContent,
