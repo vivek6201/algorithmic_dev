@@ -16,7 +16,8 @@
     "prisma:studio": "prisma studio",
     "prisma:reset": "prisma migrate reset",
     "prisma:deploy": "prisma migrate deploy",
-    "prisma:seed": "prisma db seed"
+    "prisma:seed": "prisma db seed",
+    "prisma:update-db": "ts-node src/migrate.ts"
   },
   "keywords": [],
   "author": "",

@@ -24,9 +24,9 @@ model JobCategory {
 model Jobs {
   id String @id @default(cuid())
 
-  companyName      String          @default("Unknown")
-  position         String          @default("Unknown")
-  location         String          @default("Unknown")
+  companyName      String
+  position         String
+  location         String
   shortDescription String
   description      String
   slug             String          @unique
@@ -41,4 +41,6 @@ model Jobs {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([slug, published, type, createdAt(sort: Desc)])
 }
